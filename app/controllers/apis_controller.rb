@@ -66,7 +66,18 @@ class ApisController < ApplicationController
 
   # GET /apis/1/edit
   def edit
-    @api = Api.find(params[:id])
+    if params[:id] and isNumeric(params[:id])
+      @api = Api.find(params[:id])
+    else
+      
+      if request.url.index('localhost')
+        @api = Api.find(:first, :conditions => ['name LIKE ?', params[:id]])
+      else
+        @api = Api.find(:first, :conditions => ['name ILIKE ?', params[:id]])
+      end
+    
+    end
+    
   end
 
   # POST /apis
@@ -88,8 +99,18 @@ class ApisController < ApplicationController
   # PUT /apis/1
   # PUT /apis/1.json
   def update
-    @api = Api.find(params[:id])
-
+    if params[:id] and isNumeric(params[:id])
+      @api = Api.find(params[:id])
+    else
+      
+      if request.url.index('localhost')
+        @api = Api.find(:first, :conditions => ['name LIKE ?', params[:id]])
+      else
+        @api = Api.find(:first, :conditions => ['name ILIKE ?', params[:id]])
+      end
+    
+    end
+    
     respond_to do |format|
       if @api.update_attributes(params[:api])
         format.html { redirect_to '/' + @api.name, notice: 'Api was successfully updated.' }

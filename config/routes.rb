@@ -26,7 +26,6 @@ Apisio::Application.routes.draw do
   match '/logout' => 'sessions#destroy'
   match '/password/:id' => 'users#password'
   match '/about' => 'static#about'
-  match '/api' => 'static#api'
   match '/mashups' => 'static#mashups'
   match '/users/pollallfeed' => 'users#pollallfeed'
   match '/users/pollfeed' => 'users#pollfeed'
@@ -49,6 +48,7 @@ Apisio::Application.routes.draw do
   resources :statuses
   resources :apis
   
+  match '/api' => 'static#api'
   match ':id' => 'apis#show', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
   
   match '*a', :to => 'errors#404'
