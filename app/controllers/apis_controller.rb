@@ -76,7 +76,7 @@ class ApisController < ApplicationController
 
     respond_to do |format|
       if @api.save
-        format.html { redirect_to @api, notice: 'Api was successfully created.' }
+        format.html { redirect_to '/' + @api.name, notice: 'Api was successfully created.' }
         format.json { render json: @api, status: :created, location: @api }
       else
         format.html { render action: "new" }
