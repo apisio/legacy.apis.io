@@ -92,7 +92,7 @@ class ApisController < ApplicationController
 
     respond_to do |format|
       if @api.update_attributes(params[:api])
-        format.html { redirect_to @api, notice: 'Api was successfully updated.' }
+        format.html { redirect_to '/' + @api.name, notice: 'Api was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
