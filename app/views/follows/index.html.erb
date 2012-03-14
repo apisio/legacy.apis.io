@@ -1,0 +1,135 @@
+<% if @follows %>
+
+<br/>
+<% if params[:view] == 'following' %>
+	<% if @current_user == @user %>
+		<h1>You Are Following (<%= link_to 'view followers', '/' + @user.username + '/followers' %>)</h1>
+	<% else %>
+		<h1><%= link_to @user.username.upcase, '/' + @user.username  %> <%=params[:view].capitalize %> (<%= link_to 'view followers', '/' + @user.username + '/followers' %>)</h1>
+	<% end %>
+<% else %>
+	<% if @current_user == @user %>
+		<h1>Your Followers (<%= link_to 'view following', '/' + @user.username + '/following' %>)</h1>
+	<% else %>
+		<h1> <%= link_to @user.username.upcase, '/' + @user.username  %> <%=params[:view].capitalize %>  (<%= link_to 'view following', '/' + @user.username + '/following' %>)</h1>
+	<% end %>
+<% end %>
+<br/>
+
+<div>
+<script>
+function setbuttonclick(buttonid) {
+ $("#follow_" + buttonid).click(function() {
+  $("#spinner_" + buttonid).show();
+ });
+};
+</script>
+	
+
+<% @follows.each do |follow| %>
+
+	<% if params[:view] == 'following'%>
+		<% @followuser = User.find(follow.follow_id) rescue nil%><br/>		
+	<% else %>	
+		<% @followuser = User.find(follow.user_id) rescue nil%><br/>
+	<% end %>
+	
+	<% if @followuser %>
+	
+		<div class="bubble" id="follower_<%=follow.user_id if follow.user_id %>">
+			<a href="/<%= @followuser.username.downcase%>">
+			<% if !@followuser.photo.blank? %>	
+				<img src="<%= @followuser.photo %>" style="width:100px; height: 100px;" align="left"/>
+			<% else %>
+				<%= gravatar_image_tag @followuser.email, :class => "gravatar", :style=>"width:100px; height: 100px;",  :align=>"left" rescue ""%>
+			<% end %>
+			</a>
+			<blockquote>
+				<p> 
+					<% 
+					if @followuser.about_me.blank?
+						@txt = "ham radio operator"
+					else
+						@txt = @followuser.about_me[0..160]
+					end
+					@linkmessage = @txt.gsub(/(@)((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i) {|s| '<a href=/'+s[1..1000].downcase+'>'+s+'</a>'}
+					@linkmessage = @linkmessage.gsub(/https?:\/\/([^\/]+)(.*)/) {|s| '<a href='+s+'>'+s+'</a>'}
+					%>
+					 <%= raw(@linkmessage) rescue ""%>
+
+				</p>
+				<div id="spinner_<%=@followuser.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+
+			</blockquote>
+			<cite>
+				<%= link_to @followuser.username.upcase, '/' + @followuser.username.downcase %> 
+				Joined <%= time_ago_in_words(@followuser.created_at) %> ago 
+				<div class="pull-right" id="userstatus_<%=@followuser.id.to_s%>">
+				<% if params[:view] == 'following'%>
+					<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'unfollow' }, :remote => true do |f| %>
+						<%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
+					<% end %>
+				<% else %>
+			        <% @followback = Follow.find(:first, :conditions => ["user_id = ? and follow_id = ?", @current_user.id, follow.user_id]) %>
+			        <% @block = Follow.find(:first, :conditions => ["user_id = ? and block_id = ?", @current_user.id, follow.user_id]) %>
+
+					<% if @followuser.id != session[:user_id]%>
+					<% if @followback %>	      
+						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'unfollow' }, :remote => true do |f| %>
+							<%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
+						<% end %>
+						
+					<% elsif @block %>
+						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"unblock", :id=>@followuser.id }, :remote => true do |f| %>
+							<%= button_tag(raw('<i class="icon-stop icon-white"></i> Unblock'), :title=>"Unblokc " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
+						<% end %>
+					
+					<% else %>
+						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'follow' }, :remote => true do |f| %>
+							<div class="btn-group">
+							<%= button_tag(raw('<i class="icon-ok"></i> Follow'), :title=>"Follow " + @followuser.username.upcase, :class=>"btn", :id=>"follow_" + @followuser.id.to_s ) %>
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="/follows/block/<%=@followuser.id%>" data-remote="true">Block <%=@followuser.username.upcase%></a></li>
+					          </ul>
+					        </div><!-- /btn-group -->
+						<% end %>
+					<% end %>
+					<% end %>
+				<% end %>
+				
+				</div>
+
+				<script>
+					setbuttonclick(<%=@followuser.id.to_s%>);
+				</script>
+				
+				<script>
+				$(function() {
+				 $("#follow_<%=@followuser.id.to_s%>").click(function() {
+				  $("#spinner_<%=@followuser.id.to_s%>").show();
+				 });
+				});
+				</script>
+				
+			
+			</cite>
+		</div>
+		
+
+	<% end %>
+	
+<% end %>
+
+</div>
+
+<br />
+<p><center><div class="pager"><%= will_paginate @follows, :page_links => false %></div></center></p>
+<br/><br/>
+
+<% else %>
+<br/><br/><br/><br/>
+<h1>User not found :(</h1>
+<div id="pagecontent">
+</div>
+<% end %>

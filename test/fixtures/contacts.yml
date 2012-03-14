@@ -1,0 +1,63 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  callsign: MyString
+  fullname: MyString
+  email: MyString
+  address: MyString
+  city: MyString
+  state: MyString
+  zip: MyString
+  county: MyString
+  country: MyString
+  mylat: MyString
+  mylong: MyString
+  contactlat: MyString
+  contactlong: MyString
+  mygrid: MyString
+  contactgrid: MyString
+  dxcc: MyString
+  frequency: MyString
+  band: MyString
+  mode: MyString
+  txpower: MyString
+  rxpower: MyString
+  txsignal: MyString
+  rxsignal: MyString
+  event: MyString
+  comment: MyText
+  contacttime: 2011-12-31 12:36:56
+  confirmcode: MyString
+  confirmtime: 2011-12-31 12:36:56
+
+two:
+  user_id: 1
+  callsign: MyString
+  fullname: MyString
+  email: MyString
+  address: MyString
+  city: MyString
+  state: MyString
+  zip: MyString
+  county: MyString
+  country: MyString
+  mylat: MyString
+  mylong: MyString
+  contactlat: MyString
+  contactlong: MyString
+  mygrid: MyString
+  contactgrid: MyString
+  dxcc: MyString
+  frequency: MyString
+  band: MyString
+  mode: MyString
+  txpower: MyString
+  rxpower: MyString
+  txsignal: MyString
+  rxsignal: MyString
+  event: MyString
+  comment: MyText
+  contacttime: 2011-12-31 12:36:56
+  confirmcode: MyString
+  confirmtime: 2011-12-31 12:36:56

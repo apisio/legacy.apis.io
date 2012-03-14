@@ -1,0 +1,33 @@
+<h1>Listing parameters</h1>
+
+<table>
+  <tr>
+    <th>Resource</th>
+    <th>Paramtype</th>
+    <th>Paramname</th>
+    <th>Paramvalue</th>
+    <th>Paramrequired</th>
+    <th>Paramdocurl</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @parameters.each do |parameter| %>
+  <tr>
+    <td><%= parameter.resource_id %></td>
+    <td><%= parameter.paramtype %></td>
+    <td><%= parameter.paramname %></td>
+    <td><%= parameter.paramvalue %></td>
+    <td><%= parameter.paramrequired %></td>
+    <td><%= parameter.paramdocurl %></td>
+    <td><%= link_to 'Show', parameter %></td>
+    <td><%= link_to 'Edit', edit_parameter_path(parameter) %></td>
+    <td><%= link_to 'Destroy', parameter, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Parameter', new_parameter_path %>

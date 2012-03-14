@@ -1,0 +1,29 @@
+<html>
+	<body style="background-color: #c0c0c0;">		
+		<center>
+		<table style="background-color: #ffffff;"">
+			<tr>
+				<td width="70%" colspan="2">
+					<h1>
+						You have a new follower!
+					</h1>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="<%=@photo%>" width="200">
+				</td>
+				<td>
+					<p>Hi <%=@to.capitalize rescue ""%>,</p>
+					
+					<p><%=@from.capitalize rescue ""%> is now following you on APIs.io! You can follow them back by clicking on this link: </p>
+					
+					<p>Regards,<br />
+					APIs.io</p>
+				</td>
+			</tr>
+		</table>
+		</center>
+		
+	</body>
+</html>

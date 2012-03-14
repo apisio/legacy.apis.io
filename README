@@ -1,0 +1,21 @@
+= APIs.io
+
+The idea behind APIs.io started by a rant from @ChrisMatthieu stating that @Apigee wouldn’t list his 3 REST APIs on their Provider page even though he had been speaking with them for nearly 6 months and all three APIs worked in their API Explorer. Apigee seems to reserve space on their API Provider page for paying customers.
+
+The following individuals immediately responded with support for this idea: @guyht @kritikal @k0ws1k and @SandFoxUK. Within 1 hour from the initial tweet, we created the @Apisio twitter handle and a public repo on Github (http://github.com/apisio). An idea becomes reality...
+
+== What is APIs.io
+
+What we need is an open source and free API registry service that allows developers to publish and discover REST APIs and interact with them online. I am thinking that this service would work like a mashup of the following services:
+
+Programmable Web - Directory of REST APIs allowing developers to discover and rate APIs and list mashups using them.
+
+Apigee / HURL - API Explorer for interacting with REST APIs. Saving requests and responses to share with other developers.
+
+API Configurator (new service) - Apigee uses WADL files to define an API’s behavior. We should also support WADL files but add a UI for defining APIs online with the ability to export WADL files. (Interesting project: http://tomayac.de/rest-describe/latest/RestDescribe.html)
+
+== Architecture
+
+Developed using Node.JS and hosted on Nodester. This will allow us to handle a large volume of transactions for rate limiting and analytics. We could possibly use Backbone.js to create a very responsive UX with websockets for streaming live API metrics.
+
+Here's an interesting API server slide deck that I came across today: http://paul.querna.org/slides/api-servers-in-nodejs/#1

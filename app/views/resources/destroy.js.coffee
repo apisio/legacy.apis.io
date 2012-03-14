@@ -1,0 +1,1 @@
+$('#resource_<%=@resource.id.to_s%>').slideUp()

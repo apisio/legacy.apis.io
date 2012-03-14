@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  shownumber: 1
+  title: MyString
+  description: MyText
+  embedtag: MyText
+
+two:
+  shownumber: 1
+  title: MyString
+  description: MyText
+  embedtag: MyText

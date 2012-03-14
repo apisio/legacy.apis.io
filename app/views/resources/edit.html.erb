@@ -1,0 +1,19 @@
+<h1>Editing Resource</h1>
+<br />
+<p class="well">
+	<b>Base API:</b> <%=@resource.api.apiurl%><br />
+</p>
+<div class="row">
+<div class="span8">
+
+<%= render 'form' %>
+
+</div>
+<div class="span4">
+	
+	<p class="pull-right">
+		<a href="<%=@resource.api.apidocurl%>" target="_new"><center><img src="<%= @resource.api.imageurl %>" style="width:200px; height: 200px;"></center></a>
+	</p>
+
+</div>
+</div>

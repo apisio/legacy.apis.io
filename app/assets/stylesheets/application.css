@@ -1,0 +1,68 @@
+
+/* Normal Bubble */
+div.bubble {
+	width: auto;
+	height: 100px;
+	font-size: 1em;
+	margin-bottom: 24px;
+	margin: 20px;
+	background-color: #eee;
+}
+
+div.bubble blockquote {
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #c9c2c1;
+	background-color: #fff;
+}
+
+div.bubble blockquote p {
+	margin: 10px;
+	padding: 0px;
+	font-size: 1.25em;
+}
+
+div.bubble cite {
+	position: relative;
+	margin: 0px;
+	padding: 17px 0px 0px 15px;
+	top: 14px;
+	background: transparent url(/assets/tip.gif) no-repeat 20px 0; /* or tip.gif */
+	font-style: normal;
+	font-size:12px;
+}
+
+/* Rounded Bubble */
+div.bubble div.rounded {
+	margin-bottom: 10px;
+	border: 3px solid #fff;
+	background-color: #b7e0ff;
+}
+div.bubble div.rounded blockquote {
+	border: 0;
+	background-color: transparent;
+}
+div.bubble div.rounded blockquote p {
+	margin: 0px 10px;
+}
+div.bubble cite.rounded {
+	position: relative;
+	margin: 0px;
+	padding-left: 15px;
+	padding-top: 12px;
+	top: 9px;
+	background: transparent url(/assets/tip-rounded.gif) no-repeat 15px 0;
+}
+
+/* Pimped Bubble */
+div#pimped.bubble {
+	font-size: 0.9em;
+}
+div#pimped.bubble div.rounded {
+	color: #fff;
+	border: 3px solid #fff;
+	background-color: #111;
+}
+div#pimped.bubble cite.rounded {
+	background: transparent url(/assets/tip-pimped.gif) no-repeat 15px 0;
+}

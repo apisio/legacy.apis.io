@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Api:</b>
+  <%= @resource.api_id %>
+</p>
+
+<p>
+  <b>Resourcename:</b>
+  <%= @resource.resourcename %>
+</p>
+
+<p>
+  <b>Pathurl:</b>
+  <%= @resource.pathurl %>
+</p>
+
+<p>
+  <b>Resourcemethod:</b>
+  <%= @resource.resourcemethod %>
+</p>
+
+<p>
+  <b>Authentication:</b>
+  <%= @resource.authentication %>
+</p>
+
+<p>
+  <b>Curlexample:</b>
+  <%= @resource.curlexample %>
+</p>
+
+<p>
+  <b>Docurl:</b>
+  <%= @resource.docurl %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @resource.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_resource_path(@resource) %> |
+<%= link_to 'Back', resources_path %>

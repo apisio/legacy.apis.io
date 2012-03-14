@@ -1,0 +1,80 @@
+
+<div class="row">
+<div class="span16">
+
+
+<% if @user  %>
+
+<img src="<%= @user.photo %>" style="width:100px; height: 100px;"/>
+<br />
+<h1>
+<%= @user.username.capitalize %>'<%= "s" if @user.username[-1,1] != "s"%> Profile 
+</h1>
+<p>Website: <%= link_to @user.website, @user.website%>	</p>
+
+<br /><br />
+<h1>Following</h1>
+<% @following.each do |follow| %>
+
+	<% @api = Api.find(follow.follow_id)%>
+
+	<div class="span4 well">
+		
+		<table><tr>
+			<td width="100"><a href="/<%=@api.name%>"><img src="<%= @api.imageurl %>" style="width:80px; height: 80px; margin:10px;" align="left"></a></td>
+			<td>
+				<h4><a href="/<%=@api.name%>"><%= @api.name %></a>
+				(<%= @api.category %>)</h4><hr />
+				<%= @api.description[0..140] %>
+			</td>
+		</tr></table>
+		
+	</div>
+
+<% end %>
+
+<%= javascript_tag do -%>
+$(document).ready(
+  function(){
+    setInterval(function(){
+      $.ajax({
+        url: "/users/pollallfeed",
+        type: "GET",
+        dataType: "script"
+    });
+  }, 10000 );
+});
+<% end -%>
+
+
+<% if !@activities.nil?%>
+<br /><br />
+<h1>Activity:</h1>
+
+
+<h1><%= @user.username.capitalize %>'<%= "s" if @user.username[-1,1] != "s"%> Activity</h1>
+
+<div id="statuses">
+
+	<%= render 'feed' %>
+
+	<br />
+	<p><center><div class="pager"><%= will_paginate @activities, :page_links => false %></div></center></p>
+	
+	
+</div>
+<% end %>
+
+
+<% else %>
+<!-- 404 -->
+<div class="hero-unit">
+	<h1>User not found...</h1>
+</div>
+
+<% end %>
+
+</div>
+</div>
+
+<br /><br/><br/>

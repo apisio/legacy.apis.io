@@ -1,0 +1,25 @@
+<h1>API Timeline</h1>
+<%# render 'statusbar' %>
+
+<%= javascript_tag do -%>
+$(document).ready(
+  function(){
+    setInterval(function(){
+      $.ajax({
+        url: "/statuses/pollfeed",
+        type: "GET",
+        dataType: "script"
+    });
+  }, 10000 );
+});
+<% end -%>
+
+<% if @following == 0 %>
+	<br /><br /><br />
+	<h1><center>You are now following any <a href="/apis">APIs</a></center></h1>
+<% end %>
+<div id="statuses">
+	<%= render 'feed' %>
+</div>
+<br />
+<p><center><div class="pager"><%= will_paginate @statuses, :page_links => false %></div></center></p>

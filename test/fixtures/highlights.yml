@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  verse_id: 1
+  color: MyString
+
+two:
+  user_id: 1
+  verse_id: 1
+  color: MyString

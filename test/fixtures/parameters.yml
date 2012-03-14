@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  resource_id: 1
+  paramtype: MyString
+  paramname: MyString
+  paramvalue: MyString
+  paramrequired: false
+  paramdocurl: MyString
+
+two:
+  resource_id: 1
+  paramtype: MyString
+  paramname: MyString
+  paramvalue: MyString
+  paramrequired: false
+  paramdocurl: MyString

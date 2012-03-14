@@ -1,0 +1,67 @@
+<script type="text/javascript">
+function addLink(text)
+{
+var TheTextBox = document.getElementById("status_input_box");
+TheTextBox.value = '@' + text + ' ' + TheTextBox.value;
+TheTextBox.focus();
+// var textarea = document.getElementById("status_input_box");
+// textarea.innerHTML += link;
+}
+
+function setbuttonclick() {
+ $("#statusbutton").click(function() {
+  $("#spinner").show();
+ });
+};
+</script>
+
+<div>
+
+<center><%= form_for :status, :url=>{:controller=>"statuses", :action=>"create" }, :remote => true do |f| %>
+<br />
+  <p>&nbsp;What are you doing right now? <span id="counter_box">140</span> characters remaining <br />
+<% if session["user_id"]%>
+    <%= f.text_field :message, :size => 100, :maxlength => 140, :id => "status_input_box", :value => @replycall, :class => "input-xxlarge"  %>
+
+	<% if !session["access_token"].blank? %>
+		<%= image_tag "twitter_newbird_blue_small.gif", :style => "width:30px; height:30px" %>
+		<%= f.check_box :twitter, :checked => true %> &nbsp;
+	<% end %>
+	<% if !session["fbtoken"].blank? %>
+		<%= image_tag "fblogo.jpg", :style => "width:30px; height:30px" %> 
+		<%= f.check_box :facebook, :checked => true %> &nbsp;
+	<% end %>
+	
+    <%= f.submit "Submit", :id=>"statusbutton", :disable_with => 'Processing...', :class=>"btn btn-primary" %>
+<% else %>
+	<%= f.text_field :message, :size => 100, :maxlength => 140, :id => "status_input_box", :value => @replycall, :class => "input-xxlarge", :disabled => "true"  %>
+	<%= f.submit "Submit", :disabled => "true" %>
+<% end %>
+<small>
+	<br />
+	Note: You can send APRS message out like DMs on Twitter (i.e. d n7ice test message).
+	You can also send status updates to 73s via APRS by sending APRS messages to "73S".
+</small>
+</p>
+<% end %>
+
+<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+<script>
+$(function() {
+ $("#statusbutton").click(function() {
+  $("#spinner").show();
+ });
+});
+</script>
+
+</center>
+<br />
+<script type="text/javascript">
+
+$('#status_input_box').keyup(function(){
+    var s = 140 - $(this).val().length;
+    $('#counter_box').text(s);
+});
+</script>
+
+</div>

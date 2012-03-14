@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  api_id: 1
+  resourcename: MyString
+  pathurl: MyString
+  resourcemethod: MyString
+  authentication: MyString
+  curlexample: MyString
+  docurl: MyString
+  description: MyText
+
+two:
+  api_id: 1
+  resourcename: MyString
+  pathurl: MyString
+  resourcemethod: MyString
+  authentication: MyString
+  curlexample: MyString
+  docurl: MyString
+  description: MyText

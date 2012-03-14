@@ -1,0 +1,50 @@
+<%= form_for(@resource) do |f| %>
+  <% if @resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resource.errors.count, "error") %> prohibited this resource from being saved:</h2>
+
+      <ul>
+      <% @resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <%= f.hidden_field :api_id %>
+  <div class="field">
+    <%= f.label :resourcename %>
+    <%= f.text_field :resourcename, :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label :pathurl %>
+    / <%= f.text_field :pathurl, :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label :resourcemethod %>
+	<%= f.select :resourcemethod, options_for_select([[@resource.resourcemethod], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />			    
+
+  </div>
+  <div class="field">
+    <%= f.label :authentication %>
+	<%= f.select :authentication, options_for_select([[@resource.authentication], "None", "Basic", "OAuth"]), :class => 'input' %><br />			    
+  </div>
+
+
+
+  <div class="field">
+    <%= f.label :curlexample %>
+    <%= f.text_field :curlexample, :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label :docurl %>
+    <%= f.text_field :docurl, :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description, :class=>"input-xxlarge", :rows=>"5" %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-success" %> <%= link_to 'cancel', "/" + @resource.api.name %>
+  </div>
+<% end %>

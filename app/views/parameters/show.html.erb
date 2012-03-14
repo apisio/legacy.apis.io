@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Resource:</b>
+  <%= @parameter.resource_id %>
+</p>
+
+<p>
+  <b>Paramtype:</b>
+  <%= @parameter.paramtype %>
+</p>
+
+<p>
+  <b>Paramname:</b>
+  <%= @parameter.paramname %>
+</p>
+
+<p>
+  <b>Paramvalue:</b>
+  <%= @parameter.paramvalue %>
+</p>
+
+<p>
+  <b>Paramrequired:</b>
+  <%= @parameter.paramrequired %>
+</p>
+
+<p>
+  <b>Paramdocurl:</b>
+  <%= @parameter.paramdocurl %>
+</p>
+
+
+<%= link_to 'Edit', edit_parameter_path(@parameter) %> |
+<%= link_to 'Back', parameters_path %>

@@ -1,0 +1,36 @@
+<%= form_for(@api) do |f| %>
+  <% if @api.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@api.errors.count, "error") %> prohibited this api from being saved:</h2>
+
+      <ul>
+      <% @api.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <%= f.hidden_field :user_id, :value=>session["user_id"] %>
+  <div class="input">
+    <%= f.text_field :name, :class=>"input-xxlarge focus", :placeholder=>"API Name" %>
+  </div>
+  <div class="field">
+    <%= f.text_field :apiurl, :class=>"input-xxlarge", :placeholder=>"API Base URL" %>
+  </div>
+  <div class="field">
+    <%= f.text_field :apidocurl, :class=>"input-xxlarge", :placeholder=>"API Documentation URL" %>
+  </div>
+  <div class="field">
+    <%= f.text_field :imageurl, :class=>"input-xxlarge", :placeholder=>"API Image URL" %>
+  </div>
+  <div class="field">
+    <%= f.text_area :description, :class=>"input-xxlarge", :placeholder=>"API Description" %>
+  </div>
+  <div class="field">
+    <%= f.select :category, options_for_select([["Select Category", ""], "Advertising", "Gaming", "Mapping", "PaaS", "Payments", "Photos", "Search", "Social", "Telephony", "Travel", "Weather", "Other"]), :class => 'input' %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-success" %>
+  </div>
+<% end %>
