@@ -34,9 +34,9 @@ Apisio::Application.routes.draw do
   match '/follows/block/:id' => 'follows#block'
   match '/follows/unblock/:id' => 'follows#unblock'
 
-  match '/search/:id' => 'apis#search', :constraints => { :url => /.*/ }
-  match '/:id/import' => 'apis#import', :constraints => { :url => /.*/ }
-  match '/:id/export' => 'apis#export', :constraints => { :url => /.*/ }
+  match '/search/:id' => 'apis#search', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
+  match '/:id/import' => 'apis#import', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
+  match '/:id/export' => 'apis#export', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
   match '/apis/wadl_import' => 'apis#wadl_import'
   
 
@@ -49,7 +49,7 @@ Apisio::Application.routes.draw do
   resources :statuses
   resources :apis
   
-  match ':id' => 'apis#show', :constraints => { :url => /.*/ }
+  match ':id' => 'apis#show', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
   
   match '*a', :to => 'errors#404'
 
