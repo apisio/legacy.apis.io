@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307224505) do
+ActiveRecord::Schema.define(:version => 20120317233334) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -53,6 +53,11 @@ ActiveRecord::Schema.define(:version => 20120307224505) do
     t.string   "paramdocurl"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "paramstyle"
+    t.string   "paramdefault"
+    t.text     "description"
+    t.text     "payload"
+    t.integer  "app_id"
   end
 
   create_table "resources", :force => true do |t|

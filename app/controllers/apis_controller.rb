@@ -150,6 +150,8 @@ class ApisController < ApplicationController
   end
   
   def wadl_import
+    
+    # TODO: Add support for multiple resources in a wadl file
 
     api_id =  params[:dump][:api]
     
@@ -162,13 +164,14 @@ class ApisController < ApplicationController
     @importcount = 0
       
     Resource.delete_all(["api_id = ?", api_id])
-    # TODO: Delete resource parameters too
+    Parameter.delete_all(["api_id = ?", api_id])
     
     content =  params[:dump][:file].read
 
 
     @doc = Nokogiri::XML(content)
 
+    # Remove appigee or apisio xml namspaces on tags
     @doc.remove_namespaces!
 
     @doc.search('*/resource').each do |node|
@@ -202,6 +205,37 @@ class ApisController < ApplicationController
         @resource.curlexample = meth.xpath('example')[0]["url"] 
 
       	@resource.save 
+      	
+        # Add resource parameters
+      	meth.search('request/param').each do |param| 
+      	  
+      	  @parameter = Parameter.new
+          @parameter.api_id = api_id
+          @parameter.resource_id = @resource.id
+
+          @parameter.paramname = param["name"]
+          @parameter.paramtype = param["type"]
+          @parameter.paramdefault = param["default"]
+          @parameter.paramstyle = param["style"]
+          @parameter.description = param.search('doc').text.gsub(/\s+/, " ").strip
+          if param["required"]
+            @parameter.paramrequired = true
+          else
+            @parameter.paramrequired = false
+          end 
+          @parameter.save
+          
+        end
+        
+        payload = meth.search('request/representation/payload').text.gsub(/\s+/, " ").strip
+        if payload
+      	  @parameter = Parameter.new
+          @parameter.api_id = api_id
+          @parameter.resource_id = @resource.id
+          @parameter.payload = payload
+          @parameter.save          
+        end
+        
 
     	end
     	
