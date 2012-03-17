@@ -5,9 +5,9 @@
 	
 	<h1><%= @api.name %>
 	(<%= @api.category %>)</h1>
-	<h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br /><br />
+	<h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br />
 
-	<p><span class="well"><%= @api.description %></span><br /><br /></p><br />
+	<p><span class="well span7"><%= @api.description %></span><br /><br /></p><br />
 
 	<h3>Base URL: <%= @api.apiurl %></h3>
 

@@ -9,21 +9,44 @@
       </p> -->
    <br />
    <p>
-	APIs.io is an open source and free API registry service that allows 
+	APIS.io is an open source and free API registry service that allows 
 	developers to publish and discover REST APIs and interact with them online.	
    </p>
 	<p>
-		APIs.io === (ProgrammableWeb + Apigee + Mashery) * OpenSource
+		APIS.io === (ProgrammableWeb + Apigee + Mashery) * OpenSource
 	</p>
    <br />
-   <center><div id="reqbutton" class="btn btn-success  btn-large">
+   <center>
+	<div id="reqbutton" class="btn btn-success  btn-large">
       <img src="/assets/github-icon.png"> Login with GitHub 
-   </div></center>
+   	</div>
+	<div id="videobutton" class="btn btn-primary btn-large">
+		Watch Video &raquo;
+	</div>
+	</center>
 
 	<script type="text/javascript">
       $('#reqbutton').click(function() {
               window.location.replace("/auth/github");
             });
+		$('#videobutton').click(function() {
+			// window.location.href = 'http://www.youtube.com/watch?v=jwsP1Ejv-_w';
+			$.fancybox({
+					'padding'		: 0,
+					'autoScale'		: false,
+					'transitionIn'	: 'elastic',
+					'transitionOut'	: 'none',
+					'title'			: this.title,
+					'width'			: 680,
+					'height'		: 495,
+					'href'			: 'http://www.youtube.com/watch?v=RfnvuzniCNs&hd=1&feature=player_embedded#at=41'.replace(new RegExp("watch\\?v=", "i"), 'v/'),
+					'type'			: 'swf',
+					'swf'			: {
+					'wmode'			: 'transparent',
+					'allowfullscreen'	: 'true'
+					}
+				});
+		});
 	</script>
 	
 </div>
