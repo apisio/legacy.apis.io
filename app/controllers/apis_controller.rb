@@ -153,7 +153,7 @@ class ApisController < ApplicationController
     
     # TODO: Add support for multiple resources in a wadl file
 
-    api_id =  params[:dump][:api]
+    @api_id =  params[:dump][:api]
     
     # Bail if API doesn't belong to you.
     @api = Api.find(api_id)
@@ -163,8 +163,8 @@ class ApisController < ApplicationController
 
     @importcount = 0
       
-    Resource.delete_all(["api_id = ?", api_id])
-    Parameter.delete_all(["api_id = ?", api_id])
+    Resource.delete_all(["api_id = ?", @api_id])
+    Parameter.delete_all(["api_id = ?", @api_id])
     
     content =  params[:dump][:file].read
 
@@ -179,7 +179,7 @@ class ApisController < ApplicationController
     	node.search('method').each do |meth|
     	
     	  @resource = Resource.new
-        @resource.api_id = api_id
+        @resource.api_id = @api_id
 
       	@resource.pathurl = node['path']
       
@@ -210,7 +210,7 @@ class ApisController < ApplicationController
       	meth.search('request/param').each do |param| 
       	  
       	  @parameter = Parameter.new
-          @parameter.api_id = api_id
+          @parameter.api_id = @api_id
           @parameter.resource_id = @resource.id
 
           @parameter.paramname = param["name"]
@@ -230,7 +230,7 @@ class ApisController < ApplicationController
         payload = meth.search('request/representation/payload').text.gsub(/\s+/, " ").strip
         if payload
       	  @parameter = Parameter.new
-          @parameter.api_id = api_id
+          @parameter.api_id = @api_id
           @parameter.resource_id = @resource.id
           @parameter.payload = payload
           @parameter.save          
