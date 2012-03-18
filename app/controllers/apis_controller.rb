@@ -156,7 +156,7 @@ class ApisController < ApplicationController
     @api_id =  params[:dump][:api]
     
     # Bail if API doesn't belong to you.
-    @api = Api.find(api_id)
+    @api = Api.find(@api_id)
     if @api and @api.user_id != session["user_id"]
       return
     end
