@@ -10,7 +10,15 @@ class StatusesController < ApplicationController
   # GET /statuses.json
   def index
     # @statuses = Status.find(:all, :order => "created_at DESC")
-    @statuses = Status.paginate :page => params[:page], :order => 'created_at DESC' #, :per_page => 3
+    # @statuses = Status.paginate :page => params[:page], :order => 'created_at DESC' #, :per_page => 3
+    
+    @statuses = Status.paginate :page => params[:page],  
+    :conditions => ["follows.user_id = ? or statuses.user_id = ?", session['user_id'], session['user_id']],
+    :joins => "left outer join follows on statuses.user_id = follows.follow_id or statuses.user_id = #{session['user_id']}",
+    :order => 'statuses.updated_at DESC',
+    :select => 'DISTINCT(statuses.id), statuses.*'
+    
+    
     @following = Follow.count(:all, :conditions => ["user_id = ?", session["user_id"]])
     
 

@@ -79,16 +79,24 @@ class FollowsController < ApplicationController
       @follow.user_id = session["user_id"]
       @follow.follow_id = params[:id]    
       @follow.save      
-
-      # Log follow activitiy
-      # @activity = Activity.new
-      # @activity.user_id = session["user_id"]
-      # @activity.follow_id = @follow.id
-      # @activity.save
+      
+      @status = Status.new
+      @status.user_id = session["user_id"]
+      @status.api_id = params[:id]   
+      @status.message = "Followed API"
+      @status.save
+      
 
     else # unfollow
       @follow = Follow.find(:first, :conditions => ["user_id = ? and follow_id = ?", session["user_id"], params[:id]])
       if @follow
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = params[:id]   
+        @status.message = "Unfollowed API"
+        @status.save
+        
         @follow.destroy
       end      
     end

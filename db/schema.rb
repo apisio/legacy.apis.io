@@ -11,18 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120318155739) do
-
-  create_table "activities", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "status_id"
-    t.integer  "contact_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "follow_id"
-    t.integer  "register_id"
-    t.string   "message"
-  end
+ActiveRecord::Schema.define(:version => 20120318213304) do
 
   create_table "apis", :force => true do |t|
     t.integer  "user_id"
@@ -78,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20120318155739) do
     t.string   "message"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "api_id"
   end
 
   create_table "users", :force => true do |t|

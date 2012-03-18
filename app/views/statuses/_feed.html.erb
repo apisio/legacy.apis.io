@@ -2,16 +2,12 @@
 
 	<% if !status.message.blank? %>
 	<div class="bubble" id="status_<%=status.id %>">
-		<a href="/<%= status.user.username rescue ""%>">
-		<% if status.user and !status.user.photo.blank? %>	
-			<img src="<%= status.user.photo  rescue ""%>" style="width:100px; height: 100px;" align="left"  />
-		<% else %>
-			<%= gravatar_image_tag status.user.email, :class => "gravatar", :align=>"left", :style=>"width:100px; height: 100px;"  rescue ""%>
-		<% end %>
+		<a href="/users/<%= status.user.username rescue ""%>">
+		<img src="<%= status.user.photo  rescue ""%>" style="width:100px; height: 100px;" align="left"  />
 		</a>
 		<blockquote>
-			<p> 
-				<a href="#" onclick="addLink('<%= status.user.username.upcase rescue ""%>');"><img src="/assets/reply.gif" align="right"></a>
+			<p>  
+				<a href="/<%= status.api.name rescue '' %>"><img src="<%= status.api.imageurl rescue '' %>" align="right"  style="width:30px; height: 30px;"></a>
 				<% 
 				@txt = status.message
 				@linkmessage = @txt.gsub(/(@)((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i) {|s| '<a href=/'+s[1..1000].downcase+'>'+s+'</a>'}
@@ -22,14 +18,10 @@
 			</p>			
 		</blockquote>
 		<cite>			
-			<a href="/<%= status.user.username.downcase rescue ""%>">
+			<a href="/users/<%= status.user.username.downcase rescue ""%>">
 			<%= status.user.username.upcase  rescue ""%></a>
 			Updated <%= time_ago_in_words status.created_at %> ago
-			
-			<% if !status.location.blank? %>
-				<%=image_tag("map_blue16.png", :width=>"12")%> <%= status.location %>
-			<% end %>
-			
+						
 			<div class="pull-right">
 			<% if session["user_id"] and session["user_id"] == status.user_id %>
 				<%= link_to raw('<button class="btn"><i class="icon-trash"></i> Delete</button>'), status, confirm: 'Are you sure?', method: :delete, :remote => true %>

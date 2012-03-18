@@ -87,6 +87,13 @@ class ApisController < ApplicationController
 
     respond_to do |format|
       if @api.save
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @api.id
+        @status.message = "Created " + @api.name.capitalize + " API"
+        @status.save
+        
         format.html { redirect_to '/' + @api.name, notice: 'Api was successfully created.' }
         format.json { render json: @api, status: :created, location: @api }
       else
@@ -113,6 +120,13 @@ class ApisController < ApplicationController
     
     respond_to do |format|
       if @api.update_attributes(params[:api])
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @api.id
+        @status.message = "Updated " + @api.name.capitalize + " API"
+        @status.save
+        
         format.html { redirect_to '/' + @api.name, notice: 'Api was successfully updated.' }
         format.json { head :no_content }
       else
@@ -126,6 +140,13 @@ class ApisController < ApplicationController
   # DELETE /apis/1.json
   def destroy
     @api = Api.find(params[:id])
+    
+    @status = Status.new
+    @status.user_id = session["user_id"]
+    @status.api_id = @api.id
+    @status.message = "Deleted " + @api.name.capitalize + " API"
+    @status.save
+    
     @api.destroy
 
     respond_to do |format|
@@ -242,6 +263,11 @@ class ApisController < ApplicationController
     	
     end
 
+    @status = Status.new
+    @status.user_id = session["user_id"]
+    @status.api_id = @api.id
+    @status.message = "Iported new WADL file for " + @api.name.capitalize + " API"
+    @status.save
 
     
     redirect_to("/" + @api.name)
@@ -342,6 +368,14 @@ class ApisController < ApplicationController
     
     @data << '</resources>' + "\n" 
     @data << '</application>' + "\n" 
+    
+    
+    @status = Status.new
+    @status.user_id = session["user_id"]
+    @status.api_id = @api.id
+    @status.message = "Exported WADL for " + @api.name.capitalize + " API"
+    @status.save
+    
     
     send_data(@data,
           :type => 'text/xml',

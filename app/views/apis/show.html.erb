@@ -150,15 +150,15 @@
 									<%= f.hidden_field :resource_id, :value => resource.id %>
 									
 									<p class="well">
-										<%= f.select :paramstyle, options_for_select([["Request Type"], "header", ["parameter","query"], "payload"]), :class => 'input' %><br />			    
+										<%= f.select :paramstyle, options_for_select(["header", ["parameter","query"], "payload"]), :class => 'input' %><br />			    
 									    
 										<%= f.text_field :paramname, :class=>"input", :placeholder => "Name" %>
 										<%= f.text_field :paramdefault, :class=>"input", :placeholder => "Value" %>
 										<%= f.text_area :payload, :class=>"input-xxlarge", :placeholder => "Payload", :rows=>"5" %>
-										Required? <%= f.check_box :paramrequired %>
+										Required? <%= f.check_box :paramrequired %><br /><br />
 										
+									    <%= f.submit "Update", :class=>"btn btn-success", :id=>"updateparambutton_" + resource.id.to_s %>
 									</p>
-								    <%= f.submit "Update", :class=>"btn btn-success", :id=>"updateparambutton_" + resource.id.to_s %>
 
 							<% end %>
 							</div>

@@ -44,6 +44,14 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       if @resource.save
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @resource.api_id
+        @status.message = "Added new " + @resource.resourcename.capitalize + " " + @resource.resourcemethod + " resource to " + @resource.api.name.capitalize + " API"
+        @status.save
+        
+        
         format.html { redirect_to @resource, notice: 'Resource was successfully created.' }
         format.json { render json: @resource, status: :created, location: @resource }
         format.js { render :action => 'create.js.coffee', :content_type => 'text/javascript'}
@@ -61,6 +69,14 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       if @resource.update_attributes(params[:resource])
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @resource.api_id
+        @status.message = "Updated " + @resource.resourcename.capitalize + " " + @resource.resourcemethod + " resource to " + @resource.api.name.capitalize + " API"
+        @status.save
+        
+        
         format.html { redirect_to '/' + @resource.api.name, notice: 'Resource was successfully updated.' }
         format.json { head :no_content }
       else
@@ -74,6 +90,14 @@ class ResourcesController < ApplicationController
   # DELETE /resources/1.json
   def destroy
     @resource = Resource.find(params[:id])
+    
+    @status = Status.new
+    @status.user_id = session["user_id"]
+    @status.api_id = @resource.api_id
+    @status.message = "Deleted " + @resource.resourcename.capitalize + " " + @resource.resourcemethod + " resource to " + @resource.api.name.capitalize + " API"
+    @status.save
+    
+    
     @resource.destroy
 
     respond_to do |format|

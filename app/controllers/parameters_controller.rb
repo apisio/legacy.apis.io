@@ -44,6 +44,13 @@ class ParametersController < ApplicationController
 
     respond_to do |format|
       if @parameter.save
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @parameter.api_id
+        @status.message = "Added new " + @parameter.paramstyle.capitalize + " parameter to " + @parameter.resource.resourcename.capitalize + " API"
+        @status.save
+        
         format.html { redirect_to @parameter, notice: 'Parameter was successfully created.' }
         format.json { render json: @parameter, status: :created, location: @parameter }
         format.js { render :action => 'create.js.coffee', :content_type => 'text/javascript'}
@@ -66,6 +73,14 @@ class ParametersController < ApplicationController
 
     respond_to do |format|
       if @parameter.update_attributes(params[:parameter])
+        
+        @status = Status.new
+        @status.user_id = session["user_id"]
+        @status.api_id = @parameter.api_id
+        @status.message = "Updated " + @parameter.paramstyle.capitalize + " parameter to " + @parameter.resource.resourcename.capitalize + " API"
+        @status.save
+        
+        
         format.html { redirect_to '/' + @parameter.resource.api.name, notice: 'Parameter was successfully updated.' }
         # format.html { redirect_to @parameter, notice: 'Parameter was successfully updated.' }
         format.json { head :no_content }
@@ -80,6 +95,13 @@ class ParametersController < ApplicationController
   # DELETE /parameters/1.json
   def destroy
     @parameter = Parameter.find(params[:id])
+    
+    @status = Status.new
+    @status.user_id = session["user_id"]
+    @status.api_id = @parameter.api_id
+    @status.message = "Deleted " + @parameter.paramstyle.capitalize + " parameter from " + @parameter.resource.resourcename.capitalize + " API"
+    @status.save
+    
     @parameter.destroy
 
     respond_to do |format|
