@@ -1,6 +1,40 @@
-<h1>Editing parameter</h1>
+<h1>Editing Parameter</h1>
+<br />
+<p class="well">
+		<%
+		if @parameter.resource.resourcemethod == "GET" 
+			@btncolor = "primary"
+		elsif @parameter.resource.resourcemethod == "POST" 
+			@btncolor = "success"
+		elsif @parameter.resource.resourcemethod == "DELETE" 
+			@btncolor = "danger"
+		elsif @parameter.resource.resourcemethod == "PUT" 
+			@btncolor = "inverse"
+		end
+
+		if @parameter.resource.authentication == "None"
+			@prefix = ''
+		else
+			@prefix = '<i class="icon-lock icon-white"></i>'
+		end 	
+		%>
+	
+	<a class="btn disabled btn-large btn-<%=@btncolor%>"><%=raw(@prefix)%> <%= @parameter.resource.resourcemethod  rescue ""%></a>
+	<b>/<%=@parameter.resource.pathurl rescue ""%></b>  
+	<br /><%=@parameter.resource.description rescue ""%>
+</p>
+<div class="row">
+<div class="span8">
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @parameter %> |
-<%= link_to 'Back', parameters_path %>
+</div>
+<div class="span4">
+	
+	<p class="pull-right">
+		<a href="<%=@parameter.resource.api.apidocurl%>" target="_new"><center><img src="<%= @parameter.resource.api.imageurl %>" style="width:200px; height: 200px;"></center></a>
+	</p>
+
+</div>
+</div>
+

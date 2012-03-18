@@ -11,31 +11,34 @@
     </div>
   <% end %>
 
+<%= f.hidden_field :api_id, :value => @parameter.api_id %>
+<%= f.hidden_field :resource_id, :value => @parameter.resource_id %>
+
   <div class="field">
-    <%= f.label :resource_id %><br />
-    <%= f.number_field :resource_id %>
+    <%= f.label "Request Type" %>
+	<%= f.select :paramstyle, options_for_select([[@parameter.paramstyle], "header", "parameter", "payload"]), :class => 'input' %><br />			    
   </div>
   <div class="field">
-    <%= f.label :paramtype %><br />
-    <%= f.text_field :paramtype %>
-  </div>
-  <div class="field">
-    <%= f.label :paramname %><br />
+    <%= f.label "Name" %>
     <%= f.text_field :paramname %>
   </div>
   <div class="field">
-    <%= f.label :paramvalue %><br />
-    <%= f.text_field :paramvalue %>
+    <%= f.label "Value" %>
+    <%= f.text_field :paramdefault %>
   </div>
   <div class="field">
-    <%= f.label :paramrequired %><br />
+    <%= f.label :description %>
+    <%= f.text_area :description, :rows=>"5", :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label :payload %>
+    <%= f.text_area :payload, :rows=>"5", :class=>"input-xxlarge" %>
+  </div>
+  <div class="field">
+    <%= f.label "Required" %>
     <%= f.check_box :paramrequired %>
-  </div>
-  <div class="field">
-    <%= f.label :paramdocurl %><br />
-    <%= f.text_field :paramdocurl %>
-  </div>
+  </div><br />
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class=>"btn btn-success" %> <%= link_to 'cancel', "/" + @parameter.resource.api.name %>
   </div>
 <% end %>

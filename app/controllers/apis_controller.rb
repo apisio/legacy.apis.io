@@ -295,8 +295,41 @@ class ApisController < ApplicationController
 
         @data << '<doc title="" apisio:url="' + resource.docurl + '">' + resource.description + '</doc>' + "\n" 
 
-        # TODO: Add Params
-        @data << '<request></request>' + "\n" 
+        # Request Hearers, Params, and Payloads
+        @data << '<request>' + "\n" 
+        @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])
+				
+				@parameters.each do |parameter| 
+					if parameter.paramstyle == "header" 
+					  @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '"'
+					  if parameter.paramrequired == true
+					    @data << 'required="true" />' + "\n" 
+					  else
+					    @data << 'required="true" />' + "\n" 
+					  end
+					end 
+					if parameter.paramstyle == "query" 
+					  @data << '<param name="' + parameter.paramname.to_s + '" type="' + parameter.paramtype.to_s + '" style="query" default="' + parameter.paramdefault.to_s + '" '
+					  if parameter.paramrequired == true
+					    @data << 'required="true">' + "\n" 
+					  else
+					    @data << 'required="true">' + "\n" 
+					  end
+      		   @data << '<doc>' + parameter.description + '</doc>' + "\n" 
+      		   @data << '</param>' + "\n"       		    
+					end
+					if !parameter.payload.blank?
+					  @data << '<representation>' + "\n" 
+            @data << '<apisio:payload><![CDATA[' + parameter.payload + ']]></apisio:payload>' + "\n" 
+					  @data << '</representation>' + "\n" 
+					end
+					
+				end
+				@data << '</request>' + "\n" 
+        
+        
+        
+        
 
     		@data << '</method>' + "\n" 
 

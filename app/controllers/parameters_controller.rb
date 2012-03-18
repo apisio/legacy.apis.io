@@ -5,7 +5,7 @@ class ParametersController < ApplicationController
     @parameters = Parameter.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {redirect_to "/"}# index.html.erb
       format.json { render json: @parameters }
     end
   end
@@ -46,6 +46,8 @@ class ParametersController < ApplicationController
       if @parameter.save
         format.html { redirect_to @parameter, notice: 'Parameter was successfully created.' }
         format.json { render json: @parameter, status: :created, location: @parameter }
+        format.js { render :action => 'create.js.coffee', :content_type => 'text/javascript'}
+        
       else
         format.html { render action: "new" }
         format.json { render json: @parameter.errors, status: :unprocessable_entity }
@@ -57,10 +59,15 @@ class ParametersController < ApplicationController
   # PUT /parameters/1.json
   def update
     @parameter = Parameter.find(params[:id])
+    
+    if params[:parameter][:paramstyle] == "header"
+      @parameter.paramtype = "xsd:string"
+    end
 
     respond_to do |format|
       if @parameter.update_attributes(params[:parameter])
-        format.html { redirect_to @parameter, notice: 'Parameter was successfully updated.' }
+        format.html { redirect_to '/' + @parameter.resource.api.name, notice: 'Parameter was successfully updated.' }
+        # format.html { redirect_to @parameter, notice: 'Parameter was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -78,6 +85,7 @@ class ParametersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to parameters_url }
       format.json { head :no_content }
+      format.js { render :action => 'destroy.js.coffee', :content_type => 'text/javascript'}
     end
   end
 end

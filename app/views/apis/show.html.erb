@@ -31,16 +31,17 @@
 	
 		<%= form_for :resource, :url=>{:controller=>"resources", :action=>"create" }, :remote => true do |f| %>
 		
+		<p class="well">
 				<%= f.hidden_field :api_id, :value => @api.id %>
 				<%= f.text_field :resourcename, :placeholder=>"Resource name", :class => "input-xxlarge" %><br />
-				/ <%= f.text_field :pathurl, :placeholder=>"Resource path URL", :class => "input-xxlarge" %><br />
+				<%= f.text_field :pathurl, :placeholder=>"Resource path URL", :class => "input-xxlarge" %><br />
 				<%= f.select :resourcemethod, options_for_select([["Select Method", ""], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />			    
 				<%= f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic", "OAuth"]), :class => 'input' %><br />			    
 				<%= f.text_field :curlexample, :placeholder=>"CURL example", :class => "input-xxlarge" %><br />
 				<%= f.text_field :docurl, :placeholder=>"Resource documentation URL", :class => "input-xxlarge" %><br />
 				<%= f.text_area :description, :class => "input-xxlarge", :rows => "5", :placeholder=>"Resource description" %><br />
 			    <%= f.submit "Update", :class=>"btn btn-success", :disable_with => 'Processing...', :id=>"addbutton" %>
-	
+		</p>
 		<% end %>
 		</div>
 		
@@ -105,39 +106,80 @@
 
 					<br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
 					<div id="resource_params_<%=resource.id%>" style="display:none">
-						
+						<hr>
 						<% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
 						
 						<% @parameters.each do |parameter| %>
+							<p id="parameter_<%=parameter.id%>">
 							<% if parameter.paramstyle == "header" %>
-								<p><b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%> </p>
+								<b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%>
+								<br /><%=parameter.description%>
 							<% end %>
 							<% if parameter.paramstyle == "query" %>
-								<p>
-									<b>Parameter</b>: <%=parameter.paramname%> = 
-									<% if parameter.paramdefault.blank? %>
-										{string}
-									<% else %>
-										<%=parameter.paramdefault %>
-									<% end %>
-									<br /><%=parameter.description%>
-								</p>
+								<b>Parameter</b>: <%=parameter.paramname%> = 
+								<% if parameter.paramdefault.blank? %>
+									{string}
+								<% else %>
+									<%=parameter.paramdefault %>
+								<% end %>
+								<br /><%=parameter.description%>
 							<% end %>
 							<% if !parameter.payload.blank?  %>
-								<p><b>Payload</b>: <%=parameter.payload%> </p>
+								<b>Payload</b>: <%=parameter.payload%>
 							<% end %>
+							<% if parameter.paramrequired  %>
+								<b>* required</b>
+							<% end %>
+							
+							<% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and @api.user_id == session["user_id"]%>
+								<%= link_to 'Edit', edit_parameter_path(parameter) %> | 
+							    <%= link_to 'Destroy', parameter, confirm: 'Are you sure?', method: :delete, :remote => true %>
+						    <% end %>
+							</p>
 							
 						<% end %>
 						
 						<% if @api.user_id == session["user_id"]%>
-							<button id="addparambutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button>
+							<p class="pull-right"><button id="addparambutton_<%=resource.id%>" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button></p>
+							<div id="addparameter_<%=resource.id%>" style="display:none">	
+							<br /><br />
+
+							<%= form_for :parameter, :url=>{:controller=>"parameters", :action=>"create" }, :remote => true do |f| %>
+
+									<%= f.hidden_field :api_id, :value => @api.id %>
+									<%= f.hidden_field :resource_id, :value => resource.id %>
+									
+									<p class="well">
+										<%= f.select :paramstyle, options_for_select([["Request Type"], "header", ["parameter","query"], "payload"]), :class => 'input' %><br />			    
+									    
+										<%= f.text_field :paramname, :class=>"input", :placeholder => "Name" %>
+										<%= f.text_field :paramdefault, :class=>"input", :placeholder => "Value" %>
+										<%= f.text_area :payload, :class=>"input-xxlarge", :placeholder => "Payload", :rows=>"5" %>
+										Required? <%= f.check_box :paramrequired %>
+										
+									</p>
+								    <%= f.submit "Update", :class=>"btn btn-success", :id=>"updateparambutton_" + resource.id.to_s %>
+
+							<% end %>
+							</div>
+							<div id="spinner_<%=resource.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>		
+							
 						<% end %>						
 					</div>
 					<script>
 					$(function() {
 						 $("#href_resource_params_<%=resource.id%>").click(function() {
-						  $("#resource_params_<%=resource.id%>").slideToggle();
+						  $("#resource_params_<%=resource.id%>").toggle();
 						 });
+						
+						 $("#updateparambutton_<%=resource.id%>").click(function() {
+						  $("#spinner_<%=resource.id%>").show();
+						 });
+
+						 $("#addparambutton_<%=resource.id%>").click(function() {
+						  $("#addparameter_<%=resource.id%>").slideToggle();
+						 });
+						
 					});
 					</script>
 
