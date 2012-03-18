@@ -6,25 +6,25 @@ class FollowsController < ApplicationController
   # GET /follows.json
   def index
     
-    if params[:user] and isNumeric(params[:user])
-      @user = User.find(params[:user])
+    if params[:id] and isNumeric(params[:id])
+      @api = Api.find(params[:id])
     else
-      # @user = User.find_by_username(params[:user])
-      if request.url.index('localhost')
-        @user = User.find(:first, :conditions => ['username LIKE ?', params[:user]])
-       else
-        @user = User.find(:first, :conditions => ['username ILIKE ?', params[:user]])
-      end
       
+      if request.url.index('localhost')
+        @api = Api.find(:first, :conditions => ['name LIKE ?', params[:id]])
+       else
+        @api = Api.find(:first, :conditions => ['name ILIKE ?', params[:id]])
+      end
+    
     end
 
-    if @user    
+    if @api    
       if params[:view] == 'following'
         # Following
-        @follows = Follow.paginate :page => params[:page], :conditions => ["user_id = ?", @user.id], :order => "updated_at DESC"
+        @follows = Follow.paginate :page => params[:page], :conditions => ["user_id = ?", @api.id], :order => "updated_at DESC"
       else
         # Followers
-        @follows = Follow.paginate :page => params[:page], :conditions => ["follow_id = ?", @user.id], :order => "updated_at DESC"
+        @follows = Follow.paginate :page => params[:page], :conditions => ["follow_id = ?", @api.id], :order => "updated_at DESC"
       end 
     end
     
