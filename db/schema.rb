@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120317235451) do
+ActiveRecord::Schema.define(:version => 20120318155739) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(:version => 20120317235451) do
     t.string   "paramdefault"
     t.text     "description"
     t.text     "payload"
-    t.integer  "app_id"
     t.integer  "api_id"
   end
 

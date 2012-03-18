@@ -90,20 +90,59 @@
 				prefix = '<i class="icon-lock icon-white"></i>'
 			end 	
 			%>
-				<tr id="resource_<%=resource.id%>">
-                   <td width="20%">
-						<a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+			<tr id="resource_<%=resource.id%>">
+                <td width="20%">
+					<a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+					<% if @api.user_id == session["user_id"]%>
+						<br />
+						<%= link_to 'Edit', edit_resource_path(resource) %> | 
+					    <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
+				    <% end %>
+			 	</td>
+                <td width="80%"><b>/<%=resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
+					(<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
+	                <code><%= resource.curlexample rescue ""%></code>
+
+					<br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
+					<div id="resource_params_<%=resource.id%>" style="display:none">
+						
+						<% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
+						
+						<% @parameters.each do |parameter| %>
+							<% if parameter.paramstyle == "header" %>
+								<p><b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%> </p>
+							<% end %>
+							<% if parameter.paramstyle == "query" %>
+								<p>
+									<b>Parameter</b>: <%=parameter.paramname%> = 
+									<% if parameter.paramdefault.blank? %>
+										{string}
+									<% else %>
+										<%=parameter.paramdefault %>
+									<% end %>
+									<br /><%=parameter.description%>
+								</p>
+							<% end %>
+							<% if !parameter.payload.blank?  %>
+								<p><b>Payload</b>: <%=parameter.payload%> </p>
+							<% end %>
+							
+						<% end %>
+						
 						<% if @api.user_id == session["user_id"]%>
-							<br />
-							<%= link_to 'Edit', edit_resource_path(resource) %> | 
-						    <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
-					    <% end %>
-					</td>
-                   <td width="80%"><b>/<%=resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
-					(<a href="<%=resource.docurl%>" target="_new">more</a>)<br />
-                      <code><%= resource.curlexample rescue ""%></code>
-                   </td>
-                </tr>
+							<button id="addparambutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button>
+						<% end %>						
+					</div>
+					<script>
+					$(function() {
+						 $("#href_resource_params_<%=resource.id%>").click(function() {
+						  $("#resource_params_<%=resource.id%>").slideToggle();
+						 });
+					});
+					</script>
+
+	            </td>
+	   		</tr>
 				
 		<% end %>
 	

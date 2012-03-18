@@ -5,7 +5,7 @@ class ResourcesController < ApplicationController
     @resources = Resource.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {redirect_to "/"}# index.html.erb
       format.json { render json: @resources }
     end
   end
