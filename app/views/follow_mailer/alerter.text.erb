@@ -1,8 +1,8 @@
 Hi <%=@to.capitalize rescue ""%>, 
 
-<%=@from.capitalize rescue ""%> is now following you on APIs.io! You can follow them back by clicking on this link: 
+<%=@from.capitalize rescue ""%> is now following your API on APIs.io!  You can see what other APIs they are following at: 
 
-http://apis.io
+http://apis.io/users/<%=@to.downcase rescue "" %>
 
 Regards,
 APIs.io
