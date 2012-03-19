@@ -1,20 +1,5 @@
 <% if @follows %>
 
-<br/>
-<% if params[:view] == 'following' %>
-	<% if @current_user == @user %>
-		<h1>You Are Following (<%= link_to 'view followers', '/' + @user.username + '/followers' %>)</h1>
-	<% else %>
-		<h1><%= link_to @user.username.upcase, '/' + @user.username  %> <%=params[:view].capitalize %> (<%= link_to 'view followers', '/' + @user.username + '/followers' %>)</h1>
-	<% end %>
-<% else %>
-	<% if @current_user == @user %>
-		<h1>Your Followers (<%= link_to 'view following', '/' + @user.username + '/following' %>)</h1>
-	<% else %>
-		<h1> <%= link_to @user.username.upcase, '/' + @user.username  %> <%=params[:view].capitalize %>  (<%= link_to 'view following', '/' + @user.username + '/following' %>)</h1>
-	<% end %>
-<% end %>
-<br/>
 
 <div>
 <script>
@@ -37,18 +22,14 @@ function setbuttonclick(buttonid) {
 	<% if @followuser %>
 	
 		<div class="bubble" id="follower_<%=follow.user_id if follow.user_id %>">
-			<a href="/<%= @followuser.username.downcase%>">
-			<% if !@followuser.photo.blank? %>	
+			<a href="/users/<%= @followuser.username.downcase%>">
 				<img src="<%= @followuser.photo %>" style="width:100px; height: 100px;" align="left"/>
-			<% else %>
-				<%= gravatar_image_tag @followuser.email, :class => "gravatar", :style=>"width:100px; height: 100px;",  :align=>"left" rescue ""%>
-			<% end %>
 			</a>
 			<blockquote>
 				<p> 
 					<% 
 					if @followuser.about_me.blank?
-						@txt = "ham radio operator"
+						@txt = "&nbsp;"
 					else
 						@txt = @followuser.about_me[0..160]
 					end
@@ -62,43 +43,8 @@ function setbuttonclick(buttonid) {
 
 			</blockquote>
 			<cite>
-				<%= link_to @followuser.username.upcase, '/' + @followuser.username.downcase %> 
+				<%= link_to @followuser.username.upcase, '/users/' + @followuser.username.downcase %> 
 				Joined <%= time_ago_in_words(@followuser.created_at) %> ago 
-				<div class="pull-right" id="userstatus_<%=@followuser.id.to_s%>">
-				<% if params[:view] == 'following'%>
-					<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'unfollow' }, :remote => true do |f| %>
-						<%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
-					<% end %>
-				<% else %>
-			        <% @followback = Follow.find(:first, :conditions => ["user_id = ? and follow_id = ?", @current_user.id, follow.user_id]) %>
-			        <% @block = Follow.find(:first, :conditions => ["user_id = ? and block_id = ?", @current_user.id, follow.user_id]) %>
-
-					<% if @followuser.id != session[:user_id]%>
-					<% if @followback %>	      
-						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'unfollow' }, :remote => true do |f| %>
-							<%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
-						<% end %>
-						
-					<% elsif @block %>
-						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"unblock", :id=>@followuser.id }, :remote => true do |f| %>
-							<%= button_tag(raw('<i class="icon-stop icon-white"></i> Unblock'), :title=>"Unblokc " + @followuser.username.upcase, :class=>"btn btn-danger", :id=>"follow_" + @followuser.id.to_s ) %>
-						<% end %>
-					
-					<% else %>
-						<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@followuser.id, :status=>'follow' }, :remote => true do |f| %>
-							<div class="btn-group">
-							<%= button_tag(raw('<i class="icon-ok"></i> Follow'), :title=>"Follow " + @followuser.username.upcase, :class=>"btn", :id=>"follow_" + @followuser.id.to_s ) %>
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-					          <ul class="dropdown-menu">
-					            <li><a href="/follows/block/<%=@followuser.id%>" data-remote="true">Block <%=@followuser.username.upcase%></a></li>
-					          </ul>
-					        </div><!-- /btn-group -->
-						<% end %>
-					<% end %>
-					<% end %>
-				<% end %>
-				
-				</div>
 
 				<script>
 					setbuttonclick(<%=@followuser.id.to_s%>);
