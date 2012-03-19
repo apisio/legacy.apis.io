@@ -1,7 +1,21 @@
+# Login: https://apis.io/auth/github (redirects to GitHub)
+# Callback URL: http://apis.io/auth/github/callback
+#
+# For development change `apis.io` to `localhost:3000`.
+#
+# The environment variables need to be set. To set them locally:
+#
+#     export GITHUB_CLIENT_ID=<client-id>
+#     export GITHUB_CLIENT_SECRET=<client-secret>
+#
+# To set them on Heroku:
+#
+#     heroku config:add GITHUB_CLIENT_ID=<client-id> GITHUB_CLIENT_SECRET=<client-secret>
+#
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :github, '6606ca9f6a7be1dc45b6', '9b663eea83e4fc1e434c95bd2a4c874ce5a9f9c8'
+  envvars = {id: 'GITHUB_CLIENT_ID', secret: 'GITHUB_CLIENT_SECRET'}
+  envvars.values.each do |envvar|
+    raise "The #{envvar} environment variable must be set." unless ENV.has_key? envvar
+  end
+  provider :github, ENV[envvars[:id]], ENV[envvars[:secret]]
 end
-
-
-# /auth/github
-# http://apis.io/auth/github/callback
