@@ -66,25 +66,34 @@ class FollowsController < ApplicationController
   def create
     
     # Follow or Unfollow based on status param in AJAX
-      @followbutton = params[:id] 
+    @followbutton = params[:id] 
       
-   # Check to see if blocked before allowing follow
-    # @blocker = Follow.find(:first, :conditions => ["user_id = ? and block_id = ?", params[:id], session["user_id"]])
+    @api = Api.find(params[:id] )
     
-    # if @blocker
-    #   @blocked = true
       
     if params[:status] == "follow"
+      
+      # Update follow
       @follow = Follow.new(params[:follow])    
       @follow.user_id = session["user_id"]
       @follow.follow_id = params[:id]    
       @follow.save      
       
+      # Update status
       @status = Status.new
       @status.user_id = session["user_id"]
       @status.api_id = params[:id]   
       @status.message = "Followed API"
       @status.save
+      
+      # Send email
+      begin
+        @apiusername = @api.user.username
+        @apiuseremail = @api.user.email
+        
+        FollowMailer.alerter(session['username'], @apiusername, session['photo'], @apiuseremail).deliver        
+      rescue
+      end
       
 
     else # unfollow
@@ -101,9 +110,7 @@ class FollowsController < ApplicationController
       end      
     end
 
-    @api = Api.find(params[:id])
-    @followers = Follow.count(:conditions => ["follow_id = ?", @api.id])
-    
+    @followers = Follow.count(:conditions => ["follow_id = ?", @api.id])    
     
     respond_to do |format|  
       format.js { render :action => 'create.js.coffee', :content_type => 'text/javascript'}

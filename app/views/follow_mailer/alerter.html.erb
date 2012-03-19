@@ -5,7 +5,7 @@
 			<tr>
 				<td width="70%" colspan="2">
 					<h1>
-						You have a new follower!
+						Your API has a new follower!
 					</h1>
 				</td>
 			</tr>
@@ -16,10 +16,10 @@
 				<td>
 					<p>Hi <%=@to.capitalize rescue ""%>,</p>
 					
-					<p><%=@from.capitalize rescue ""%> is now following you on APIs.io! You can follow them back by clicking on this link: </p>
+					<p><%=@from.capitalize rescue ""%> is now following your API on APIS.io! You can see what other APIs they are following at: http://apis.io/users/<%=@to.downcase rescue ""%></p>
 					
 					<p>Regards,<br />
-					APIs.io</p>
+					APIS.io</p>
 				</td>
 			</tr>
 		</table>
