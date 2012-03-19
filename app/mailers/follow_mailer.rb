@@ -6,6 +6,6 @@ class FollowMailer < ActionMailer::Base
     @from = from
     @to = to
     @photo = photo
-    mail to: email, subject: "New APIs.io Follower", :from => "noreply@APIs.io"
+    mail to: email, subject: "New APIS.io Follower", :from => "noreply@apis.io"
   end
 end

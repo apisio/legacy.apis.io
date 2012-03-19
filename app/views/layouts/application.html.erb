@@ -119,10 +119,6 @@
 					<% else %>
 						<li><%= link_to 'Register/Login', '/auth/github', :title => "Login" %></li>
 					<% end %>
-					<% if session[:admin] %>
-						<li class="divider-vertical"></li>
-						<li><%= link_to 'Proxy', '/login', :title => 'Admin' %></li>
-					<% end %>
 
 	               </ul>
 	    
