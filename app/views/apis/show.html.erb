@@ -13,19 +13,19 @@
 
 
 	<p class="pull-right">
-		<% if @api.user_id == session["user_id"]%>
+		<% if @api.user_id == session["user_id"] or session["admin"]%>
 			<%= link_to "Import WADL", "/" + @api.name + "/import"%> | 
 		<% end %>
 	
 		<%= link_to "Export WADL", "/" + @api.name + "/export"%> 
 	
-		<% if @api.user_id == session["user_id"]%>
+		<% if @api.user_id == session["user_id"] or session["admin"]%>
 			<button id="addresourcebutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add API Resource </button>
 		<% end %>
 	</p>
 
 
-	<% if @api.user_id == session["user_id"]%>
+	<% if @api.user_id == session["user_id"] or session["admin"] %>
 		<br /><br />
 		<div id="addresource" style="display:none">	
 	
@@ -94,7 +94,7 @@
 			<tr id="resource_<%=resource.id%>">
                 <td width="20%">
 					<a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
-					<% if @api.user_id == session["user_id"]%>
+					<% if @api.user_id == session["user_id"] or session["admin"]%>
 						<br />
 						<%= link_to 'Edit', edit_resource_path(resource) %> | 
 					    <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
@@ -131,7 +131,7 @@
 								<b>* required</b>
 							<% end %>
 							
-							<% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and @api.user_id == session["user_id"]%>
+							<% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and (@api.user_id == session["user_id"] or session["admin"]) %>
 								<%= link_to 'Edit', edit_parameter_path(parameter) %> | 
 							    <%= link_to 'Destroy', parameter, confirm: 'Are you sure?', method: :delete, :remote => true %>
 						    <% end %>
@@ -139,7 +139,7 @@
 							
 						<% end %>
 						
-						<% if @api.user_id == session["user_id"]%>
+						<% if @api.user_id == session["user_id"] or session["admin"] %>
 							<p class="pull-right"><button id="addparambutton_<%=resource.id%>" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button></p>
 							<div id="addparameter_<%=resource.id%>" style="display:none">	
 							<br /><br />
@@ -205,7 +205,7 @@
 
 	<br /><br />
 	<%= link_to 'Back', apis_path %>
-	<% if @api.user_id == session["user_id"]%>
+	<% if @api.user_id == session["user_id"] or session["admin"] %>
 		|
 	    <%= link_to 'Edit', edit_api_path(@api) %> |
 	    <%= link_to 'Destroy', @api, confirm: 'Are you sure?', method: :delete %>

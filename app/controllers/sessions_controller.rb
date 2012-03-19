@@ -93,6 +93,7 @@ class SessionsController < ApplicationController
       session['fullname'] = @authhash[:name]
       session['photo'] = @authhash[:photo]
       session['access_token'] = @authhash[:token]  
+      session['admin'] = @auth.admin 
         
       redirect_to "/"
         
