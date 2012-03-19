@@ -19,8 +19,8 @@ Apisio::Application.routes.draw do
   match '/activity' => "users#allfeed"
   match '/activity/:id' => "users#showfeed"
 
-  match ':user/following' => 'follows#index', :view => 'following'
-  match ':user/followers' => 'follows#index', :view => 'followers'
+  match ':id/following' => 'follows#index', :view => 'following'
+  match ':id/followers' => 'follows#index', :view => 'followers'
   
   match '/login' => 'sessions#new'
   match '/logout' => 'sessions#destroy'
@@ -49,7 +49,7 @@ Apisio::Application.routes.draw do
   resources :apis
   
   match '/api' => 'static#api'
-  match ':id' => 'apis#show', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
+  match ':id' => 'apis#show', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
   
   match '*a', :to => 'errors#404'
 
