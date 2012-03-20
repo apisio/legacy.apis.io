@@ -24,7 +24,7 @@
 						
 			<div class="pull-right">
 			<% if session["user_id"] and session["user_id"] == status.user_id %>
-				<%= link_to raw('<button class="btn"><i class="icon-trash"></i> Delete</button>'), status, confirm: 'Are you sure?', method: :delete, :remote => true %>
+				<%# link_to raw('<button class="btn"><i class="icon-trash"></i> Delete</button>'), status, confirm: 'Are you sure?', method: :delete, :remote => true %>
 			<% end %>
 			</div>
 		</cite>

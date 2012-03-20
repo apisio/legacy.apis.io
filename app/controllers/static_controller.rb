@@ -5,7 +5,7 @@ class StaticController < ApplicationController
   
   def index
     if session["user_id"]
-      redirect_to "/apis"
+      redirect_to "/statuses"
     end
   end  
   

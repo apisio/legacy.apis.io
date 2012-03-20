@@ -14,6 +14,10 @@
 
 <br /><br />
 <h1>Following</h1>
+<% if @following.length == 0 %>
+	<br />
+	<h3><center>You are not following any <a href="/apis">APIs</a></center></h3>
+<% end %>
 <% @following.each do |follow| %>
 
 	<% @api = Api.find(follow.follow_id)%>
