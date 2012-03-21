@@ -45,108 +45,104 @@
        div.c1 {display: none}
     </style>
 
-	<%= yield :head %>
-	<%= yield :stylers %>
+    <%= yield :head %>
+    <%= yield :stylers %>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-2483685-25']);
-	  _gaq.push(['_trackPageview']);
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-2483685-25']);
+      _gaq.push(['_trackPageview']);
 
-	  (function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
 
-	</script>
-		
-   </head>
-   <body data-spy="scroll" data-target=".subnav" data-offset="50">
-		<script type="text/javascript">
-			function lookupapi(){
-				window.location.replace("/search/" + $('#apisearch').val());
-				return false;
-			}
-		</script>
-		
-		<!-- Navbar
-	    ================================================== -->
-	    <div class="navbar navbar-fixed-top">
-	      <div class="navbar-inner">
-	        <div class="container">
-	          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </a>
-	          <!a class="brand" href="/"><div class="brand"></div><!/a>
-	          <div class="nav-collapse">
-				<ul class="pull-right nav">
-						<li>
-							<form onsubmit="return lookupapi();" class="navbar-search pull-left">
-							<input class="input-large search-query" type="text" placeholder="search" id="apisearch" name="apisearch" />
-							</form>
-						</li>
-	               </ul>
-		           <ul class="nav">
+    </script>
+    
+  </head>
+  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+    <script type="text/javascript">
+      function lookupapi(){
+        window.location.replace("/search/" + $('#apisearch').val());
+        return false;
+      }
+    </script>
+    
+    <!-- Navbar ================================================== -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <!a class="brand" href="/"><div class="brand"></div><!/a>
+          <div class="nav-collapse">
+            <ul class="pull-right nav">
+              <li>
+                <form onsubmit="return lookupapi();" class="navbar-search pull-left">
+                <input class="input-large search-query" type="text" placeholder="search" id="apisearch" name="apisearch" />
+                </form>
+              </li>
+             </ul>
+            <ul class="nav">
 
-					<% if session["user_id"] %>
-					<li>
-						<div class="thumbnail">
-							<img src="<%= session["photo"] %>" style="width:25px; height: 25px;"/>	
-						</div>
-					</li>
-					<li>	
-						<%= link_to session["username"].upcase, "/users/" + session["username"], :title => "Profile" %> 		
-					</li>
-					<% end %>
+              <% if session["user_id"] %>
+              <li>
+                <div class="thumbnail">
+                  <img src="<%= session["photo"] %>" style="width:25px; height: 25px;"/>  
+                </div>
+              </li>
+              <li>  
+                <%= link_to session["username"].upcase, "/users/" + session["username"], :title => "Profile" %>     
+              </li>
+              <% end %>
 
-					<% if session["user_id"] %>
-						<li><%= link_to 'Home', '/statuses', :title => "Home", :class=>"active" %></li> 
-					<% else %>
-						<li><%= link_to 'Home', '/', :title => "Home", :class=>"active" %></li> 
-					<% end %>
-					<li><%= link_to 'API Directory', '/apis', :title => "API Directory" %></li> 
-					<li><%= link_to 'Mashups', '/mashups', :title => "Mashups" %></li> 
+              <% if session["user_id"] %>
+              <li><%= link_to 'Home', '/statuses', :title => "Home", :class=>"active" %></li> 
+              <% else %>
+              <li><%= link_to 'Home', '/', :title => "Home", :class=>"active" %></li> 
+              <% end %>
+              <li><%= link_to 'API Directory', '/apis', :title => "API Directory" %></li> 
+              <li><%= link_to 'Mashups', '/mashups', :title => "Mashups" %></li> 
 
-					<% if session["user_id"] %>
-						<li><%# link_to 'QSOs', '/' + session["username"] + '/contacts', :title => "Social Logbook" %></li> 
-						<li><%= link_to 'Logout', '/logout', :title => "Logout" %> </li>
-					<% else %>
-						<li><%= link_to 'Register/Login', '/auth/github', :title => "Login" %></li>
-					<% end %>
+              <% if session["user_id"] %>
+              <li><%# link_to 'QSOs', '/' + session["username"] + '/contacts', :title => "Social Logbook" %></li> 
+              <li><%= link_to 'Logout', '/logout', :title => "Logout" %> </li>
+              <% else %>
+              <li><%= link_to 'Register/Login', '/auth/github', :title => "Login" %></li>
+              <% end %>
 
-	               </ul>
-	    
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	  
-		
-
-    <div class="container">	
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container">  
       <p id="notice"><%= alert %></p>
       <%# image_tag "apis_logo.png"%>
       <p class="pull-right">
       <%= link_to image_tag("apisio_blocks2.png"), '/' %>
       </p>
       <br />
-      <%= yield :alert %>				
+      <%= yield :alert %>        
       <%= yield %>
     </div>
 
     <footer class="footer">
-    <div class="container">
-      <p>
-      <center>
-        <% time = Time.new %>
-        &copy; <%=time.year%> - APIS.io - <%=link_to "About Us", "/about"%> | <%=link_to "API", "/api"%> | <%=link_to "Twitter", "http://twitter.com/apisio"%> 
-      </center>
-      </p>
-    </div>
+      <div class="container">
+        <p>
+        <center>
+          <% time = Time.new %>
+          &copy; <%=time.year%> - APIS.io - <%=link_to "About Us", "/about"%> | <%=link_to "API", "/api"%> | <%=link_to "Twitter", "http://twitter.com/apisio"%> 
+        </center>
+        </p>
+      </div>
     </footer>
 
     <script>

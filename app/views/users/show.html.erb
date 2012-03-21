@@ -10,32 +10,32 @@
 <h1>
 <%= @user.username.capitalize %>'<%= "s" if @user.username[-1,1] != "s"%> Profile 
 </h1>
-<p>Website: <%= link_to @user.website, @user.website%>	</p>
+<p>Website: <%= link_to @user.website, @user.website%>  </p>
 
 <br /><br />
 <h1>Following</h1>
 <% if @following.length == 0 %>
-	<br />
-	<h3><center>You are not following any <a href="/apis">APIs</a></center></h3>
+  <br />
+  <h3><center>You are not following any <a href="/apis">APIs</a></center></h3>
 <% end %>
 <% @following.each do |follow| %>
 
-	<% @api = Api.find(follow.follow_id)%>
+  <% @api = Api.find(follow.follow_id)%>
 
-	<div class="span3 well">
-		
-		<table><tr><td colspan="2">
-			<h4><a href="/<%=@api.name%>"><%= @api.name %></a>
-			(<%= @api.category %>)</h4><hr />
-		</td></tr>
-		<tr>
-		<td width="80" height="100" valign="top"><a href="/<%=@api.name%>"><img src="<%= @api.imageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
-					<td valign="top">
-				<%= @api.description[0..140] %>
-			</td>
-		</tr></table>
-		
-	</div>
+  <div class="span3 well">
+    
+    <table><tr><td colspan="2">
+      <h4><a href="/<%=@api.name%>"><%= @api.name %></a>
+      (<%= @api.category %>)</h4><hr />
+    </td></tr>
+    <tr>
+    <td width="80" height="100" valign="top"><a href="/<%=@api.name%>"><img src="<%= @api.imageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
+          <td valign="top">
+        <%= @api.description[0..140] %>
+      </td>
+    </tr></table>
+    
+  </div>
 
 <% end %>
 
@@ -62,12 +62,12 @@ $(document).ready(
 
 <div id="statuses">
 
-	<%= render 'feed' %>
+  <%= render 'feed' %>
 
-	<br />
-	<p><center><div class="pager"><%= will_paginate @activities, :page_links => false %></div></center></p>
-	
-	
+  <br />
+  <p><center><div class="pager"><%= will_paginate @activities, :page_links => false %></div></center></p>
+  
+  
 </div>
 <% end %>
 
@@ -75,7 +75,7 @@ $(document).ready(
 <% else %>
 <!-- 404 -->
 <div class="hero-unit">
-	<h1>User not found...</h1>
+  <h1>User not found...</h1>
 </div>
 
 <% end %>

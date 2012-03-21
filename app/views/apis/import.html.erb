@@ -1,25 +1,28 @@
 <div class="hero-unit">
-	
-	<h1>Import WADL</h1>
-		<a href="<%=@api.apidocurl%>" target="_new"><center><img src="<%= @api.imageurl %>" align="right" style="width:200px; height: 200px;"></center></a>
-	
-	<br />
-	<p>You can import your existing WADL files (including Apigee WADLs) into our platform to create API resources! <br /><br />
-		<strong>WARNING: Importing a WADL will delete your existing API resources!</strong></p>
+  
+  <h1>Import WADL</h1>
 
-	<%= form_for :dump, :url=>{:controller=>"apis", :action=>"wadl_import"}, :html => { :multipart => true } do |f| -%>
-		<%= f.hidden_field :api, :value => @api.id %>
-	    <%= f.file_field :file -%>
-		<%= f.submit "Upload", :class=>"btn btn-danger", :id=>"followbutton" %>	    		
-	<% end -%>
+  <a href="<%=@api.apidocurl%>" target="_new"><center><img src="<%= @api.imageurl %>" align="right" style="width:200px; height: 200px;"></center></a>
+  
+  <br />
+  <p>
+    You can import your existing WADL files (including Apigee WADLs) into our platform to create API resources! <br /><br />
+    <strong>WARNING: Importing a WADL will delete your existing API resources!</strong>
+  </p>
 
-	<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
-	<script>
-	$(function() {
-	 $("#followbutton").click(function() {
-	  $("#spinner").show();
-	 });
-	});
-	</script>
-	  
+  <%= form_for :dump, :url=>{:controller=>"apis", :action=>"wadl_import"}, :html => { :multipart => true } do |f| -%>
+    <%= f.hidden_field :api, :value => @api.id %>
+      <%= f.file_field :file -%>
+    <%= f.submit "Upload", :class=>"btn btn-danger", :id=>"followbutton" %>          
+  <% end -%>
+
+  <div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+  <script>
+  $(function() {
+    $("#followbutton").click(function() {
+      $("#spinner").show();
+    });
+  });
+  </script>
+    
 </div>

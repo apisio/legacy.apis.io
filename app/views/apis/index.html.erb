@@ -2,28 +2,28 @@
 
 <% if controller.action_name == "search" %>
 <h2>Search results for <i><%=params[:id]%></i></h2>
-<% end %>	
+<% end %>  
 
 <br /><br />
 <div class="row">
 <div class="span16">
 <% @apis.each do |api| %>
 
-	<div class="span3 well">
-		
-		<table>
-			<tr><td colspan="2">
-				<h4><a href="/<%=api.name%>"><%= api.name %></a>
-				(<%= api.category %>)</h4><hr />
-			</td></tr>
-			<tr>
-			<td width="80" height="100" valign="top"><a href="/<%=api.name%>"><img src="<%= api.imageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
-			<td valign="top">				
-				<%= api.description[0..140] %>
-			</td>
-		</tr></table>
-		
-	</div>
+  <div class="span3 well">
+    
+    <table>
+      <tr><td colspan="2">
+        <h4><a href="/<%=api.name%>"><%= api.name %></a>
+        (<%= api.category %>)</h4><hr />
+      </td></tr>
+      <tr>
+      <td width="80" height="100" valign="top"><a href="/<%=api.name%>"><img src="<%= api.imageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
+      <td valign="top">        
+        <%= api.description[0..140] %>
+      </td>
+    </tr></table>
+    
+  </div>
 
 <% end %>
 

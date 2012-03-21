@@ -158,7 +158,7 @@ class FollowsController < ApplicationController
     @user = User.find(params[:id])
 
     render :action => 'create.js.coffee', :content_type => 'text/javascript'
-		
+    
   end
 
   def unblock
@@ -174,7 +174,7 @@ class FollowsController < ApplicationController
     @user = User.find(params[:id])
 
     render :action => 'create.js.coffee', :content_type => 'text/javascript'
-		
+    
   end
 
   # DELETE /follows/1

@@ -4,67 +4,67 @@
 <div>
 <script>
 function setbuttonclick(buttonid) {
- $("#follow_" + buttonid).click(function() {
-  $("#spinner_" + buttonid).show();
- });
+  $("#follow_" + buttonid).click(function() {
+    $("#spinner_" + buttonid).show();
+  });
 };
 </script>
-	
+  
 
 <% @follows.each do |follow| %>
 
-	<% if params[:view] == 'following'%>
-		<% @followuser = User.find(follow.follow_id) rescue nil%><br/>		
-	<% else %>	
-		<% @followuser = User.find(follow.user_id) rescue nil%><br/>
-	<% end %>
-	
-	<% if @followuser %>
-	
-		<div class="bubble" id="follower_<%=follow.user_id if follow.user_id %>">
-			<a href="/users/<%= @followuser.username.downcase%>">
-				<img src="<%= @followuser.photo %>" style="width:100px; height: 100px;" align="left"/>
-			</a>
-			<blockquote>
-				<p> 
-					<% 
-					if @followuser.about_me.blank?
-						@txt = "&nbsp;"
-					else
-						@txt = @followuser.about_me[0..160]
-					end
-					@linkmessage = @txt.gsub(/(@)((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i) {|s| '<a href=/'+s[1..1000].downcase+'>'+s+'</a>'}
-					@linkmessage = @linkmessage.gsub(/https?:\/\/([^\/]+)(.*)/) {|s| '<a href='+s+'>'+s+'</a>'}
-					%>
-					 <%= raw(@linkmessage) rescue ""%>
+  <% if params[:view] == 'following'%>
+    <% @followuser = User.find(follow.follow_id) rescue nil%><br/>    
+  <% else %>  
+    <% @followuser = User.find(follow.user_id) rescue nil%><br/>
+  <% end %>
+  
+  <% if @followuser %>
+  
+    <div class="bubble" id="follower_<%=follow.user_id if follow.user_id %>">
+      <a href="/users/<%= @followuser.username.downcase%>">
+        <img src="<%= @followuser.photo %>" style="width:100px; height: 100px;" align="left"/>
+      </a>
+      <blockquote>
+        <p> 
+          <% 
+          if @followuser.about_me.blank?
+            @txt = "&nbsp;"
+          else
+            @txt = @followuser.about_me[0..160]
+          end
+          @linkmessage = @txt.gsub(/(@)((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i) {|s| '<a href=/'+s[1..1000].downcase+'>'+s+'</a>'}
+          @linkmessage = @linkmessage.gsub(/https?:\/\/([^\/]+)(.*)/) {|s| '<a href='+s+'>'+s+'</a>'}
+          %>
+           <%= raw(@linkmessage) rescue ""%>
 
-				</p>
-				<div id="spinner_<%=@followuser.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+        </p>
+        <div id="spinner_<%=@followuser.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
 
-			</blockquote>
-			<cite>
-				<%= link_to @followuser.username.upcase, '/users/' + @followuser.username.downcase %> 
-				Joined <%= time_ago_in_words(@followuser.created_at) %> ago 
+      </blockquote>
+      <cite>
+        <%= link_to @followuser.username.upcase, '/users/' + @followuser.username.downcase %> 
+        Joined <%= time_ago_in_words(@followuser.created_at) %> ago 
 
-				<script>
-					setbuttonclick(<%=@followuser.id.to_s%>);
-				</script>
-				
-				<script>
-				$(function() {
-				 $("#follow_<%=@followuser.id.to_s%>").click(function() {
-				  $("#spinner_<%=@followuser.id.to_s%>").show();
-				 });
-				});
-				</script>
-				
-			
-			</cite>
-		</div>
-		
+        <script>
+          setbuttonclick(<%=@followuser.id.to_s%>);
+        </script>
+        
+        <script>
+        $(function() {
+         $("#follow_<%=@followuser.id.to_s%>").click(function() {
+          $("#spinner_<%=@followuser.id.to_s%>").show();
+         });
+        });
+        </script>
+        
+      
+      </cite>
+    </div>
+    
 
-	<% end %>
-	
+  <% end %>
+  
 <% end %>
 
 </div>
