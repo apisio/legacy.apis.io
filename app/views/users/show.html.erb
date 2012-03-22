@@ -12,6 +12,15 @@
 </h1>
 <p>Website: <%= link_to @user.website, @user.website%>  </p>
 
+<% 
+if @user.about_me.blank?
+  @txt = "&nbsp;"
+else
+  @txt = @user.about_me #[0..160]
+end
+%>
+<%=@txt%>
+
 <br /><br />
 <h1>Following</h1>
 <% if @following.length == 0 %>

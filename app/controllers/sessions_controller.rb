@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
     session['provider'] = nil
     session['access_token'] = nil 
     session["trustee"] = nil
+    session["bio"] = nil
     
     # remove remember me cookie
     cookies.delete(:auth_token)
@@ -54,13 +55,16 @@ class SessionsController < ApplicationController
       omniauth['extra']['raw_info']['avatar_url'] ? @authhash[:photo] = omniauth['extra']['raw_info']['avatar_url'] : @authhash[:photo] = ''        
       
       omniauth['credentials']['token'] ? @authhash[:token] = omniauth['credentials']['token'] : @authhash[:token] = ''        
+
+      omniauth['extra']['raw_info']['bio'] ? @authhash[:bio] = omniauth['extra']['raw_info']['bio'] : @authhash[:bio] = ''        
+
                       
     else        
       # debug to output the hash that has been returned when adding new services
       render :text => omniauth.to_yaml
       return
     end 
-
+    
     if @authhash[:uid] != '' and @authhash[:provider] != ''
       
       @auth = User.find_by_uid(@authhash[:uid])
@@ -84,6 +88,7 @@ class SessionsController < ApplicationController
 
       @auth.photo = @authhash[:photo]
       @auth.website = @authhash[:url]
+      @auth.about_me = @authhash[:bio]
     
       @auth.save
 
@@ -95,6 +100,7 @@ class SessionsController < ApplicationController
       session['access_token'] = @authhash[:token]  
       session['admin'] = @auth.admin 
       session['email'] = @authhash[:email]
+      session['bio'] = @authhash[:bio]
         
       redirect_to "/"
         

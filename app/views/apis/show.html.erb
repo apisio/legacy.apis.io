@@ -20,7 +20,7 @@
     <%= link_to "Export WADL", "/" + @api.name + "/export"%> 
   
     <% if @api.user_id == session["user_id"] or session["admin"]%>
-      <button id="addresourcebutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add API Resource </button>
+      <button id="addresourcebutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Resource </button>
     <% end %>
   </p>
 
@@ -222,7 +222,7 @@
   <div id="spinner_<%=@api.id.to_s rescue "0"%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
     
   <% if @followers %>
-    <h2><a href="<%= "/" + @api.name + "/following"%>">Followers: <span id="followercount"><%=@followers%></span></a> </h2>
+    <h2><a href="<%= "/" + @api.name + "/followers"%>">Followers: <span id="followercount"><%=@followers%></span></a> </h2>
   <% end %>
   
     

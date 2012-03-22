@@ -1,6 +1,5 @@
+<br /><br /><br />
 <% if @follows %>
-
-
 <div>
 <script>
 function setbuttonclick(buttonid) {
@@ -31,7 +30,7 @@ function setbuttonclick(buttonid) {
           if @followuser.about_me.blank?
             @txt = "&nbsp;"
           else
-            @txt = @followuser.about_me[0..160]
+            @txt = @followuser.about_me[0..160] + "..."
           end
           @linkmessage = @txt.gsub(/(@)((?:[a-z][a-z]*[0-9]+[a-z0-9]*))/i) {|s| '<a href=/'+s[1..1000].downcase+'>'+s+'</a>'}
           @linkmessage = @linkmessage.gsub(/https?:\/\/([^\/]+)(.*)/) {|s| '<a href='+s+'>'+s+'</a>'}

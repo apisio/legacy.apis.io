@@ -19,8 +19,8 @@ Apisio::Application.routes.draw do
   match '/activity' => "users#allfeed"
   match '/activity/:id' => "users#showfeed"
 
-  match ':id/following' => 'follows#index', :view => 'following'
-  match ':id/followers' => 'follows#index', :view => 'followers'
+  match ':id/following' => 'follows#index', :view => 'following', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
+  match ':id/followers' => 'follows#index', :view => 'followers', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
   
   match '/login' => 'sessions#new'
   match '/logout' => 'sessions#destroy'
@@ -33,9 +33,9 @@ Apisio::Application.routes.draw do
   match '/follows/block/:id' => 'follows#block'
   match '/follows/unblock/:id' => 'follows#unblock'
 
-  match '/search/:id' => 'apis#search', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
-  match '/:id/import' => 'apis#import', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
-  match '/:id/export' => 'apis#export', :constraints => { :id => /[0-9A-Za-z\-\.]+/ }
+  match '/search/:id' => 'apis#search', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
+  match '/:id/import' => 'apis#import', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
+  match '/:id/export' => 'apis#export', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
   match '/apis/wadl_import' => 'apis#wadl_import'
   
 
