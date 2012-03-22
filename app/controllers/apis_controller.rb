@@ -266,7 +266,7 @@ class ApisController < ApplicationController
     @status = Status.new
     @status.user_id = session["user_id"]
     @status.api_id = @api.id
-    @status.message = "Iported new WADL file for " + @api.name.capitalize + " API"
+    @status.message = "Imported new WADL file for " + @api.name.capitalize + " API"
     @status.save
 
     
