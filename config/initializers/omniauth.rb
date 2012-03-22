@@ -19,6 +19,3 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   end
   provider :github, ENV[envvars[:id]], ENV[envvars[:secret]]
 end
-
-# /auth/github
-# http://apis.io/auth/github/callback

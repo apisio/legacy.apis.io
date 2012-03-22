@@ -1,30 +1,30 @@
 <html>
-	<body style="background-color: #c0c0c0;">		
-		<center>
-		<table style="background-color: #ffffff;"">
-			<tr>
-				<td width="70%" colspan="2">
-					<h1>
-						<img src="http://apis.io/assets/apisio_blocks2.png" align="right">						
-						Your API has a new follower!
-					</h1>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<img src="<%=@photo%>" width="100">
-				</td>
-				<td>
-					<p>Hi <%=@to.capitalize rescue ""%>,</p>
-					
-					<p><%=@from.capitalize rescue ""%> is now following your API on APIS.io! You can see what other APIs they are following at: http://apis.io/users/<%=@from.downcase rescue ""%></p>
-					
-					<p>Regards,<br />
-					APIS.io</p>
-				</td>
-			</tr>
-		</table>
-		</center>
-		
-	</body>
+  <body style="background-color: #c0c0c0;">    
+    <center>
+    <table style="background-color: #ffffff;">
+      <tr>
+        <td width="70%" colspan="2">
+          <h1>
+            <img src="http://apis.io/assets/apisio_blocks2.png" align="right">            
+            Your API has a new follower!
+          </h1>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="<%=@photo%>" width="100">
+        </td>
+        <td>
+          <p>Hi <%=@to.capitalize rescue ""%>,</p>
+          
+          <p><%=@from.capitalize rescue ""%> is now following your API on APIS.io! You can see what other APIs they are following at: http://apis.io/users/<%=@from.downcase rescue ""%></p>
+          
+          <p>Regards,<br />
+          APIS.io</p>
+        </td>
+      </tr>
+    </table>
+    </center>
+    
+  </body>
 </html>

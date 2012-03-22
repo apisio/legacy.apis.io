@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-<%= f.hidden_field :api_id, :value => @parameter.api_id %>
-<%= f.hidden_field :resource_id, :value => @parameter.resource_id %>
+  <%= f.hidden_field :api_id, :value => @parameter.api_id %>
+  <%= f.hidden_field :resource_id, :value => @parameter.resource_id %>
 
   <div class="field">
     <%= f.label "Request Type" %>
-	<%= f.select :paramstyle, options_for_select([[@parameter.paramstyle], "header", "parameter", "payload"]), :class => 'input' %><br />			    
+  <%= f.select :paramstyle, options_for_select([[@parameter.paramstyle], "header", "parameter", "payload"]), :class => 'input' %><br />          
   </div>
   <div class="field">
     <%= f.label "Name" %>

@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-   <%= f.hidden_field :api_id %>
+  <%= f.hidden_field :api_id %>
   <div class="field">
     <%= f.label :resourcename %>
     <%= f.text_field :resourcename, :class=>"input-xxlarge" %>
@@ -22,15 +22,12 @@
   </div>
   <div class="field">
     <%= f.label :resourcemethod %>
-	<%= f.select :resourcemethod, options_for_select([[@resource.resourcemethod], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />			    
-
+    <%= f.select :resourcemethod, options_for_select([[@resource.resourcemethod], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />          
   </div>
   <div class="field">
     <%= f.label :authentication %>
-	<%= f.select :authentication, options_for_select([[@resource.authentication], "None", "Basic", "OAuth"]), :class => 'input' %><br />			    
+    <%= f.select :authentication, options_for_select([[@resource.authentication], "None", "Basic", "OAuth"]), :class => 'input' %><br />          
   </div>
-
-
 
   <div class="field">
     <%= f.label :curlexample %>

@@ -16,11 +16,11 @@ gem "nokogiri"
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 group :deployment do
-	gem 'mysql2'
+  gem 'mysql2'
 end 
 
 group :production do
-	gem 'pg'
+  gem 'pg'
 end 
 
 

@@ -2,253 +2,253 @@
 
 <div class="row">
 <div class="span8">
-	
-	<h1><%= @api.name %>
-	(<%= @api.category %>)</h1>
-	<h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br />
+  
+  <h1><%= @api.name %>
+  (<%= @api.category %>)</h1>
+  <h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br />
 
-	<p><span class="well span7"><%= @api.description %></span><br /><br /></p><br />
+  <p><span class="well span7"><%= @api.description %></span><br /><br /></p><br />
 
-	<h3>Base URL: <%= @api.apiurl %></h3>
-
-
-	<p class="pull-right">
-		<% if @api.user_id == session["user_id"] or session["admin"]%>
-			<%= link_to "Import WADL", "/" + @api.name + "/import"%> | 
-		<% end %>
-	
-		<%= link_to "Export WADL", "/" + @api.name + "/export"%> 
-	
-		<% if @api.user_id == session["user_id"] or session["admin"]%>
-			<button id="addresourcebutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add API Resource </button>
-		<% end %>
-	</p>
+  <h3>Base URL: <%= @api.apiurl %></h3>
 
 
-	<% if @api.user_id == session["user_id"] or session["admin"] %>
-		<br /><br />
-		<div id="addresource" style="display:none">	
-	
-		<%= form_for :resource, :url=>{:controller=>"resources", :action=>"create" }, :remote => true do |f| %>
-		
-		<p class="well">
-				<%= f.hidden_field :api_id, :value => @api.id %>
-				<%= f.text_field :resourcename, :placeholder=>"Resource name", :class => "input-xxlarge" %><br />
-				<%= f.text_field :pathurl, :placeholder=>"Resource path URL", :class => "input-xxlarge" %><br />
-				<%= f.select :resourcemethod, options_for_select([["Select Method", ""], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />			    
-				<%= f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic", "OAuth"]), :class => 'input' %><br />			    
-				<%= f.text_field :curlexample, :placeholder=>"CURL example", :class => "input-xxlarge" %><br />
-				<%= f.text_field :docurl, :placeholder=>"Resource documentation URL", :class => "input-xxlarge" %><br />
-				<%= f.text_area :description, :class => "input-xxlarge", :rows => "5", :placeholder=>"Resource description" %><br />
-			    <%= f.submit "Update", :class=>"btn btn-success", :disable_with => 'Processing...', :id=>"addbutton" %>
-		</p>
-		<% end %>
-		</div>
-		
-	<% end %>
-	
-	<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>		
-	<script>
-	$(function() {
-	 $("#addbutton").click(function() {
-	  $("#addbutton").attr('value','Processing...');
-	  $("#spinner").show();
-	 });
-
-	 $("#addresourcebutton").click(function() {
-	  $("#addresource").slideToggle();
-	 });
-
-	});
-	</script>
+  <p class="pull-right">
+    <% if @api.user_id == session["user_id"] or session["admin"]%>
+      <%= link_to "Import WADL", "/" + @api.name + "/import"%> | 
+    <% end %>
+  
+    <%= link_to "Export WADL", "/" + @api.name + "/export"%> 
+  
+    <% if @api.user_id == session["user_id"] or session["admin"]%>
+      <button id="addresourcebutton" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add API Resource </button>
+    <% end %>
+  </p>
 
 
-	<table class="table table-striped table-bordered">
-	<div id="resources">	
-	<% resname = "" %>
-	<% @resources.each do |resource| %>
-	
-		<% if resource.resourcename != resname %>
-			<tr><td colspan="2"><br /><h1><%= resource.resourcename %></h1><br /></td></tr>
-			<% resname = resource.resourcename %>		
-		<% end %>
-	
-		<% if resource.resourcename == resname %>
-			<%
-			if resource.resourcemethod == "GET" 
-				btncolor = "primary"
-			elsif resource.resourcemethod == "POST" 
-				btncolor = "success"
-			elsif resource.resourcemethod == "DELETE" 
-				btncolor = "danger"
-			elsif resource.resourcemethod == "PUT" 
-				btncolor = "inverse"
-			end
+  <% if @api.user_id == session["user_id"] or session["admin"] %>
+    <br /><br />
+    <div id="addresource" style="display:none">  
+  
+    <%= form_for :resource, :url=>{:controller=>"resources", :action=>"create" }, :remote => true do |f| %>
+    
+    <p class="well">
+        <%= f.hidden_field :api_id, :value => @api.id %>
+        <%= f.text_field :resourcename, :placeholder=>"Resource name", :class => "input-xxlarge" %><br />
+        <%= f.text_field :pathurl, :placeholder=>"Resource path URL", :class => "input-xxlarge" %><br />
+        <%= f.select :resourcemethod, options_for_select([["Select Method", ""], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %><br />          
+        <%= f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic", "OAuth"]), :class => 'input' %><br />          
+        <%= f.text_field :curlexample, :placeholder=>"CURL example", :class => "input-xxlarge" %><br />
+        <%= f.text_field :docurl, :placeholder=>"Resource documentation URL", :class => "input-xxlarge" %><br />
+        <%= f.text_area :description, :class => "input-xxlarge", :rows => "5", :placeholder=>"Resource description" %><br />
+          <%= f.submit "Update", :class=>"btn btn-success", :disable_with => 'Processing...', :id=>"addbutton" %>
+    </p>
+    <% end %>
+    </div>
+    
+  <% end %>
+  
+  <div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
+  <script>
+  $(function() {
+   $("#addbutton").click(function() {
+    $("#addbutton").attr('value','Processing...');
+    $("#spinner").show();
+   });
 
-			if resource.authentication == "None"
-				prefix = ''
-			else
-				prefix = '<i class="icon-lock icon-white"></i>'
-			end 	
-			%>
-			<tr id="resource_<%=resource.id%>">
+   $("#addresourcebutton").click(function() {
+    $("#addresource").slideToggle();
+   });
+
+  });
+  </script>
+
+
+  <table class="table table-striped table-bordered">
+  <div id="resources">  
+  <% resname = "" %>
+  <% @resources.each do |resource| %>
+  
+    <% if resource.resourcename != resname %>
+      <tr><td colspan="2"><br /><h1><%= resource.resourcename %></h1><br /></td></tr>
+      <% resname = resource.resourcename %>    
+    <% end %>
+  
+    <% if resource.resourcename == resname %>
+      <%
+      if resource.resourcemethod == "GET" 
+        btncolor = "primary"
+      elsif resource.resourcemethod == "POST" 
+        btncolor = "success"
+      elsif resource.resourcemethod == "DELETE" 
+        btncolor = "danger"
+      elsif resource.resourcemethod == "PUT" 
+        btncolor = "inverse"
+      end
+
+      if resource.authentication == "None"
+        prefix = ''
+      else
+        prefix = '<i class="icon-lock icon-white"></i>'
+      end   
+      %>
+      <tr id="resource_<%=resource.id%>">
                 <td width="20%">
-					<a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
-					<% if @api.user_id == session["user_id"] or session["admin"]%>
-						<br />
-						<%= link_to 'Edit', edit_resource_path(resource) %> | 
-					    <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
-				    <% end %>
-			 	</td>
+          <a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+          <% if @api.user_id == session["user_id"] or session["admin"]%>
+            <br />
+            <%= link_to 'Edit', edit_resource_path(resource) %> | 
+              <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
+            <% end %>
+         </td>
                 <td width="80%"><b>/<%=resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
-					(<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
-	                <code><%= resource.curlexample rescue ""%></code>
+          (<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
+                  <code><%= resource.curlexample rescue ""%></code>
 
-					<br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
-					<div id="resource_params_<%=resource.id%>" style="display:none">
-						<hr>
-						<% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
-						
-						<% @parameters.each do |parameter| %>
-							<p id="parameter_<%=parameter.id%>">
-							<% if parameter.paramstyle == "header" %>
-								<b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%>
-								<br /><%=parameter.description%>
-							<% end %>
-							<% if parameter.paramstyle == "query" %>
-								<b>Parameter</b>: <%=parameter.paramname%> = 
-								<% if parameter.paramdefault.blank? %>
-									{string}
-								<% else %>
-									<%=parameter.paramdefault %>
-								<% end %>
-								<br /><%=parameter.description%>
-							<% end %>
-							<% if !parameter.payload.blank?  %>
-								<b>Payload</b>: <%=parameter.payload%>
-							<% end %>
-							<% if parameter.paramrequired  %>
-								<b>* required</b>
-							<% end %>
-							
-							<% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and (@api.user_id == session["user_id"] or session["admin"]) %>
-								<%= link_to 'Edit', edit_parameter_path(parameter) %> | 
-							    <%= link_to 'Destroy', parameter, confirm: 'Are you sure?', method: :delete, :remote => true %>
-						    <% end %>
-							</p>
-							
-						<% end %>
-						
-						<% if @api.user_id == session["user_id"] or session["admin"] %>
-							<p class="pull-right"><button id="addparambutton_<%=resource.id%>" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button></p>
-							<div id="addparameter_<%=resource.id%>" style="display:none">	
-							<br /><br />
+          <br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
+          <div id="resource_params_<%=resource.id%>" style="display:none">
+            <hr>
+            <% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
+            
+            <% @parameters.each do |parameter| %>
+              <p id="parameter_<%=parameter.id%>">
+              <% if parameter.paramstyle == "header" %>
+                <b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%>
+                <br /><%=parameter.description%>
+              <% end %>
+              <% if parameter.paramstyle == "query" %>
+                <b>Parameter</b>: <%=parameter.paramname%> = 
+                <% if parameter.paramdefault.blank? %>
+                  {string}
+                <% else %>
+                  <%=parameter.paramdefault %>
+                <% end %>
+                <br /><%=parameter.description%>
+              <% end %>
+              <% if !parameter.payload.blank?  %>
+                <b>Payload</b>: <%=parameter.payload%>
+              <% end %>
+              <% if parameter.paramrequired  %>
+                <b>* required</b>
+              <% end %>
+              
+              <% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and (@api.user_id == session["user_id"] or session["admin"]) %>
+                <%= link_to 'Edit', edit_parameter_path(parameter) %> | 
+                  <%= link_to 'Destroy', parameter, confirm: 'Are you sure?', method: :delete, :remote => true %>
+                <% end %>
+              </p>
+              
+            <% end %>
+            
+            <% if @api.user_id == session["user_id"] or session["admin"] %>
+              <p class="pull-right"><button id="addparambutton_<%=resource.id%>" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button></p>
+              <div id="addparameter_<%=resource.id%>" style="display:none">  
+              <br /><br />
 
-							<%= form_for :parameter, :url=>{:controller=>"parameters", :action=>"create" }, :remote => true do |f| %>
+              <%= form_for :parameter, :url=>{:controller=>"parameters", :action=>"create" }, :remote => true do |f| %>
 
-									<%= f.hidden_field :api_id, :value => @api.id %>
-									<%= f.hidden_field :resource_id, :value => resource.id %>
-									
-									<p class="well">
-										<%= f.select :paramstyle, options_for_select(["header", ["parameter","query"], "payload"]), :class => 'input' %><br />			    
-									    
-										<%= f.text_field :paramname, :class=>"input", :placeholder => "Name" %>
-										<%= f.text_field :paramdefault, :class=>"input", :placeholder => "Value" %>
-										<%= f.text_area :payload, :class=>"input-xxlarge", :placeholder => "Payload", :rows=>"5" %>
-										Required? <%= f.check_box :paramrequired %><br /><br />
-										
-									    <%= f.submit "Update", :class=>"btn btn-success", :id=>"updateparambutton_" + resource.id.to_s %>
-									</p>
+                  <%= f.hidden_field :api_id, :value => @api.id %>
+                  <%= f.hidden_field :resource_id, :value => resource.id %>
+                  
+                  <p class="well">
+                    <%= f.select :paramstyle, options_for_select(["header", ["parameter","query"], "payload"]), :class => 'input' %><br />          
+                      
+                    <%= f.text_field :paramname, :class=>"input", :placeholder => "Name" %>
+                    <%= f.text_field :paramdefault, :class=>"input", :placeholder => "Value" %>
+                    <%= f.text_area :payload, :class=>"input-xxlarge", :placeholder => "Payload", :rows=>"5" %>
+                    Required? <%= f.check_box :paramrequired %><br /><br />
+                    
+                      <%= f.submit "Update", :class=>"btn btn-success", :id=>"updateparambutton_" + resource.id.to_s %>
+                  </p>
 
-							<% end %>
-							</div>
-							<div id="spinner_<%=resource.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>		
-							
-						<% end %>						
-					</div>
-					<script>
-					$(function() {
-						 $("#href_resource_params_<%=resource.id%>").click(function() {
-						  $("#resource_params_<%=resource.id%>").toggle();
-						 });
-						
-						 $("#updateparambutton_<%=resource.id%>").click(function() {
-						  $("#spinner_<%=resource.id%>").show();
-						 });
+              <% end %>
+              </div>
+              <div id="spinner_<%=resource.id%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
+              
+            <% end %>            
+          </div>
+          <script>
+          $(function() {
+             $("#href_resource_params_<%=resource.id%>").click(function() {
+              $("#resource_params_<%=resource.id%>").toggle();
+             });
+            
+             $("#updateparambutton_<%=resource.id%>").click(function() {
+              $("#spinner_<%=resource.id%>").show();
+             });
 
-						 $("#addparambutton_<%=resource.id%>").click(function() {
-						  $("#addparameter_<%=resource.id%>").slideToggle();
-						 });
-						
-					});
-					</script>
+             $("#addparambutton_<%=resource.id%>").click(function() {
+              $("#addparameter_<%=resource.id%>").slideToggle();
+             });
+            
+          });
+          </script>
 
-	            </td>
-	   		</tr>
-				
-		<% end %>
-	
-	<% end %>
-	</div>
-	</table>
+              </td>
+         </tr>
+        
+    <% end %>
+  
+  <% end %>
+  </div>
+  </table>
 
-	<script> 
-	function setbuttonclick(buttonid) {
-	 $("#follow_" + buttonid).click(function() {
-	  $("#spinner_" + buttonid).show();
-	 });
-	};
-	</script>
+  <script> 
+  function setbuttonclick(buttonid) {
+   $("#follow_" + buttonid).click(function() {
+    $("#spinner_" + buttonid).show();
+   });
+  };
+  </script>
 
-	<br />
-	
+  <br />
+  
 
-	<br /><br />
-	<%= link_to 'Back', apis_path %>
-	<% if @api.user_id == session["user_id"] or session["admin"] %>
-		|
-	    <%= link_to 'Edit', edit_api_path(@api) %> |
-	    <%= link_to 'Destroy', @api, confirm: 'Are you sure?', method: :delete %>
-	<% end %>
-	
-	
+  <br /><br />
+  <%= link_to 'Back', apis_path %>
+  <% if @api.user_id == session["user_id"] or session["admin"] %>
+    |
+      <%= link_to 'Edit', edit_api_path(@api) %> |
+      <%= link_to 'Destroy', @api, confirm: 'Are you sure?', method: :delete %>
+  <% end %>
+  
+  
 </div><div class="span4">
 
 <a href="<%=@api.apidocurl%>" target="_new"><center><img src="<%= @api.imageurl %>" style="width:200px; height: 200px;"></center></a>
 
 <% if session["user_id"] %>
-	
-	<center>
-	<div id="spinner_<%=@api.id.to_s rescue "0"%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
-		
-	<% if @followers %>
-		<h2><a href="<%= "/" + @api.name + "/following"%>">Followers: <span id="followercount"><%=@followers%></span></a> </h2>
-	<% end %>
-	
-		
-	<div id="userstatus_<%=@api.id.to_s rescue "0"%>">
-	<% if @follow %>
-	
-		<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@api.id, :status=>'unfollow' }, :remote => true do |f| %>
-			<%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @api.name.capitalize, :class=>"btn btn-danger", :id=>"follow_" + @api.id.to_s ) %>
-		<% end %>
-		
-		
-	<% else %>
-	
-		<%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@api.id, :status=>'follow' }, :remote => true do |f| %>
+  
+  <center>
+  <div id="spinner_<%=@api.id.to_s rescue "0"%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+    
+  <% if @followers %>
+    <h2><a href="<%= "/" + @api.name + "/following"%>">Followers: <span id="followercount"><%=@followers%></span></a> </h2>
+  <% end %>
+  
+    
+  <div id="userstatus_<%=@api.id.to_s rescue "0"%>">
+  <% if @follow %>
+  
+    <%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@api.id, :status=>'unfollow' }, :remote => true do |f| %>
+      <%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @api.name.capitalize, :class=>"btn btn-danger", :id=>"follow_" + @api.id.to_s ) %>
+    <% end %>
+    
+    
+  <% else %>
+  
+    <%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@api.id, :status=>'follow' }, :remote => true do |f| %>
           <%= button_tag(raw('<i class="icon-ok"></i> Follow'), :title=>"Follow " + @api.name.capitalize, :class=>"btn", :id=>"follow_" + @api.id.to_s ) %>
-		<% end %>											
-		
-	<% end %>
+    <% end %>                      
+    
+  <% end %>
 
-	<script>
-		setbuttonclick(<%=@api.id.to_s rescue "0"%>);
-	</script>
-	</div>		
-	</center>
-			
-	
+  <script>
+    setbuttonclick(<%=@api.id.to_s rescue "0"%>);
+  </script>
+  </div>    
+  </center>
+      
+  
 <% end %>
 
 </div>
@@ -257,7 +257,7 @@
 <% else %>
 <!-- 404 -->
 <div class="hero-unit">
-	<h1>API not found...</h1>
+  <h1>API not found...</h1>
 </div>
 
 <% end %>

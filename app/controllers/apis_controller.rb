@@ -197,18 +197,18 @@ class ApisController < ApplicationController
 
     @doc.search('*/resource').each do |node|
       
-    	node.search('method').each do |meth|
-    	
-    	  @resource = Resource.new
+      node.search('method').each do |meth|
+      
+        @resource = Resource.new
         @resource.api_id = @api_id
 
-      	@resource.pathurl = node['path']
+        @resource.pathurl = node['path']
       
-    	  @resource.resourcemethod =  meth["name"]
+        @resource.resourcemethod =  meth["name"]
 
-    	  @resource.description =  meth.search('doc').text.gsub(/\s+/, " ").strip
+        @resource.description =  meth.search('doc').text.gsub(/\s+/, " ").strip
 
-    	  @resource.docurl =  meth.xpath('doc')[0]["url"]
+        @resource.docurl =  meth.xpath('doc')[0]["url"]
 
         # puts "resource name:" + meth.xpath('tags/tag')[0].text 
         meth.search('tags/tag').each do |tag| 
@@ -225,12 +225,12 @@ class ApisController < ApplicationController
           
         @resource.curlexample = meth.xpath('example')[0]["url"] 
 
-      	@resource.save 
-      	
+        @resource.save 
+        
         # Add resource parameters
-      	meth.search('request/param').each do |param| 
-      	  
-      	  @parameter = Parameter.new
+        meth.search('request/param').each do |param| 
+          
+          @parameter = Parameter.new
           @parameter.api_id = @api_id
           @parameter.resource_id = @resource.id
 
@@ -250,7 +250,7 @@ class ApisController < ApplicationController
         
         payload = meth.search('request/representation/payload').text.gsub(/\s+/, " ").strip
         if payload
-      	  @parameter = Parameter.new
+          @parameter = Parameter.new
           @parameter.api_id = @api_id
           @parameter.resource_id = @resource.id
           @parameter.payload = payload
@@ -258,9 +258,9 @@ class ApisController < ApplicationController
         end
         
 
-    	end
-    	
-    	
+      end
+      
+      
     end
 
     @status = Status.new
@@ -324,45 +324,45 @@ class ApisController < ApplicationController
         # Request Hearers, Params, and Payloads
         @data << '<request>' + "\n" 
         @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])
-				
-				@parameters.each do |parameter| 
-					if parameter.paramstyle == "header" 
-					  @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '"'
-					  if parameter.paramrequired == true
-					    @data << 'required="true" />' + "\n" 
-					  else
-					    @data << 'required="true" />' + "\n" 
-					  end
-					end 
-					if parameter.paramstyle == "query" 
-					  @data << '<param name="' + parameter.paramname.to_s + '" type="' + parameter.paramtype.to_s + '" style="query" default="' + parameter.paramdefault.to_s + '" '
-					  if parameter.paramrequired == true
-					    @data << 'required="true">' + "\n" 
-					  else
-					    @data << 'required="true">' + "\n" 
-					  end
-      		   @data << '<doc>' + parameter.description + '</doc>' + "\n" 
-      		   @data << '</param>' + "\n"       		    
-					end
-					if !parameter.payload.blank?
-					  @data << '<representation>' + "\n" 
+        
+        @parameters.each do |parameter| 
+          if parameter.paramstyle == "header" 
+            @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '"'
+            if parameter.paramrequired == true
+              @data << 'required="true" />' + "\n" 
+            else
+              @data << 'required="true" />' + "\n" 
+            end
+          end 
+          if parameter.paramstyle == "query" 
+            @data << '<param name="' + parameter.paramname.to_s + '" type="' + parameter.paramtype.to_s + '" style="query" default="' + parameter.paramdefault.to_s + '" '
+            if parameter.paramrequired == true
+              @data << 'required="true">' + "\n" 
+            else
+              @data << 'required="true">' + "\n" 
+            end
+             @data << '<doc>' + parameter.description + '</doc>' + "\n" 
+             @data << '</param>' + "\n"               
+          end
+          if !parameter.payload.blank?
+            @data << '<representation>' + "\n" 
             @data << '<apisio:payload><![CDATA[' + parameter.payload + ']]></apisio:payload>' + "\n" 
-					  @data << '</representation>' + "\n" 
-					end
-					
-				end
-				@data << '</request>' + "\n" 
+            @data << '</representation>' + "\n" 
+          end
+          
+        end
+        @data << '</request>' + "\n" 
         
         
         
         
 
-    		@data << '</method>' + "\n" 
+        @data << '</method>' + "\n" 
 
-  			resname = resource.resourcename 
-  		end 
-  		
-  		@data << '</resource>' + "\n" 
+        resname = resource.resourcename 
+      end 
+      
+      @data << '</resource>' + "\n" 
 
     end
     
@@ -382,7 +382,5 @@ class ApisController < ApplicationController
           :filename => params[:id].downcase + '.wadl')
     
   end
-  
-  
   
 end
