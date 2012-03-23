@@ -29,7 +29,7 @@ end
 <% end %>
 <% @following.each do |follow| %>
 
-  <% @api = Api.find(follow.follow_id)%>
+  <% @api = Api.find(follow.follow_id) rescue nil%>
 
 	<% if @api %>
 
