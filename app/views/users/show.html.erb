@@ -14,7 +14,7 @@
 
 <% 
 if @user.about_me.blank?
-  @txt = "&nbsp;"
+  @txt = " "
 else
   @txt = @user.about_me #[0..160]
 end

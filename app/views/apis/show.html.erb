@@ -100,7 +100,12 @@
               <%= link_to 'Destroy', resource, confirm: 'Are you sure?', method: :delete, :remote => true %>
             <% end %>
          </td>
-                <td width="80%"><b>/<%=resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
+                <td width="80%"><b>
+				<% @slashprefix = "" %>
+				<% if resource.pathurl[0] != "/"%>
+					<%@slashprefix = "/"%>
+				<% end %>
+				<%=@slashprefix + resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
           (<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
                   <code><%= resource.curlexample rescue ""%></code>
 

@@ -178,7 +178,7 @@ class ApisController < ApplicationController
     
     # Bail if API doesn't belong to you.
     @api = Api.find(@api_id)
-    if @api and @api.user_id != session["user_id"]
+    if @api and (@api.user_id != session["user_id"] or !session["admin"])
       return
     end
 
@@ -219,15 +219,41 @@ class ApisController < ApplicationController
 
         if meth.xpath('authentication')[0]["required"] == "true"
           @resource.authentication = "Basic"
+          @curlauth = "-u 'username:password'"
         else
           @resource.authentication = "None"
+          @curlauth = ""
         end 
           
-        @resource.curlexample = meth.xpath('example')[0]["url"] 
+        # Build curl statement
+        @curltext = "curl -X " + @resource.resourcemethod + " " + @curlauth + " "
+
+        # base url
+        @apiurl = @api.apiurl
+        if @apiurl[@apiurl.length-1] != "/"
+          @apiurl << "/"
+        end 
+        
+        # url path
+        @curlexample = meth.xpath('example')[0]["url"] 
+        if @curlexample[0] == "/"
+          @apipath = @curlexample[1..@curlexample.length-1]
+        else
+          @apipath = @curlexample
+        end
+        # @curltext << @apiurl + @apipath
+        @apiurlpath = @apiurl + @apipath
+        
+        # TODO: add header, parameters, and payload to curl example
+        @resource.curlexample = @curltext
 
         @resource.save 
         
         # Add resource parameters
+        @apiparams = ""
+        @apiheader = ""
+        @apipayload = ""
+        
         meth.search('request/param').each do |param| 
           
           @parameter = Parameter.new
@@ -246,18 +272,40 @@ class ApisController < ApplicationController
           end 
           @parameter.save
           
+          # Format curl
+          if param["style"] == "header"
+            @apiheader = "-h '" + param["name"] + ": " + param["default"] + "' "
+          end  
+          if param["style"] == "query"
+            @apiparams << "&" + param["name"] + "=" + param["default"]
+          end
+          
         end
         
-        payload = meth.search('request/representation/payload').text.gsub(/\s+/, " ").strip
-        if payload
+        @payload = meth.search('request/representation/payload').text.gsub(/\s+/, " ").strip
+        if !@payload.blank?
           @parameter = Parameter.new
           @parameter.api_id = @api_id
           @parameter.resource_id = @resource.id
-          @parameter.payload = payload
-          @parameter.save          
+          @parameter.payload = @payload
+          @parameter.save   
+          
+          #Format curl
+          @apipayload = "-d '" +  @payload + "' "   
         end
         
-
+        # update curl example with parameters, header, and payload
+        @resourceudpate = Resource.find(@resource.id)
+        if @resourceudpate
+          if @apiparams
+            @apiparams = "-d '" + @apiparams[1..@apiparams.length-1] + "' " rescue ""
+          end
+          @curlexample = @resourceudpate.curlexample + @apipayload + @apiheader + @apiparams + @apiurlpath
+          
+          @resourceudpate.curlexample = @curlexample
+          @resourceudpate.save
+        end
+        
       end
       
       
@@ -271,6 +319,11 @@ class ApisController < ApplicationController
 
     
     redirect_to("/" + @api.name)
+    # respond_to do |format|
+    #   format.html {redirect_to("/" + @api.name)}# new.html.erb
+    #   format.json { render json: @api }
+    # end
+    
 
   end
   
