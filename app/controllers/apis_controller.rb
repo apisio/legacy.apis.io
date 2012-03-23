@@ -274,10 +274,10 @@ class ApisController < ApplicationController
           
           # Format curl
           if param["style"] == "header"
-            @apiheader = "-h '" + param["name"] + ": " + param["default"] + "' "
+            @apiheader = "-h '" + param["name"] + ": " + param["default"] + "' " rescue ""
           end  
           if param["style"] == "query"
-            @apiparams << "&" + param["name"] + "=" + param["default"]
+            @apiparams << "&" + param["name"] + "=" + param["default"] rescue ""
           end
           
         end
