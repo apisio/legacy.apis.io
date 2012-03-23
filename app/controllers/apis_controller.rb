@@ -370,7 +370,7 @@ class ApisController < ApplicationController
           @data << '<apisio:authentication required="true" />' + "\n" 
         end
         
-        @data << '<apisio:example url="' + resource.curlexample + '" />' + "\n" 
+        @data << '<apisio:example url="' + resource.curlexample.gsub('&', '&amp;').gsub('"', '&quot;') + '" />' + "\n" 
 
         @data << '<doc title="" apisio:url="' + resource.docurl + '">' + resource.description + '</doc>' + "\n" 
 
@@ -380,7 +380,7 @@ class ApisController < ApplicationController
         
         @parameters.each do |parameter| 
           if parameter.paramstyle == "header" 
-            @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '"'
+            @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '" '
             if parameter.paramrequired == true
               @data << 'required="true" />' + "\n" 
             else
