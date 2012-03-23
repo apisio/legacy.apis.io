@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120318213304) do
+ActiveRecord::Schema.define(:version => 20120323002709) do
 
   create_table "apis", :force => true do |t|
     t.integer  "user_id"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(:version => 20120318213304) do
     t.string   "pathurl"
     t.string   "resourcemethod"
     t.string   "authentication"
-    t.string   "curlexample"
+    t.text     "curlexample"
     t.string   "docurl"
     t.text     "description"
     t.datetime "created_at",     :null => false
