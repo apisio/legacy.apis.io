@@ -158,7 +158,7 @@ class ExplorersController < ApplicationController
   # update auth based on auth type
   def add_auth(auth, curl, params)
     if auth == 'Basic'
-      username, password = params.values_at(:username, :password)
+      username, password = params.values_at(:apiusername, :apipassword)
       encoded = Base64.encode64("#{username}:#{password}").gsub("\n",'')
       curl.headers['Authorization'] = "Basic #{encoded}"
     end

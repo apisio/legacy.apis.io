@@ -5,11 +5,17 @@
 <%= form_for :explorer, :url=>{:controller=>"explorers", :action=>"create" }, :remote => true do |f| %>
 <p>
     <%= f.hidden_field :user_id, :value => session["user_id"] %>
-    <%= f.text_field :apiurl, :placeholder=>"API URL", :class => "input-xxlarge" %><br />
-    <%= f.select :apimethod, options_for_select([["Select Method", ""], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %>
-    <%= f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic"]), :class => 'input' %><br />          
-	<%= check_box_tag :follow_redirects, 1, params[:follow_redirects] %> Follow Redirects?<br /><br />
-    <%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
+    <%= f.text_field :apiurl, :placeholder=>"API URL", :class => "input-xxlarge focus" %><br />
+    <%= f.select :apimethod, options_for_select(["GET", "POST", "PUT", "DELETE"]), :class => 'input-small' %>
+	<%= check_box_tag :follow_redirects, 1, params[:follow_redirects] %> follow redirects?<br />
+    <%# f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic"]), :class => 'input' %>
+	<%= f.radio_button :authentication, "None", :checked => true %> No Auth
+	<%= f.radio_button :authentication, "Basic" %> Basic Auth<br />
+	<div id="basicauthparams" style="display:none">
+    <%= f.text_field :apiusername, :placeholder=>"username", :class => "input-large" %>
+	<%= f.password_field :apipassword, :class => "input-large" %><br />
+    </div>
+    <br /><%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
 </p>
 <% end %>
 
@@ -19,6 +25,12 @@
 $(function() {
  $("#sendbutton").click(function() {
   $("#spinner").show();
+ });
+ $("#explorer_authentication_none").click(function() {
+  $("#basicauthparams").hide();
+ });
+ $("#explorer_authentication_basic").click(function() {
+  $("#basicauthparams").show();
  });
 
 });
