@@ -355,64 +355,66 @@ class ApisController < ApplicationController
     
     @resources.each do |resource|
       
-      @data << '<resource path="' + resource.pathurl + '">' + "\n" 
+      @data << '<resource path="' + resource.pathurl.gsub('&', '&amp;').gsub('"', '&quot;')  + '">' + "\n" 
       
       resname = ""
       while resource.resourcename != resname do        
+        
+        begin
  
-        @data << '<method id="' + resource.resourcename + '_' + resource.resourcemethod + '" name="' + resource.resourcemethod + '" apisio:displayName="' + resource.resourcename + '_' + resource.resourcemethod + '">' + "\n" 
+          @data << '<method id="' + resource.resourcename + '_' + resource.resourcemethod + '" name="' + resource.resourcemethod + '" apisio:displayName="' + resource.resourcename + '_' + resource.resourcemethod + '">' + "\n" 
 
-        @data << '<apisio:tags><apisio:tag primary="true">' + resource.resourcename + '</apisio:tag></apisio:tags>' + "\n" 
+          @data << '<apisio:tags><apisio:tag primary="true">' + resource.resourcename + '</apisio:tag></apisio:tags>' + "\n" 
 
-        if resource.authentication == "None"
-          @data << '<apisio:authentication required="false" />' + "\n" 
-        else
-          @data << '<apisio:authentication required="true" />' + "\n" 
-        end
-        
-        @data << '<apisio:example url="' + resource.curlexample.gsub('&', '&amp;').gsub('"', '&quot;') + '" />' + "\n" 
-
-        @data << '<doc title="" apisio:url="' + resource.docurl + '">' + resource.description + '</doc>' + "\n" 
-
-        # Request Hearers, Params, and Payloads
-        @data << '<request>' + "\n" 
-        @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])
-        
-        @parameters.each do |parameter| 
-          if parameter.paramstyle == "header" 
-            @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '" '
-            if parameter.paramrequired == true
-              @data << 'required="true" />' + "\n" 
-            else
-              @data << 'required="true" />' + "\n" 
-            end
-          end 
-          if parameter.paramstyle == "query" 
-            @data << '<param name="' + parameter.paramname.to_s + '" type="' + parameter.paramtype.to_s + '" style="query" default="' + parameter.paramdefault.to_s + '" '
-            if parameter.paramrequired == true
-              @data << 'required="true">' + "\n" 
-            else
-              @data << 'required="true">' + "\n" 
-            end
-             @data << '<doc>' + parameter.description + '</doc>' + "\n" 
-             @data << '</param>' + "\n"               
+          if resource.authentication == "None"
+            @data << '<apisio:authentication required="false" />' + "\n" 
+          else
+            @data << '<apisio:authentication required="true" />' + "\n" 
           end
-          if !parameter.payload.blank?
-            @data << '<representation>' + "\n" 
-            @data << '<apisio:payload><![CDATA[' + parameter.payload + ']]></apisio:payload>' + "\n" 
-            @data << '</representation>' + "\n" 
-          end
+        
+          @data << '<apisio:example url="' + resource.curlexample.gsub('&', '&amp;').gsub('"', '&quot;') + '" />' + "\n" 
+
+          @data << '<doc title="" apisio:url="' + resource.docurl + '">' + resource.description + '</doc>' + "\n" 
+
+          # Request Hearers, Params, and Payloads
+          @data << '<request>' + "\n" 
+          @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])
+        
+          @parameters.each do |parameter| 
+            if parameter.paramstyle == "header" 
+              @data << '<param name="' + parameter.paramname + '" type="' + parameter.paramtype.to_s + '" style="header" default="' + parameter.paramdefault.to_s + '" '
+              if parameter.paramrequired == true
+                @data << 'required="true" />' + "\n" 
+              else
+                @data << 'required="true" />' + "\n" 
+              end
+            end 
+            if parameter.paramstyle == "query" 
+              @data << '<param name="' + parameter.paramname.to_s + '" type="' + parameter.paramtype.to_s + '" style="query" default="' + parameter.paramdefault.to_s + '" '
+              if parameter.paramrequired == true
+                @data << 'required="true">' + "\n" 
+              else
+                @data << 'required="true">' + "\n" 
+              end
+               @data << '<doc>' + parameter.description + '</doc>' + "\n" 
+               @data << '</param>' + "\n"               
+            end
+            if !parameter.payload.blank?
+              @data << '<representation>' + "\n" 
+              @data << '<apisio:payload><![CDATA[' + parameter.payload + ']]></apisio:payload>' + "\n" 
+              @data << '</representation>' + "\n" 
+            end
           
-        end
-        @data << '</request>' + "\n" 
+          end
+          @data << '</request>' + "\n" 
         
-        
-        
-        
+          @data << '</method>' + "\n" 
 
-        @data << '</method>' + "\n" 
+        rescue
+        end  
 
-        resname = resource.resourcename 
+        resname = resource.resourcename         
+        
       end 
       
       @data << '</resource>' + "\n" 
