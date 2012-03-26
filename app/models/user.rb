@@ -3,4 +3,5 @@ class User < ActiveRecord::Base
   has_many :apis
   has_many :statuses
   has_many :follows    
+  has_many :explorers    
 end

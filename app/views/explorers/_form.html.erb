@@ -1,0 +1,29 @@
+<%= form_for(@explorer) do |f| %>
+  <% if @explorer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@explorer.errors.count, "error") %> prohibited this explorer from being saved:</h2>
+
+      <ul>
+      <% @explorer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :apirequest %><br />
+    <%= f.text_area :apirequest %>
+  </div>
+  <div class="field">
+    <%= f.label :apiresponse %><br />
+    <%= f.text_area :apiresponse %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,5 +1,7 @@
 Apisio::Application.routes.draw do
 
+  resources :explorers
+
   resources :parameters
 
   resources :resources

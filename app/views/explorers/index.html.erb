@@ -1,0 +1,40 @@
+<br /><br /><br />
+<div class="hero-unit">
+<h1>API Explorer</h1><br />
+
+<%= form_for :explorer, :url=>{:controller=>"explorers", :action=>"create" }, :remote => true do |f| %>
+<p>
+    <%= f.hidden_field :user_id, :value => session["user_id"] %>
+    <%= f.text_field :apiurl, :placeholder=>"API URL", :class => "input-xxlarge" %><br />
+    <%= f.select :apimethod, options_for_select([["Select Method", ""], "GET", "POST", "PUT", "DELETE"]), :class => 'input' %>
+    <%= f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic"]), :class => 'input' %><br />          
+	<%= check_box_tag :follow_redirects, 1, params[:follow_redirects] %> Follow Redirects?<br /><br />
+    <%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
+</p>
+<% end %>
+
+<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
+
+<script>
+$(function() {
+ $("#sendbutton").click(function() {
+  $("#spinner").show();
+ });
+
+});
+</script>
+<div id="output" style="display:none">
+	<hr />
+	<div class="row">
+		<div class="span5">
+			<h2>Request</h2>
+			<div id="apirequest"></div>
+		</div>
+		<div class="span5">
+			<h2>Response</h2>
+			<div id="apiresponse"></div>
+		</div>
+	</div>
+</div>
+
+</div>
