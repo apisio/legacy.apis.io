@@ -45,6 +45,8 @@ class ExplorersController < ApplicationController
   def create
     # @explorer = Explorer.new(params[:explorer])
     
+    puts "header input:" + params["explorer"]["header-keys"].join
+    
     @user_id = params[:explorer][:user_id]
     @url = params[:explorer][:apiurl]
     @method = params[:explorer][:apimethod]
@@ -67,13 +69,13 @@ class ExplorersController < ApplicationController
     add_auth(@auth, curl, params[:explorer])
 
     # arbitrary headers
-    add_headers_from_arrays(curl, params[:explorer]["header-keys"], params[:explorer]["header-vals"])
+    add_headers_from_arrays(curl, params["explorer"]["header-keys"], params["explorer"]["header-vals"])
 
     # arbitrary post params
     if params[:explorer]['post-body'] && ['POST', 'PUT'].index(@method)
-      post_data = [params[:explorer]['post-body']]
+      @post_data = [params["explorer"]['post-body']]
     else
-      post_data = make_fields(@method, params[:explorer]["param-keys"], params[:explorer]["param-vals"])
+      @post_data = make_fields(@method, params["explorer"]["param-keys"], params["explorer"]["param-vals"])
     end
 
     # begin
@@ -81,13 +83,13 @@ class ExplorersController < ApplicationController
       puts "#{@method} #{@url}"
 
       if @method == 'PUT'
-        curl.http_put(stringify_data(post_data))
+        curl.http_put(stringify_data(@post_data))
       else
-        curl.send("http_#{@method.downcase}", *post_data)
+        curl.send("http_#{@method.downcase}", *@post_data)
       end
 
       @request = sent_headers.join("\n")
-      @request << post_data.join('&') if post_data.any?
+      @request << @post_data.join('&') if @post_data.any?
       @request = @request.gsub("\n", '<br/>')
       
       @header =  curl.header_str
@@ -187,5 +189,19 @@ class ExplorersController < ApplicationController
     end
     fields
   end
+  
+  # turn post_data into a string for PUT requests
+  def stringify_data(data)
+    if data.is_a? String
+      data
+    elsif data.is_a? Array
+      data.map { |x| stringify_data(x) }.join("&")
+    elsif data.is_a? Curl::PostField
+      data.to_s
+    else
+      raise "Cannot stringify #{data.inspect}"
+    end
+  end
+  
   
 end

@@ -1,0 +1,88 @@
+<%= form_for :explorer, :url=>{:controller=>"explorers", :action=>"create" }, :remote => true do |f| %>
+<p>
+    <%= f.hidden_field :user_id, :value => session["user_id"] %>
+    <%= f.text_field :apiurl, :placeholder=>"API URL", :class => "input-xxlarge focus" %><br />
+    <%= f.select :apimethod, options_for_select(["GET", "POST", "PUT", "DELETE"]), :class => 'input-small span1' %>
+	<%= check_box_tag :follow_redirects, 1, params[:follow_redirects] %> follow redirects?<br />
+	
+	<div id="post-params" style="display: none;">
+		<p>
+			<%= link_to_function "+ Add Param", '$("#param-fields").show()' %>
+			<%= link_to_function "+ Add Payload", '$("#post-body").show()' %>
+		</p>
+		
+        <p id="param-fields" style="display:none;">
+          <!-- <a href="#" class="param-delete"><img class="delete" src="/img/delete.png" title="remove"/></a> -->
+	    	<%= f.text_field "param-keys[]", :placeholder=>"Param Key", :class => "input-large" %>
+	    	<%= f.text_field "param-vals[]", :placeholder=>"Param Value", :class => "input-large" %><br />
+        </p>
+
+      <p id="post-body" style="display:none;">
+	    <%= f.text_area "post-body", :class=>"input-xxlarge", :placeholder=>"API Payload", :rows=>"15" %>
+
+      </p>
+    </div>
+    
+	
+	
+    <%# f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic"]), :class => 'input' %>
+	<p><%= f.radio_button :authentication, "None", :checked => true %> No Auth 
+	<%= f.radio_button :authentication, "Basic" %> Basic Auth<br /></p>
+	<div id="basicauthparams" style="display:none">
+    <%= f.text_field :apiusername, :placeholder=>"username", :class => "input-large" %>
+	<%= f.password_field :apipassword, :placeholder=>"password", :class => "input-large" %><br />
+    </div>
+	<p><%= link_to_function "+ Add Header", '$("#header-fields").show()' %></p>
+
+
+    <p id="header-fields" style="display:none;">
+      <!-- <a href="#" class="header-delete"><img class="delete" src="/img/delete.png" title="remove"/></a> -->
+    	<%= f.text_field 'header-keys[]', :placeholder=>"Header Key", :class => "input-large" %>
+    	<%= f.text_field 'header-vals[]', :placeholder=>"Header Value", :class => "input-large" %><br />
+    </p>
+
+
+
+    <br /><%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
+</p>
+<% end %>
+
+<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
+
+<script>
+$(function() {
+ $("#sendbutton").click(function() {
+  $("#spinner").show();
+ });
+
+ $("#explorer_apimethod").change(function(){
+	if ($("#explorer_apimethod").val() == 'POST' || $("#explorer_apimethod").val() == 'PUT'){
+	  	$("#post-params").show();		
+	} else {
+		$("#post-params").hide();
+	};
+ });
+
+ $("#explorer_authentication_none").click(function() {
+  $("#basicauthparams").hide();
+ });
+
+ $("#explorer_authentication_basic").click(function() {
+  $("#basicauthparams").show();
+ });
+
+});
+</script>
+<div id="output" style="display:none">
+	<hr />
+	<div class="row">
+		<div class="span5">
+			<h2>Request</h2>
+			<div id="apirequest"></div>
+		</div>
+		<div class="span5">
+			<h2>Response</h2>
+			<div id="apiresponse"></div>
+		</div>
+	</div>
+</div>
