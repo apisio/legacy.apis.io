@@ -44,9 +44,7 @@ class ExplorersController < ApplicationController
   # POST /explorers.json
   def create
     # @explorer = Explorer.new(params[:explorer])
-    
-    puts "header input:" + params["explorer"]["header-keys"].join
-    
+        
     @user_id = params[:explorer][:user_id]
     @url = params[:explorer][:apiurl]
     @method = params[:explorer][:apimethod]
@@ -69,18 +67,18 @@ class ExplorersController < ApplicationController
     add_auth(@auth, curl, params[:explorer])
 
     # arbitrary headers
-    add_headers_from_arrays(curl, params["explorer"]["header-keys"], params["explorer"]["header-vals"])
+    add_headers_from_arrays(curl, params["header-keys"], params["header-vals"])
 
     # arbitrary post params
-    if params[:explorer]['post-body'] && ['POST', 'PUT'].index(@method)
+    if !params[:explorer]['post-body'].empty? && ['POST', 'PUT'].index(@method)
       @post_data = [params["explorer"]['post-body']]
     else
-      @post_data = make_fields(@method, params["explorer"]["param-keys"], params["explorer"]["param-vals"])
+      @post_data = make_fields(@method, params["param-keys"], params["param-vals"])
     end
-
+    
     # begin
       # debug { puts "#{@method} #{@url}" }
-      puts "#{@method} #{@url}"
+      # puts "#{@method} #{@url}"
 
       if @method == 'PUT'
         curl.http_put(stringify_data(@post_data))
@@ -102,9 +100,9 @@ class ExplorersController < ApplicationController
       # @body    = pretty_print(@type, curl.body_str)
       # @request = pretty_print_requests(sent_headers, post_data)
       
-      puts "request: " + @request
-      puts "header: " + @header
-      puts "body: " + @body
+      # puts "request: " + @request
+      # puts "header: " + @header
+      # puts "body: " + @body
 
       # json :header    => @header,
       #      :body      => @body,

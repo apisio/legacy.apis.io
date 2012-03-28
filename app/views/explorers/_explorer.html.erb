@@ -7,41 +7,27 @@
 	
 	<div id="post-params" style="display: none;">
 		<p>
-			<%= link_to_function "+ Add Param", '$("#param-fields").show()' %>
-			<%= link_to_function "+ Add Payload", '$("#post-body").show()' %>
+			<button id="add_param" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Param </button>
+			<button id="add_payload" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Payload </button>
 		</p>
 		
-        <p id="param-fields" style="display:none;">
-          <!-- <a href="#" class="param-delete"><img class="delete" src="/img/delete.png" title="remove"/></a> -->
-	    	<%= f.text_field "param-keys[]", :placeholder=>"Param Key", :class => "input-large" %>
-	    	<%= f.text_field "param-vals[]", :placeholder=>"Param Value", :class => "input-large" %><br />
-        </p>
+		<div id="param-fields"></div>
 
       <p id="post-body" style="display:none;">
 	    <%= f.text_area "post-body", :class=>"input-xxlarge", :placeholder=>"API Payload", :rows=>"15" %>
-
       </p>
     </div>
     
-	
-	
-    <%# f.select :authentication, options_for_select([["Select Authentication", ""], "None", "Basic"]), :class => 'input' %>
 	<p><%= f.radio_button :authentication, "None", :checked => true %> No Auth 
 	<%= f.radio_button :authentication, "Basic" %> Basic Auth<br /></p>
 	<div id="basicauthparams" style="display:none">
     <%= f.text_field :apiusername, :placeholder=>"username", :class => "input-large" %>
 	<%= f.password_field :apipassword, :placeholder=>"password", :class => "input-large" %><br />
     </div>
-	<p><%= link_to_function "+ Add Header", '$("#header-fields").show()' %></p>
 
+	<p><button id="add_header" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Header </button></p>
 
-    <p id="header-fields" style="display:none;">
-      <!-- <a href="#" class="header-delete"><img class="delete" src="/img/delete.png" title="remove"/></a> -->
-    	<%= f.text_field 'header-keys[]', :placeholder=>"Header Key", :class => "input-large" %>
-    	<%= f.text_field 'header-vals[]', :placeholder=>"Header Value", :class => "input-large" %><br />
-    </p>
-
-
+	<div id="header-fields"></div>
 
     <br /><%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
 </p>
@@ -53,6 +39,10 @@
 $(function() {
  $("#sendbutton").click(function() {
   $("#spinner").show();
+ });
+
+ $("#add_payload").click(function() {
+  $("#post-body").show();
  });
 
  $("#explorer_apimethod").change(function(){
@@ -71,7 +61,27 @@ $(function() {
   $("#basicauthparams").show();
  });
 
+ $("#add_param").click(function(){
+   var randomnumber=Math.floor(Math.random()*1000001)
+   var new_field = '<div id="' + randomnumber + '"><input type="text" name="param-keys[]" class="input-large" placeholder="Param Key" />';
+   new_field+='<input type="text" name="param-vals[]" class="input-large" placeholder="Param Value" />';
+   new_field+=' <a href="#" onclick="removeDiv('+randomnumber+');">X</a><br /></div>';
+   $("#param-fields").append(new_field);
+ });
+
+ $("#add_header").click(function(){
+   var randomnumber=Math.floor(Math.random()*1000001)
+   var new_field = '<div id="' + randomnumber + '"><input type="text" name="header-keys[]" class="input-large" placeholder="Header Key" />';
+   new_field+='<input type="text" name="header-vals[]" class="input-large" placeholder="Header Value" />';
+   new_field+=' <a href="#" onclick="removeDiv('+randomnumber+');">X</a><br /></div>';
+   $("#header-fields").append(new_field);
+ });
 });
+
+function removeDiv(divId) {
+   $("#"+divId).remove();
+}
+
 </script>
 <div id="output" style="display:none">
 	<hr />
