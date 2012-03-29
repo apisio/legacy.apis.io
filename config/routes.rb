@@ -39,6 +39,7 @@ Apisio::Application.routes.draw do
   match '/:id/import' => 'apis#import', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
   match '/:id/export' => 'apis#export', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
   match '/apis/wadl_import' => 'apis#wadl_import'
+  match '/explorer' => 'explorers#index'
   
 
 # APIs

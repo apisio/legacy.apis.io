@@ -44,6 +44,9 @@ class ExplorersController < ApplicationController
   # POST /explorers.json
   def create
     # @explorer = Explorer.new(params[:explorer])
+    @header=""
+    @body=""
+    @request=""
         
     @user_id = params[:explorer][:user_id]
     @url = params[:explorer][:apiurl]
@@ -93,7 +96,7 @@ class ExplorersController < ApplicationController
       @header =  curl.header_str
       @header = @header.gsub("\n", '<br/>')
       @body = curl.body_str
-      @body = @body.gsub("\n", '<br/>')
+      # @body = @body.gsub("\n", '<br/>')
 
       # @header  = pretty_print_headers(curl.header_str)
       # @type    = @url =~ /(\.js)$/ ? 'js' : curl.content_type
@@ -119,6 +122,7 @@ class ExplorersController < ApplicationController
         format.html { redirect_to @explorer, notice: 'Explorer was successfully created.' }
         format.json { render json: @explorer, status: :created, location: @explorer }
         format.js { render :action => 'create.js.coffee', :content_type => 'text/javascript'}
+        # format.js 
         
       else
         format.html { render action: "new" }

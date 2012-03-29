@@ -4,4 +4,19 @@
 
 <%= render 'explorer' %>
 
+  <div id="try-it">
+    <h4>Examples of REST APIs without Auth, Headers, or Params:</h4>
+		<img src="http://github.com/favicon.ico"/> <a href="#" onclick="addLink('https://api.github.com/repos/apisio/apisio');">GitHub APISIO (repository)</a><br />
+		<img src="http://nodester.com/favicon.ico"/> <a href="#" onclick="addLink('http://api.nodester.com/status');">Nodester Node.JS PaaS Status</a><br />
+		<img src="http://twitter.com/favicon.ico"/> <a href="#" onclick="addLink('http://twitter.com/statuses/public_timeline.json');">Twitter Public Timeline</a><br />
+  </div>
+
 </div>
+
+<script type="text/javascript">
+function addLink(text)
+{
+	$('#explorer_apiurl').val(text);
+}
+</script>
+
