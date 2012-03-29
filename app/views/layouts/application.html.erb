@@ -35,9 +35,10 @@
     <link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
 
-    <script src="/javascripts/bootstrap.js"></script>
-    <script src="/javascripts/bootstrap-tooltip.js"></script>
-    <script src="/javascripts/bootstrap-popover.js"></script>
+    <!-- <script src="/javascripts/bootstrap.js"></script> -->
+    <!-- <script src="/javascripts/bootstrap-tooltip.js"></script>
+    <script src="/javascripts/bootstrap-popover.js"></script> -->
+    <script src="/javascripts/bootstrap-modal.js"></script>
 
 
     <style type="text/css">
@@ -109,7 +110,7 @@
               <% end %>
               <li><%= link_to 'API Directory', '/apis', :title => "API Directory" %></li> 
               <!-- <li><%= link_to 'Mashups', '/mashups', :title => "Mashups" %></li>  -->
-              <li><%= link_to 'API Explorer', '/explorers', :title => "API Explorer" %></li> 
+              <li><%= link_to 'API Explorer', '/explorer', :title => "API Explorer" %></li> 
 
               <% if session["user_id"] %>
               <li><%# link_to 'QSOs', '/' + session["username"] + '/contacts', :title => "Social Logbook" %></li> 

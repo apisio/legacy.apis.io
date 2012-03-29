@@ -11,7 +11,6 @@
 
   <h3>Base URL: <%= @api.apiurl %></h3>
 
-
   <p class="pull-right">
     <% if @api.user_id == session["user_id"] or session["admin"]%>
       <%= link_to "Import WADL", "/" + @api.name + "/import"%> | 
@@ -92,8 +91,9 @@
       end   
       %>
       <tr id="resource_<%=resource.id%>">
-                <td width="20%">
-          <a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+      	<td width="20%">
+          	<!-- <a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a> -->
+			<a data-toggle="modal" href="#windowTitleDialog" class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
           <% if @api.user_id == session["user_id"] or session["admin"]%>
             <br />
             <%= link_to 'Edit', edit_resource_path(resource) %> | 
@@ -257,7 +257,7 @@
 <% end %>
 
 </div>
-</div>
+</div> 
 
 <% else %>
 <!-- 404 -->
@@ -268,3 +268,34 @@
 <% end %>
 
 <br /><br />
+
+<!-- The Modal Dialog  -->
+<div class="modal hide fade" id="windowTitleDialog" style="display: none; ">
+	<div class="modal-header">
+		<a href="#" class="close" data-dismiss="modal">×</a>
+		<h3>API Explorer</h3>
+	</div>
+	<div class="modal-body">
+		<%= render 'explorers/explorer'%>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" onclick="closeDialog ();">Cancel</a>
+		<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+	</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+	$('#windowTitleDialog').bind('show', function () {
+		// document.getElementById ("xlInput").value = document.title;
+		});
+	});
+function closeDialog () {
+	$('#windowTitleDialog').modal('hide'); 
+	};
+function okClicked () {
+	// document.title = document.getElementById ("xlInput").value;
+	closeDialog ();
+	};
+</script>
