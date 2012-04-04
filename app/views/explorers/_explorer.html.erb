@@ -33,12 +33,12 @@
 </p>
 <% end %>
 
-<div id="spinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
+<div id="explorerspinner" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>    
 
 <script>
 $(function() {
  $("#sendbutton").click(function() {
-  $("#spinner").show();
+  $("#explorerspinner").show();
  });
 
  $("#add_payload").click(function() {
@@ -96,3 +96,4 @@ function removeDiv(divId) {
 		</div>
 	</div>
 </div>
+

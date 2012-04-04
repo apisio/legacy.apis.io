@@ -1,3 +1,6 @@
+<script>
+	var apiresource
+</script>
 <% if @api %>
 
 <div class="row">
@@ -93,7 +96,7 @@
       <tr id="resource_<%=resource.id%>">
       	<td width="20%">
           	<!-- <a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a> -->
-			<a data-toggle="modal" href="#windowTitleDialog" class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+			<a data-toggle="modal" href="#windowTitleDialog" class="explorer btn disabled btn-large btn-<%=btncolor%>" data-item-id="<%=resource.id%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
           <% if @api.user_id == session["user_id"] or session["admin"]%>
             <br />
             <%= link_to 'Edit', edit_resource_path(resource) %> | 
@@ -106,6 +109,11 @@
 					<%@slashprefix = "/"%>
 				<% end %>
 				<%=@slashprefix + resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
+				
+				<div id="apiurl_<%=resource.id%>" data-url="<%= @api.apiurl + @slashprefix + resource.pathurl rescue ""%>"></div>
+				<div id="apimethod_<%=resource.id%>" data-method="<%= resource.resourcemethod rescue ""%>"></div>
+				<div id="apiauth_<%=resource.id%>" data-auth="<%= resource.authentication rescue ""%>"></div>
+				
           (<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
                   <code><%= resource.curlexample rescue ""%></code>
 
@@ -276,12 +284,31 @@
 		<h3>API Explorer</h3>
 	</div>
 	<div class="modal-body">
-		<%= render 'explorers/explorer'%>
+		<%= render 'explorers/explorer' %>
 	</div>
 	<div class="modal-footer">
 		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 		<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
 	</div>
+	
+	<!-- Populate API Explorer -->	
+	<script>
+	$('.explorer').click(function(e) {
+	            e.preventDefault();
+	
+				$("#explorer_apiurl").val($("#apiurl_" + $(this).data('item-id')).attr('data-url'));
+				$("#explorer_apimethod").val($("#apimethod_" + $(this).data('item-id')).attr('data-method'));
+				
+				if($("#apiauth_" + $(this).data('item-id')).attr('data-auth') == 'Basic'){
+					$("#explorer_authentication_basic").attr("checked", true);
+					$("#basicauthparams").show();
+				}
+	
+	        });
+	
+	
+	</script>
+	
 </div>
 
 
