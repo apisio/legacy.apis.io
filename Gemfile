@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.3'
 
 gem 'omniauth', '1.0.2' 
 gem 'omniauth-github'
