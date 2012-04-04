@@ -297,7 +297,11 @@
 	            e.preventDefault();
 	
 				$("#explorer_apiurl").val($("#apiurl_" + $(this).data('item-id')).attr('data-url'));
+				
 				$("#explorer_apimethod").val($("#apimethod_" + $(this).data('item-id')).attr('data-method'));
+				if ($("#explorer_apimethod").val() == 'POST' || $("#explorer_apimethod").val() == 'PUT'){
+				  	$("#post-params").show();		
+				};
 				
 				if($("#apiauth_" + $(this).data('item-id')).attr('data-auth') == 'Basic'){
 					$("#explorer_authentication_basic").attr("checked", true);
