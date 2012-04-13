@@ -96,7 +96,7 @@
       <tr id="resource_<%=resource.id%>">
       	<td width="20%">
           	<!-- <a class="btn disabled btn-large btn-<%=btncolor%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a> -->
-			<a data-toggle="modal" href="#windowTitleDialog" class="explorer btn disabled btn-large btn-<%=btncolor%>" data-item-id="<%=resource.id%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
+			<a data-toggle="modal" href="#windowTitleDialog" class="explorer btn btn-large btn-<%=btncolor%>" data-item-id="<%=resource.id%>"><%=raw(prefix)%> <%= resource.resourcemethod  rescue ""%></a>
           <% if @api.user_id == session["user_id"] or session["admin"]%>
             <br />
             <%= link_to 'Edit', edit_resource_path(resource) %> | 
@@ -110,6 +110,7 @@
 				<% end %>
 				<%=@slashprefix + resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
 				
+				<!-- Populate API Explorer -->
 				<div id="apiurl_<%=resource.id%>" data-url="<%= @api.apiurl + @slashprefix + resource.pathurl rescue ""%>"></div>
 				<div id="apimethod_<%=resource.id%>" data-method="<%= resource.resourcemethod rescue ""%>"></div>
 				<div id="apiauth_<%=resource.id%>" data-auth="<%= resource.authentication rescue ""%>"></div>
@@ -122,13 +123,27 @@
             <hr>
             <% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
             
+			<% @headercounter = 0 %>
+			<% @paramcounter = 0 %>
             <% @parameters.each do |parameter| %>
               <p id="parameter_<%=parameter.id%>">
+	
+			<!-- Headers  -->
               <% if parameter.paramstyle == "header" %>
+
                 <b>Header</b>: <%=parameter.paramname%> = <%=parameter.paramdefault%>
                 <br /><%=parameter.description%>
+				
+				<!-- Populate API Explorer -->
+				<% @headercounter = @headercounter + 1 %>				
+				<div id="apiheaderkey_<%=resource.id%>_<%=@headercounter%>" data-header="<%= parameter.paramname rescue ""%>"></div>
+				<div id="apiheadervalue_<%=resource.id%>_<%=@headercounter%>" data-header="<%= parameter.paramdefault rescue ""%>"></div>
+				
               <% end %>
+
+			<!-- Parameters -->
               <% if parameter.paramstyle == "query" %>
+
                 <b>Parameter</b>: <%=parameter.paramname%> = 
                 <% if parameter.paramdefault.blank? %>
                   {string}
@@ -136,9 +151,21 @@
                   <%=parameter.paramdefault %>
                 <% end %>
                 <br /><%=parameter.description%>
+
+
+				<!-- Populate API Explorer -->
+				<% @paramcounter = @paramcounter + 1 %>				
+				<div id="apiparamkey_<%=resource.id%>_<%=@paramcounter%>" data-header="<%= parameter.paramname rescue ""%>"></div>
+				<div id="apiparamvalue_<%=resource.id%>_<%=@paramcounter%>" data-header="<%= parameter.paramdefault rescue ""%>"></div>
+
+
               <% end %>
+
+			<!-- Payload -->
               <% if !parameter.payload.blank?  %>
                 <b>Payload</b>: <%=parameter.payload%>
+				<!-- Populate API Explorer -->
+				<div id="apipayload_<%=resource.id%>" data-payload="<%= parameter.payload rescue ""%>"></div>				
               <% end %>
               <% if parameter.paramrequired  %>
                 <b>* required</b>
@@ -150,7 +177,12 @@
                 <% end %>
               </p>
               
-            <% end %>
+            <% end %> <!-- End of Parameter Loop -->
+
+			<!-- Populate API Explorer -->
+			<div id="apiheadercounter_<%=resource.id%>" data-header="<%= @headercounter rescue ""%>"></div>
+			<div id="apiparamcounter_<%=resource.id%>" data-header="<%= @paramcounter rescue ""%>"></div>
+			
             
             <% if @api.user_id == session["user_id"] or session["admin"] %>
               <p class="pull-right"><button id="addparambutton_<%=resource.id%>" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Parameter </button></p>
@@ -287,7 +319,7 @@
 		<%= render 'explorers/explorer' %>
 	</div>
 	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+		<!-- <a href="#" class="btn" data-dismiss="modal">Cancel</a> -->
 		<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
 	</div>
 	
@@ -296,17 +328,79 @@
 	$('.explorer').click(function(e) {
 	            e.preventDefault();
 	
+				console.log($(this).data('item-id'));
+	
 				$("#explorer_apiurl").val($("#apiurl_" + $(this).data('item-id')).attr('data-url'));
 				
 				$("#explorer_apimethod").val($("#apimethod_" + $(this).data('item-id')).attr('data-method'));
 				if ($("#explorer_apimethod").val() == 'POST' || $("#explorer_apimethod").val() == 'PUT'){
 				  	$("#post-params").show();		
+				} else {
+					$("#post-params").hide();
 				};
 				
 				if($("#apiauth_" + $(this).data('item-id')).attr('data-auth') == 'Basic'){
 					$("#explorer_authentication_basic").attr("checked", true);
 					$("#basicauthparams").show();
-				}
+				} else {
+					$("#explorer_authentication_none").attr("checked", true);
+					$("#basicauthparams").hide();					
+				};
+				
+				if($("#apipayload_" + $(this).data('item-id')).attr('data-payload') == ''){
+					$("#explorer_post-body").val('');
+					$("#post-body").hide();					
+				} else {
+					$("#explorer_post-body").val($("#apipayload_" + $(this).data('item-id')).attr('data-payload'));
+					$("#post-body").show();					
+				};
+				
+				if($("#apiheadercounter_" + $(this).data('item-id')).attr('data-header') == '0')  {
+					
+					$("#header-fields").empty();
+					
+				} else { 
+
+					$("#header-fields").empty();
+					
+					var headercount = parseInt($("#apiheadercounter_" + $(this).data('item-id')).attr('data-header')) + 1
+					for(var i=1; i<headercount; i++) { 
+					
+					   var randomnumber=Math.floor(Math.random()*1000001);
+					   var new_field = '<div id="' + randomnumber + '"><input type="text" name="header-keys[]" class="input-large" placeholder="Header Key" value="' + $("#apiheaderkey_" + $(this).data('item-id') + "_" + i).attr('data-header') + '"/>';
+					   new_field+='<input type="text" name="header-vals[]" class="input-large" placeholder="Header Value"  value="' + $("#apiheadervalue_" + $(this).data('item-id') + "_" + i).attr('data-header') + '"/>';
+					   new_field+=' <a href="#" onclick="removeDiv('+randomnumber+');">X</a><br /></div>';
+					   $("#header-fields").append(new_field);
+					
+					};
+				 
+				};
+
+
+				if($("#apiparamcounter_" + $(this).data('item-id')).attr('data-header') == '0')  {
+					
+					$("#param-fields").empty();
+					
+				} else { 
+
+					$("#param-fields").empty();
+					
+					var paramcount = parseInt($("#apiparamcounter_" + $(this).data('item-id')).attr('data-header')) + 1
+					for(var i=1; i<paramcount; i++) { 
+					
+					   var randomnumber=Math.floor(Math.random()*1000001);
+					   var new_field = '<div id="' + randomnumber + '"><input type="text" name="param-keys[]" class="input-large" placeholder="Param Key"  value="' + $("#apiparamkey_" + $(this).data('item-id') + "_" + i).attr('data-header') + '"/>';
+					   new_field+='<input type="text" name="param-vals[]" class="input-large" placeholder="Param Value"  value="' + $("#apiparamvalue_" + $(this).data('item-id') + "_" + i).attr('data-header') + '"/>';
+					   new_field+=' <a href="#" onclick="removeDiv('+randomnumber+');">X</a><br /></div>';
+					   $("#param-fields").append(new_field);
+					
+					};
+				 
+				};
+				
+				
+				
+				$('#output').hide();
 	
 	        });
 	
@@ -327,6 +421,7 @@ function closeDialog () {
 	};
 function okClicked () {
 	// document.title = document.getElementById ("xlInput").value;
-	closeDialog ();
+	// closeDialog ();
+	$('#windowTitleDialog').modal('hide'); 
 	};
 </script>

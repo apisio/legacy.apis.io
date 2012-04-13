@@ -14,12 +14,14 @@
 		<div id="param-fields"></div>
 
       <p id="post-body" style="display:none;">
-	    <%= f.text_area "post-body", :class=>"input-xxlarge", :placeholder=>"API Payload", :rows=>"15" %>
+	    <%= f.text_area "post-body", :class=>"input-xxlarge", :placeholder=>"API Payload", :rows=>"5" %>
       </p>
     </div>
     
-	<p><%= f.radio_button :authentication, "None", :checked => true %> No Auth 
-	<%= f.radio_button :authentication, "Basic" %> Basic Auth<br /></p>
+	<p>
+	<%= f.radio_button :authentication, "None", :checked => true %> No Auth 
+	<%= f.radio_button :authentication, "Basic" %> Basic Auth<br />
+	</p>
 	<div id="basicauthparams" style="display:none">
     <%= f.text_field :apiusername, :placeholder=>"username", :class => "input-large" %>
 	<%= f.password_field :apipassword, :placeholder=>"password", :class => "input-large" %><br />
@@ -42,7 +44,8 @@ $(function() {
  });
 
  $("#add_payload").click(function() {
-  $("#post-body").show();
+  $("#post-body").toggle();
+  $("#output").hide();
  });
 
  $("#explorer_apimethod").change(function(){
