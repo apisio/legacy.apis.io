@@ -347,7 +347,7 @@
 					$("#basicauthparams").hide();					
 				};
 				
-				if($("#apipayload_" + $(this).data('item-id')).attr('data-payload') == ''){
+				if($("#apipayload_" + $(this).data('item-id')).attr('data-payload') == undefined){
 					$("#explorer_post-body").val('');
 					$("#post-body").hide();					
 				} else {
