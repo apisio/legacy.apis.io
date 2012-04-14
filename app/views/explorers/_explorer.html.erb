@@ -7,8 +7,8 @@
 	
 	<div id="post-params" style="display: none;">
 		<p>
-			<button id="add_param" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Param </button>
-			<button id="add_payload" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Payload </button>
+			<button id="add_param" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Param </button>
+			<button id="add_payload" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Payload </button>
 		</p>
 		
 		<div id="param-fields"></div>
@@ -27,11 +27,11 @@
 	<%= f.password_field :apipassword, :placeholder=>"password", :class => "input-large" %><br />
     </div>
 
-	<p><button id="add_header" class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Header </button></p>
+	<p><button id="add_header" class="btn btn-success"> <i class="icon-plus icon-white"></i> Add Header </button></p>
 
 	<div id="header-fields"></div>
 
-    <br /><%= f.submit "Send", :class=>"btn btn-success btn-large", :id=>"sendbutton" %>
+    <br /><%= f.submit "Send", :class=>"btn btn-primary btn-large", :id=>"sendbutton" %>
 </p>
 <% end %>
 

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  api_id: 1
+  mashupname: MyString
+  mashupurl: MyString
+  mashupimageurl: MyString
+  mashupdesc: MyText
+
+two:
+  user_id: 1
+  api_id: 1
+  mashupname: MyString
+  mashupurl: MyString
+  mashupimageurl: MyString
+  mashupdesc: MyText

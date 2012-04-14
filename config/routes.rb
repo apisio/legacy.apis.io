@@ -1,11 +1,5 @@
 Apisio::Application.routes.draw do
 
-  resources :explorers
-
-  resources :parameters
-
-  resources :resources
-
   get "errors/404"
   get "errors/500"
 
@@ -28,7 +22,6 @@ Apisio::Application.routes.draw do
   match '/logout' => 'sessions#destroy'
   match '/password/:id' => 'users#password'
   match '/about' => 'static#about'
-  match '/mashups' => 'static#mashups'
   match '/users/pollallfeed' => 'users#pollallfeed'
   match '/users/pollfeed' => 'users#pollfeed'
   match '/statuses/pollfeed' => 'statuses#pollfeed'
@@ -50,6 +43,11 @@ Apisio::Application.routes.draw do
   resources :follows
   resources :statuses
   resources :apis
+  resources :mashups, :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }
+  resources :explorers
+  resources :parameters
+  resources :resources
+  
   
   match '/api' => 'static#api'
   match ':id' => 'apis#show', :constraints => { :id => /[0-9A-Za-z\-\.\%20]+/ }

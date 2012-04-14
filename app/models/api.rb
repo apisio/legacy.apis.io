@@ -2,6 +2,7 @@ class Api < ActiveRecord::Base
   belongs_to :user
   has_many :statuses
   has_many :resources
+  has_many :mashups
   
   validates :name, :presence =>true
   validates :apiurl, :presence =>true

@@ -4,4 +4,5 @@ class User < ActiveRecord::Base
   has_many :statuses
   has_many :follows    
   has_many :explorers    
+  has_many :mashups
 end

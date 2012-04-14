@@ -3,16 +3,21 @@
 </script>
 <% if @api %>
 
-<div class="row">
+<div class="alert alert-block alert-error fade in">
+  <a class="close" data-dismiss="alert" href="#">&times;</a>
+  <strong>NOW WITH MORE COWBELL!</strong> You can click on the API VERBS below to experiment with our new API Explorer!
+</div>
+
+<div class="row-fluid">
 <div class="span8">
   
   <h1><%= @api.name %>
   (<%= @api.category %>)</h1>
   <h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br />
 
-  <p><span class="well span7"><%= @api.description %></span><br /><br /></p><br />
+  <div class="alert alert-info"><%= @api.description %></div>
 
-  <h3>Base URL: <%= @api.apiurl %></h3>
+  <h2>Base URL: <%= @api.apiurl %></h2>
 
   <p class="pull-right">
     <% if @api.user_id == session["user_id"] or session["admin"]%>
@@ -168,7 +173,7 @@
 				<div id="apipayload_<%=resource.id%>" data-payload="<%= parameter.payload rescue ""%>"></div>				
               <% end %>
               <% if parameter.paramrequired  %>
-                <b>* required</b>
+                <span style="color:red;"><b>* required</b></span>
               <% end %>
               
               <% if (!parameter.paramstyle.blank? or !parameter.payload.blank?) and (@api.user_id == session["user_id"] or session["admin"]) %>
@@ -259,6 +264,7 @@
   
 </div><div class="span4">
 
+<br /><br /><br /><br /><br />
 <a href="<%=@api.apidocurl%>" target="_new"><center><img src="<%= @api.imageurl %>" style="width:200px; height: 200px;"></center></a>
 
 <% if session["user_id"] %>
@@ -319,8 +325,8 @@
 		<%= render 'explorers/explorer' %>
 	</div>
 	<div class="modal-footer">
-		<!-- <a href="#" class="btn" data-dismiss="modal">Cancel</a> -->
-		<a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a>
+		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+		<!-- <a href="#" class="btn btn-primary" onclick="okClicked ();">OK</a> -->
 	</div>
 	
 	<!-- Populate API Explorer -->	

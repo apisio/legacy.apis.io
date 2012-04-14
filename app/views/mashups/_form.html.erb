@@ -1,0 +1,49 @@
+<%= form_for(@mashup) do |f| %>
+  <% if @mashup.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mashup.errors.count, "error") %> prohibited this mashup from being saved:</h2>
+
+      <ul>
+      <% @mashup.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :user_id, :value=>session["user_id"] %>
+
+  <div class="field">
+	<% 
+	# @apis = Api.find(:all, :order => "name")
+	# @apilist = []
+	# @apis.each do |api|
+	# 	@apilist.push(api.name, api.id)
+	# end
+	%>
+	<% @apis_array = Api.find(:all, :order => "name").map { |api| [api.name, api.id] } %>
+	<%= options_for_select(@apis_array) %>
+	
+    <%= f.select :api_id, options_for_select([[@mashup.api_id], options_for_select(@apis_array)]), :class => 'input' %>
+  </div>
+
+  <div class="input">
+    <%= f.text_field :mashupname, :class=>"input-xxlarge focus", :placeholder=>"Mashup Name" %>
+  </div>
+
+  <div class="input">
+    <%= f.text_field :mashupurl, :class=>"input-xxlarge focus", :placeholder=>"Mashup URL" %>
+  </div>
+
+  <div class="input">
+    <%= f.text_field :mashupimageurl, :class=>"input-xxlarge focus", :placeholder=>"Mashup Logo URL" %>
+  </div>
+
+  <div class="input">
+    <%= f.text_area :mashupdesc, :class=>"input-xxlarge focus", :placeholder=>"Mashup Description" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-primary" %>
+  </div>
+<% end %>

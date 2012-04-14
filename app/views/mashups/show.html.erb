@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row-fluid">
+<div class="span8">
+
+<% if @mashup %>
+
+  
+  <h1><img src="<%= @mashup.mashupimageurl %>" style="width:60px; height: 60px;"> <%= @mashup.mashupname %>
+  (<%= link_to @mashup.api.name, "/" + @mashup.api.name rescue "" %>)</h1>
+  <h2>Registered by <%= link_to @mashup.user.username.capitalize, "/users/" + @mashup.user.username.downcase rescue ""%></h2><br />
+
+  <p class="well"><%= @mashup.mashupdesc %><br /><br /></p>
+
+<% end %>
+
+
+  <%= link_to 'Back', mashups_path %>
+  <% if @mashup.user_id == session["user_id"] or session["admin"] %>
+    |
+      <%= link_to 'Edit', edit_mashup_path(@mashup) %> |
+      <%= link_to 'Destroy', @mashup, confirm: 'Are you sure?', method: :delete %>
+  <% end %>
+  
+  
+</div><div class="span4">
+
+<br /><br /><br /><br /><br />
+<a href="<%=@mashup.api.apiurl%>" target="_new"><center><img src="<%= @mashup.api.imageurl %>" style="width:200px; height: 200px;"></center></a>
+
+<% if session["user_id"] %>
+  
+  <center>
+  <div id="spinner_<%=@mashup.id.to_s rescue "0"%>" style="display:none"><%=image_tag("ajax-spinner.gif")%></div>
+    
+  <% if @followers %>
+    <h2><a href="<%= "/" + @mashup.api.name + "/followers"%>">Followers: <span id="followercount"><%=@followers%></span></a> </h2>
+  <% end %>
+  
+    
+  <div id="userstatus_<%=@mashup.api_id.to_s rescue "0"%>">
+  <% if @follow %>
+  
+    <%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@mashup.api_id, :status=>'unfollow' }, :remote => true do |f| %>
+      <%= button_tag(raw('<i class="icon-remove icon-white"></i> Unfollow'), :title=>"Unfollow " + @mashup.api.name.capitalize, :class=>"btn btn-danger", :id=>"follow_" + @mashup.id.to_s ) %>
+    <% end %>
+    
+    
+  <% else %>
+  
+    <%= form_for :follow, :url=>{:controller=>"follows", :action=>"create", :id=>@mashup.api_id, :status=>'follow' }, :remote => true do |f| %>
+          <%= button_tag(raw('<i class="icon-ok"></i> Follow'), :title=>"Follow " + @mashup.api.name.capitalize, :class=>"btn", :id=>"follow_" + @mashup.id.to_s ) rescue ""%>
+    <% end %>                      
+    
+  <% end %>
+
+  <script>
+    setbuttonclick(<%=@mashup.id.to_s rescue "0"%>);
+  </script>
+  </div>    
+  </center>
+      
+  
+<% end %>
+
+</div>
+</div> 
+
+
+</div>

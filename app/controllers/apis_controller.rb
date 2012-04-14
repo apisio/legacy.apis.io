@@ -141,13 +141,17 @@ class ApisController < ApplicationController
   def destroy
     @api = Api.find(params[:id])
     
-    @status = Status.new
-    @status.user_id = session["user_id"]
-    @status.api_id = @api.id
-    @status.message = "Deleted " + @api.name.capitalize + " API"
-    @status.save
+    if session["user_id"] == @api.user_id  or session["admin"]
     
-    @api.destroy
+      @status = Status.new
+      @status.user_id = session["user_id"]
+      @status.api_id = @api.id
+      @status.message = "Deleted " + @api.name.capitalize + " API"
+      @status.save
+    
+      @api.destroy
+    
+    end
 
     respond_to do |format|
       format.html { redirect_to apis_url }

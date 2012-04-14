@@ -91,14 +91,17 @@ class ResourcesController < ApplicationController
   def destroy
     @resource = Resource.find(params[:id])
     
-    @status = Status.new
-    @status.user_id = session["user_id"]
-    @status.api_id = @resource.api_id
-    @status.message = "Deleted " + @resource.resourcename.capitalize + " " + @resource.resourcemethod + " resource to " + @resource.api.name.capitalize + " API"
-    @status.save
+    if session["user_id"] == @resource.user_id  or session["admin"]
     
-    
-    @resource.destroy
+      @status = Status.new
+      @status.user_id = session["user_id"]
+      @status.api_id = @resource.api_id
+      @status.message = "Deleted " + @resource.resourcename.capitalize + " " + @resource.resourcemethod + " resource to " + @resource.api.name.capitalize + " API"
+      @status.save
+        
+      @resource.destroy
+
+    end
 
     respond_to do |format|
       format.html { redirect_to resources_url }

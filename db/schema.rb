@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326051046) do
+ActiveRecord::Schema.define(:version => 20120413054840) do
 
   create_table "apis", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +39,17 @@ ActiveRecord::Schema.define(:version => 20120326051046) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "block_id"
+  end
+
+  create_table "mashups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "api_id"
+    t.string   "mashupname"
+    t.string   "mashupurl"
+    t.string   "mashupimageurl"
+    t.text     "mashupdesc"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "parameters", :force => true do |t|
