@@ -6,10 +6,10 @@
 <% if @user  %>
 
 <img src="<%= @user.photo %>" style="width:100px; height: 100px;"/>
-<br />
+<br /><br />
 <h1>
 <%= @user.username.capitalize %>'<%= "s" if @user.username[-1,1] != "s"%> Profile 
-</h1>
+</h1><br />
 <p>Website: <%= link_to @user.website, @user.website%>  </p>
 
 <% 
@@ -19,10 +19,11 @@ else
   @txt = @user.about_me #[0..160]
 end
 %>
-<%=@txt%>
 
-<br /><br />
-<h1>Following</h1>
+<div class="alert alert-info"><%=@txt%></div>
+
+
+<h1>Following</h1><br />
 <% if @following.length == 0 %>
   <br />
   <h3><center>You are not following any <a href="/apis">APIs</a></center></h3>
