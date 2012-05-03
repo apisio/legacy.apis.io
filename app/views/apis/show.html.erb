@@ -121,11 +121,12 @@
 				<div id="apiauth_<%=resource.id%>" data-auth="<%= resource.authentication rescue ""%>"></div>
 				
           (<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
-                  <code><%= resource.curlexample rescue ""%></code>
+                  
 
           <br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
           <div id="resource_params_<%=resource.id%>" style="display:none">
             <hr>
+			<code><%= resource.curlexample rescue ""%></code> <br />
             <% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
             
 			<% @headercounter = 0 %>
