@@ -116,19 +116,21 @@
 				<% if resource.pathurl[0] != "/"%>
 					<%@slashprefix = "/"%>
 				<% end %>
-				<%=@slashprefix + resource.pathurl rescue ""%></b> - <%=resource.description rescue ""%> 
+				<%=@slashprefix + resource.pathurl rescue ""%></b>  
+				<br /><%=resource.description rescue ""%> (<a href="<%=resource.docurl%>" target="_new">more</a>)  
 				
 				<!-- Populate API Explorer -->
 				<div id="apiurl_<%=resource.id%>" data-url="<%= @api.apiurl + @slashprefix + resource.pathurl rescue ""%>"></div>
 				<div id="apimethod_<%=resource.id%>" data-method="<%= resource.resourcemethod rescue ""%>"></div>
 				<div id="apiauth_<%=resource.id%>" data-auth="<%= resource.authentication rescue ""%>"></div>
 				
-          (<a href="<%=resource.docurl%>" target="_new">more</a>)<br /><br />
-                  <code><%= resource.curlexample rescue ""%></code>
+                          
 
-          <br /><br /><p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
+          <p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
           <div id="resource_params_<%=resource.id%>" style="display:none">
             <hr>
+			<br /><br /><code><%= resource.curlexample rescue ""%></code> <br /><br />
+			
             <% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
             
 			<% @headercounter = 0 %>
