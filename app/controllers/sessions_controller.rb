@@ -19,11 +19,75 @@ class SessionsController < ApplicationController
     session['access_token'] = nil 
     session["trustee"] = nil
     session["bio"] = nil
+    session["provider"] = nil    
     
     # remove remember me cookie
     cookies.delete(:auth_token)
     
     redirect_to root_url, :notice => "Logged out"
+  end
+  
+  def bechtel
+    # Initiates Bechtel OAuth
+    redirect_to "https://sso.mypsn.com/sp/startSSO.ping?PartnerIdpId=PSN2-SAML2-Entity&TargetResource=http://localhost:60883/sessions"    
+  end
+  
+  def index
+    # Bechtel OAuth callbacks
+    
+    @ref = params["REF"]  
+    @url = "https://sso.mypsn.com/ext/ref/pickup?REF=#{@ref}"
+ 
+
+    begin
+
+    @jdata = JSON.parse(RestClient.get @url, {"ping.uname"=> ENV['PING_UNAME'], "ping.pwd"=> ENV['PING_PWD'], "ping.instanceId"=> ENV['PING_INSTANCEID'] })
+    puts @jdata
+
+    rescue
+    end
+    
+    if @jdata["BechtelUserName"]
+      
+      @auth = User.find_by_username(@jdata["BechtelUserName"])
+
+      if !@auth 
+        # register
+        @auth = User.new
+      end
+      
+      # login and update account
+      # @auth.uid = @jdata["EmailID"]
+      @auth.username = @jdata["BechtelUserName"]
+      @auth.email = @jdata["BechtelEmailAddress"]
+
+      @auth.first_name = @jdata["FirstName"]
+      @auth.last_name = @jdata["LastName"]
+
+      @auth.provider = "bechtel"
+      @auth.access_token = @jdata["OAuthToken"] 
+
+      @auth.save
+
+      session["user_id"] = @auth.id
+      session['uid'] = @jdata["BechtelUserName"]
+      session['username'] = @jdata["BechtelUserName"]
+      session['fullname'] = @jdata["FirstName"] + " " + @jdata["LastName"]
+      # session['photo'] = 
+      session['access_token'] = @jdata["OAuthToken"]
+      session['admin'] = @auth.admin 
+      session['email'] = @jdata["BechtelEmailAddress"]
+      # session['bio'] = 
+      session['provider'] = "bechtel"
+      
+
+      redirect_to "/"
+    
+    else
+      redirect_to root_url, :notice => "Something went wrong."
+    end
+    
+    
   end
   
   
@@ -81,7 +145,7 @@ class SessionsController < ApplicationController
 
       fullname = @authhash[:name].split(' ')
       @auth.first_name = fullname[0]
-      @auth.first_name = fullname[1]
+      @auth.last_name = fullname[1]
         
       @auth.provider = @authhash[:provider]
       @auth.access_token = @authhash[:token]  
@@ -101,6 +165,7 @@ class SessionsController < ApplicationController
       session['admin'] = @auth.admin 
       session['email'] = @authhash[:email]
       session['bio'] = @authhash[:bio]
+      session['provider'] = @authhash[:provider]
         
       redirect_to "/"
         

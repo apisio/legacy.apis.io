@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120413054840) do
+ActiveRecord::Schema.define(:version => 20120428035230) do
 
   create_table "apis", :force => true do |t|
     t.integer  "user_id"
@@ -20,9 +20,11 @@ ActiveRecord::Schema.define(:version => 20120413054840) do
     t.string   "imageurl"
     t.text     "description"
     t.string   "category"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "apidocurl"
+    t.boolean  "privateaccess"
+    t.string   "provider"
   end
 
   create_table "explorers", :force => true do |t|

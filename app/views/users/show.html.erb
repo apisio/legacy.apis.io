@@ -5,7 +5,12 @@
 
 <% if @user  %>
 
-<img src="<%= @user.photo %>" style="width:100px; height: 100px;"/>
+<% if @user.photo %>	
+	<img src="<%= @user.photo %>" style="width:100px; height: 100px;"/>
+<% else %>
+	<%= gravatar_image_tag @user.email, :class => "gravatar", :width => "100" rescue ""%> 
+<% end %>
+
 <br /><br />
 <h1>
 <%= @user.username.capitalize %>'<%= "s" if @user.username[-1,1] != "s"%> Profile 

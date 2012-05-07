@@ -30,7 +30,34 @@
   <div class="field">
     <%= f.select :category, options_for_select([[@api.category], "Advertising", "Business", "Developer", "Enterprise", "Entertainment", "Gaming", "Health", "Location", "Mapping", "Music", "News", "PaaS", "Payments", "Photos", "Search", "Shopping", "Social", "Telephony", "Tool", "Travel", "Video", "Weather", "Other"]), :class => 'input' %>
   </div>
+  <div class="field">
+    <%= f.check_box :privateaccess, :class=>"input" %> Private API?
+
+	  <span class="field" id="providerdiv" style="display:none;">
+	    belonging to: <%= f.select :provider, options_for_select([[@api.provider], "personal", "bechtel"]), :class => 'input' %>
+	  </span>
+  </div>
+<br />
   <div class="actions">
     <%= f.submit :class=>"btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+
+$("#api_privateaccess").click(function(){
+
+	// If checked
+	if ($("#api_privateaccess").is(":checked"))
+	{
+		//show the hidden div
+		$("#providerdiv").show("fast");
+	}
+	else
+	{
+		//otherwise, hide it
+		$("#providerdiv").hide("fast");
+	}
+});
+	
+</script> 

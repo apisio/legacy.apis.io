@@ -8,7 +8,7 @@ gem 'omniauth-github'
 gem 'rest-client'
 
 gem "will_paginate"
-# gem 'gravatar_image_tag', '1.0.0.pre2'
+gem 'gravatar_image_tag' #, '1.0.0.pre2'
 
 gem "nokogiri"
 gem 'curb'

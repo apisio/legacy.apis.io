@@ -96,7 +96,11 @@
               <% if session["user_id"] %>
               <li>
                 <div class="thumbnail">
-                  <img src="<%= session["photo"] %>" style="width:25px; height: 25px;"/>  
+				<% if session["photo"] %>	
+					<img src="<%= session["photo"] %>" style="width:25px; height: 25px;"/>
+				<% else %>
+					<%= gravatar_image_tag session["email"], :class => "gravatar", :style=>"width:25px; height: 25px;" rescue ""%> 
+				<% end %>
                 </div>
               </li>
               <li>  
@@ -117,7 +121,7 @@
               <li><%# link_to 'QSOs', '/' + session["username"] + '/contacts', :title => "Social Logbook" %></li> 
               <li><%= link_to 'Logout', '/logout', :title => "Logout" %> </li>
               <% else %>
-              <li><%= link_to 'Register/Login', '/auth/github', :title => "Login" %></li>
+              <li><%= link_to 'Register/Login', '/logins', :title => "Login" %></li>
               <% end %>
 
             </ul>
@@ -128,7 +132,13 @@
     
     <div class="container-fluid">  
       <p id="notice"><%= alert %></p>
-      <%# image_tag "apis_logo.png"%>
+		<% if session['provider'] == "bechtel" %>
+			<b>Authorized Bechtel User Data</b><br />
+			Base URI = https://api.mypsn.com/svc1/v2<br /><br />
+			Headers:<br />
+			X-myPSN-AppKey = <%= ENV['APP_KEY']%> <br />
+			Authorization = <%=session['access_token']%>
+		<% end %>
       <p class="pull-right">
       <%= link_to image_tag("apisio_blocks2.png"), '/' %>
       </p>

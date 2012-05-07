@@ -2,9 +2,18 @@ class ApisController < ApplicationController
   # GET /apis
   # GET /apis.json
   def index
-    @apis = Api.paginate :page => params[:page], :order=>"name"
 
-    respond_to do |format|
+    # if session[:user_id]
+    #   if session['provider'] == "bechtel"
+    #     @apis = Api.paginate :page => params[:page], :conditions => ['provider = ? or (provider = ? and user_id = ?)', 'bechtel', 'personal', session[:user_id]], :order=>"name"
+    #   else
+    #     @apis = Api.paginate :page => params[:page], :conditions => ['provider != ? or (provider = ? and user_id = ?)', 'bechtel', 'personal', session[:user_id]], :order=>"name"
+    #   end
+    # else
+      @apis = Api.paginate :page => params[:page], :order=>"name"
+    # end
+     
+    respond_to do |format| 
       format.html # index.html.erb
       format.json { render json: @apis }
     end
@@ -12,9 +21,9 @@ class ApisController < ApplicationController
 
   def search
     if request.url.index('localhost')
-      @apis = Api.paginate :page => params[:page], :conditions => ['name LIKE ? or description LIKE ? or category LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
+      @apis = Api.paginate :page => params[:page], :conditions => ['name LIKE ? or description LIKE ? or category LIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
      else
-      @apis = Api.paginate :page => params[:page], :conditions => ['name ILIKE ? or description ILIKE ? or category ILIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
+      @apis = Api.paginate :page => params[:page], :conditions => ['name ILIKE ? or description ILIKE ? or category ILIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
     end
 
     respond_to do |format|
@@ -45,12 +54,14 @@ class ApisController < ApplicationController
       
       @resources = Resource.find(:all, :conditions => ["api_id = ?", @api.id], :order => "resourcename, resourcemethod")
     
+    else
+      redirect_to "/errors/404"
     end
     
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @api }
-    end
+    # respond_to do |format|
+    #   format.html # show.html.erb
+    #   format.json { render json: @api }
+    # end
   end
 
   # GET /apis/new
@@ -94,7 +105,7 @@ class ApisController < ApplicationController
         @status.message = "Created " + @api.name.capitalize + " API"
         @status.save
         
-        format.html { redirect_to '/' + @api.name, notice: 'Api was successfully created.' }
+        format.html { redirect_to '/' + URI.escape(@api.name), notice: 'Api was successfully created.' }
         format.json { render json: @api, status: :created, location: @api }
       else
         format.html { render action: "new" }
@@ -127,7 +138,7 @@ class ApisController < ApplicationController
         @status.message = "Updated " + @api.name.capitalize + " API"
         @status.save
         
-        format.html { redirect_to '/' + @api.name, notice: 'Api was successfully updated.' }
+        format.html { redirect_to '/' + URI.escape(@api.name), notice: 'Api was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -182,7 +193,7 @@ class ApisController < ApplicationController
     
     # Bail if API doesn't belong to you.
     @api = Api.find(@api_id)
-    if @api and (@api.user_id != session["user_id"] or !session["admin"])
+    if @api and (@api.user_id != session["user_id"]) #or !session["admin"]
       return
     end
 
@@ -221,9 +232,14 @@ class ApisController < ApplicationController
           end
         end
 
-        if meth.xpath('authentication')[0]["required"] == "true"
-          @resource.authentication = "Basic"
-          @curlauth = "-u 'username:password'"
+        if meth.xpath('authentication')[0] and meth.xpath('authentication')[0]["required"] == "true" 
+          if @api.provider == "bechtel" or meth.xpath('authentication')[0]["type"] == "oauth"
+            @resource.authentication = "OAuth"
+            @curlauth = ""
+          else  
+            @resource.authentication = "Basic"
+            @curlauth = "-u 'username:password'"
+          end
         else
           @resource.authentication = "None"
           @curlauth = ""
@@ -239,7 +255,7 @@ class ApisController < ApplicationController
         end 
         
         # url path
-        @curlexample = meth.xpath('example')[0]["url"] 
+        @curlexample = meth.xpath('example')[0]["url"] rescue ""
         if @curlexample[0] == "/"
           @apipath = @curlexample[1..@curlexample.length-1]
         else
@@ -255,7 +271,7 @@ class ApisController < ApplicationController
         
         # Add resource parameters
         @apiparams = ""
-        @apiheader = ""
+        @apiheaders = ""
         @apipayload = ""
         
         meth.search('request/param').each do |param| 
@@ -278,7 +294,7 @@ class ApisController < ApplicationController
           
           # Format curl
           if param["style"] == "header"
-            @apiheader = "-h '" + param["name"] + ": " + param["default"] + "' " rescue ""
+            @apiheaders << " -h '" + param["name"] + ": " + param["default"] + "' " rescue ""
           end  
           if param["style"] == "query"
             @apiparams << "&" + param["name"] + "=" + param["default"] rescue ""
@@ -304,7 +320,39 @@ class ApisController < ApplicationController
           if @apiparams
             @apiparams = "-d '" + @apiparams[1..@apiparams.length-1] + "' " rescue ""
           end
-          @curlexample = @resourceudpate.curlexample + @apipayload + @apiheader + @apiparams + @apiurlpath
+          
+          # IF BECHTEL API ADD ADDITIONAL HEADERS
+          if @api.privateaccess and @api.provider == "bechtel"
+            
+            # Add headers to resource
+            @parameter = Parameter.new
+            @parameter.api_id = @api_id
+            @parameter.resource_id = @resource.id
+            @parameter.paramname = "X-myPSN-AppKey"
+            @parameter.paramtype = "xsd:string"
+            @parameter.paramdefault = ENV['APP_KEY']
+            @parameter.paramstyle = "header"
+            @parameter.description = "Application Key"
+            @parameter.paramrequired = true
+            @parameter.save
+
+            @parameter = Parameter.new
+            @parameter.api_id = @api_id
+            @parameter.resource_id = @resource.id
+            @parameter.paramname = "Authorization"
+            @parameter.paramtype = "xsd:string"
+            @parameter.paramdefault = "{oauthtoken}"
+            @parameter.paramstyle = "header"
+            @parameter.description = "OAuth Token"
+            @parameter.paramrequired = true
+            @parameter.save
+
+            # Add Headers to CURL
+            @apiheaders << " -h 'X-myPSN-AppKey: " + ENV['APP_KEY'] + "' "
+            @apiheaders << " -h 'Authorization: {oauthtoken}' "
+          end  
+          
+          @curlexample = @resourceudpate.curlexample + @apipayload + @apiheaders + @apiparams + @apiurlpath
           
           @resourceudpate.curlexample = @curlexample
           @resourceudpate.save
@@ -322,7 +370,7 @@ class ApisController < ApplicationController
     @status.save
 
     
-    redirect_to("/" + @api.name)
+    redirect_to("/" + URI.escape(@api.name))
     # respond_to do |format|
     #   format.html {redirect_to("/" + @api.name)}# new.html.erb
     #   format.json { render json: @api }

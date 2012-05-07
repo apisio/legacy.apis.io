@@ -1,7 +1,10 @@
 <script>
 	var apiresource
 </script>
-<% if @api %>
+<%# if @api %>
+
+<% if @api and (@api.privateaccess != true or (@api.privateaccess == true and @api.provider == "bechtel" and session['provider'] == "bechtel") or (@api.privateaccess == true and @api.provider == "personal" and session[:user_id] == @api.user_id)) %>
+
 
 <div class="alert alert-block alert-error fade in">
   <a class="close" data-dismiss="alert" href="#">&times;</a>

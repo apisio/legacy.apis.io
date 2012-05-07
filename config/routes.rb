@@ -34,6 +34,10 @@ Apisio::Application.routes.draw do
   match '/apis/wadl_import' => 'apis#wadl_import'
   match '/explorer' => 'explorers#index'
   
+  match '/bechtel' => 'sessions#bechtel' #Bechtel OAuth Login
+  match '/sessions' => 'sessions#index' #Bechtel OAuth Login
+  match '/logins' => 'static#login'
+  
 
 # APIs
 

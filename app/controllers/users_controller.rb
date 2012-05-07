@@ -22,12 +22,14 @@ class UsersController < ApplicationController
       @following = Follow.find(:all, :conditions => ["user_id = ?", @user.id])
       # @activities = Activity.paginate :page => params[:page], :conditions => ['user_id = ?', @user.id], :order => 'activities.updated_at DESC'     
             
+    else
+      redirect_to "/errors/404"
     end #@user
     
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json 
-    end
+    # respond_to do |format|
+    #   format.html # show.html.erb
+    #   format.json 
+    # end
   end
   
 
