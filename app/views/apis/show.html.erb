@@ -1,7 +1,10 @@
+<% content_for :head do %>
+<script src="/javascripts/jquery.clippy.js"></script>
+<% end %>
+
 <script>
 	var apiresource
 </script>
-<%# if @api %>
 
 <% if @api and (@api.privateaccess != true or (@api.privateaccess == true and @api.provider == "bechtel" and session['provider'] == "bechtel") or (@api.privateaccess == true and @api.provider == "personal" and session[:user_id] == @api.user_id)) %>
 
@@ -129,7 +132,9 @@
           <p class="pull-right"><a id="href_resource_params_<%=resource.id%>">show/hide parameters</a></p>
           <div id="resource_params_<%=resource.id%>" style="display:none">
             <hr>
-			<br /><br /><code><%= resource.curlexample rescue ""%></code> <br /><br />
+			<code><%= resource.curlexample rescue ""%></code>
+			<span class="clippy"><%= resource.curlexample rescue ""%></span>
+			<br /><br />
 			
             <% @parameters = Parameter.find(:all, :conditions=>["resource_id = ?", resource.id])%>
             
@@ -435,4 +440,8 @@ function okClicked () {
 	// closeDialog ();
 	$('#windowTitleDialog').modal('hide'); 
 	};
+	
+	
+    $('.clippy').clippy();
+
 </script>
