@@ -3,7 +3,11 @@
   <% if !status.message.blank? %>
   <div class="bubble" id="status_<%=status.id %>">
     <a href="/users/<%= status.user.username rescue ""%>">
-    <img src="<%= status.user.photo  rescue ""%>" style="width:100px; height: 100px;" align="left"  />
+	<% if status.user.photo %>	
+		<img src="<%= status.user.photo %>" style="width:100px; height: 100px;" align="left"/>
+	<% else %>
+		<%= gravatar_image_tag status.user.email, :class => "gravatar", :width => "100",  :align=>"left" rescue ""%> 
+	<% end %>
     </a>
     <blockquote>
       <p>  

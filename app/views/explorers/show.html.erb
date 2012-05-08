@@ -1,20 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>User:</b>
-  <%= @explorer.user_id %>
-</p>
+<div class="hero-unit">
+<h1>Saved API Explorer API Calls</h1><br />
 
-<p>
-  <b>Apirequest:</b>
-  <%= @explorer.apirequest %>
-</p>
+<div id="output">
+	<div class="row">
+		<div class="span6">
+			<h2>Request</h2>
+			<div id="apirequest"><pre class="prettyprint linenums"><code><%= raw(@explorer.apirequest) %></code></pre></div>
+		</div>
+		<div class="span6">
+			<h2>Response</h2>
+			<div id="apiresponse"><pre class="prettyprint linenums"><code><%= raw(@explorer.apiresponse) %></code></pre></div>
+		</div>
+	</div>
+</div>
 
-<p>
-  <b>Apiresponse:</b>
-  <%= @explorer.apiresponse %>
-</p>
+</div>
 
-
-<%= link_to 'Edit', edit_explorer_path(@explorer) %> |
 <%= link_to 'Back', explorers_path %>

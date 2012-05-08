@@ -16,7 +16,7 @@ class ExplorersController < ApplicationController
   # GET /explorers/1
   # GET /explorers/1.json
   def show
-    @explorer = Explorer.find(params[:id])
+    @explorer = Explorer.find_by_reference(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -116,6 +116,18 @@ class ExplorersController < ApplicationController
     # rescue => e
     #   # json :error => e.to_s
     # end
+
+    # SAVE REQUEST / RESPONSE
+    if session[:user_id]
+      @ref = rand(1000000000000).to_s
+      @explorer = Explorer.new
+      @explorer.user_id = session[:user_id]
+      @explorer.apirequest = @request
+      @explorer.apiresponse = @header + @body
+      @explorer.reference = @ref
+      @explorer.save
+    end
+
 
     respond_to do |format|
       if true #@explorer.save

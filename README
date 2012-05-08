@@ -2,7 +2,7 @@
 
 The idea behind APIs.io started by a rant from @ChrisMatthieu stating that @Apigee wouldn’t list his 3 REST APIs on their Provider page even though he had been speaking with them for nearly 6 months and all three APIs worked in their API Explorer. Apigee seems to reserve space on their API Provider page for paying customers.
 
-The following individuals immediately responded with support for this idea: @guyht @kritikal @k0ws1k and @SandFoxUK. Within 1 hour from the initial tweet, we created the @Apisio twitter handle and a public repo on Github (http://github.com/apisio). An idea becomes reality...
+The following individuals immediately responded with support for this idea: @guyht @kritikal @k0ws1k and @SandFoxUK. Within 1 hour from the initial tweet, we created the @Apisio twitter handle and a public repo on Github (http://github.com/apisio). An idea becomes reality ... http://apis.io 
 
 == What is APIs.io
 
@@ -16,6 +16,8 @@ API Configurator (new service) - Apigee uses WADL files to define an API’s beh
 
 == Architecture
 
-Developed using Node.JS and hosted on Nodester. This will allow us to handle a large volume of transactions for rate limiting and analytics. We could possibly use Backbone.js to create a very responsive UX with websockets for streaming live API metrics.
+Today's site is built on Rails 3.2.x. It allows you import Apigee WADL files or build your own using our dynamic API WADL builder.  You can also export API WADL files to import into other services such as Apigee.  We have an API Explorer that can be used as a stand-alone service or you can click on the API Verbs on their docs page and interact with a pre-populated API Explorer for testing calls.
 
-Here's an interesting API server slide deck that I came across today: http://paul.querna.org/slides/api-servers-in-nodejs/#1
+We would like to develop a complementary realtime API engine using Node.JS and hosted on Nodester. This would allow us to handle a large volume of transactions for rate limiting and analytics. We could possibly use Backbone.js to create a very responsive UX with websockets for streaming live API metrics.
+
+Here's an interesting API server slide deck that I came across: http://paul.querna.org/slides/api-servers-in-nodejs/#1

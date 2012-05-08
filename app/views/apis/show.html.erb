@@ -152,7 +152,14 @@
 				<!-- Populate API Explorer -->
 				<% @headercounter = @headercounter + 1 %>				
 				<div id="apiheaderkey_<%=resource.id%>_<%=@headercounter%>" data-header="<%= parameter.paramname rescue ""%>"></div>
-				<div id="apiheadervalue_<%=resource.id%>_<%=@headercounter%>" data-header="<%= parameter.paramdefault rescue ""%>"></div>
+				<% 
+				if session["provider"] == "bechtel" and parameter.paramdefault.index("{oauthtoken}")
+					@paramvalue = session['access_token']
+				else
+					@paramvalue = parameter.paramdefault
+				end					
+				%>
+				<div id="apiheadervalue_<%=resource.id%>_<%=@headercounter%>" data-header="<%= @paramvalue rescue ""%>"></div>
 				
               <% end %>
 
