@@ -1,6 +1,6 @@
 class ExplorersController < ApplicationController
   
-  # require "Yajl"
+  require "Yajl"
   
   # GET /explorers
   # GET /explorers.json
@@ -95,12 +95,11 @@ class ExplorersController < ApplicationController
       
       @header =  curl.header_str
       @header = @header.gsub("\n", '<br/>')
-      @body = curl.body_str
-      # @body = @body.gsub("\n", '<br/>')
+      # @body = curl.body_str
 
-      # @header  = pretty_print_headers(curl.header_str)
-      # @type    = @url =~ /(\.js)$/ ? 'js' : curl.content_type
-      # @body    = pretty_print(@type, curl.body_str)
+      # @header =  pretty_print_headers(curl.header_str)
+      @type    = @url =~ /(\.js)$/ ? 'js' : curl.content_type
+      @body =  "<div class='highlight'>" + pretty_print(@type, curl.body_str) + "</div>"
       # @request = pretty_print_requests(sent_headers, post_data)
       
       # puts "request: " + @request
@@ -122,8 +121,8 @@ class ExplorersController < ApplicationController
       @ref = rand(1000000000000).to_s
       @explorer = Explorer.new
       @explorer.user_id = session[:user_id]
-      @explorer.apirequest = @request
-      @explorer.apiresponse = @header + @body
+      @explorer.apirequest = @request.gsub('<br/>', "\n")
+      @explorer.apiresponse = curl.header_str + @body
       @explorer.reference = @ref
       @explorer.save
     end
@@ -215,6 +214,72 @@ class ExplorersController < ApplicationController
     else
       raise "Cannot stringify #{data.inspect}"
     end
+  end
+  
+  
+  def pretty_print(type, content)
+    type = type.to_s
+
+    if type =~ /json|javascript/
+      pretty_print_json(content)
+    elsif type == 'js'
+      pretty_print_js(content)
+    elsif type.include? 'xml'
+      pretty_print_xml(content)
+    elsif type.include? 'html'
+      colorize :html => content
+    else
+      content.inspect
+    end
+  end
+
+  def pretty_print_json(content)
+    json = Yajl::Parser.parse(content)
+    pretty_print_js Yajl::Encoder.new(:pretty => true).encode(json)
+  end
+
+  def pretty_print_js(content)
+    colorize :js => content
+  end
+
+  def pretty_print_xml(content)
+    out = StringIO.new
+    doc = REXML::Document.new(content)
+    doc.write(out, 2)
+    colorize :xml => out.string
+  end
+
+  def pretty_print_headers(content)
+    lines = content.split("\n").map do |line|
+      if line =~ /^(.+?):(.+)$/
+        "<span class='nt'>#{$1}</span>:<span class='s'>#{$2}</span>"
+      else
+        "<span class='nf'>#{line}</span>"
+      end
+    end
+
+    "<div class='highlight'><pre>#{lines.join}</pre></div>"
+  end
+
+  # accepts an array of request headers and formats them
+  def pretty_print_requests(requests = [], fields = [])
+    headers = requests.map do |request|
+      pretty_print_headers request
+    end
+
+    headers.join + fields.join('&')
+  end
+  
+  def json(hash = {})
+    content_type 'application/json'
+    Yajl::Encoder.encode(hash)
+  end
+
+  # colorize :js => '{ "blah": true }'
+  def colorize(hash = {})
+    tokens  = CodeRay.scan(hash.values.first, hash.keys.first)
+    colored = tokens.html.sub('CodeRay', 'highlight')
+    colored.gsub(/(https?:\/\/[^< "']+)/, '<a href="\1" target="_blank">\1</a>')
   end
   
   

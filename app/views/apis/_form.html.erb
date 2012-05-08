@@ -31,10 +31,10 @@
     <%= f.select :category, options_for_select([[@api.category], "Advertising", "Business", "Developer", "Enterprise", "Entertainment", "Gaming", "Health", "Location", "Mapping", "Music", "News", "PaaS", "Payments", "Photos", "Search", "Shopping", "Social", "Telephony", "Tool", "Travel", "Video", "Weather", "Other"]), :class => 'input' %>
   </div>
   <div class="field">
-    <%= f.check_box :privateaccess, :class=>"input" %> Private API?
+    <%= f.check_box :privateaccess, :class=>"input" %> Private API
 
 	  <span class="field" id="providerdiv" style="display:none;">
-	    belonging to: <%= f.select :provider, options_for_select([[@api.provider], "personal", "bechtel"]), :class => 'input' %>
+	    belonging to: <%= f.select :provider, options_for_select([[@api.provider], "personal", session["provider"]]), :class => 'input' %>
 	  </span>
   </div>
 <br />

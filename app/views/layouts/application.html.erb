@@ -132,7 +132,7 @@
     
     <div class="container-fluid">  
       <p id="notice"><%= alert %></p>
-		<% if false #session['provider'] == "bechtel" %>
+		<% if session['provider'] == "bechtel" and controller.controller_name == "explorers"%>
 			<b>Authorized Bechtel User Data</b><br />
 			Base URI = https://api.mypsn.com/svc1/v2<br /><br />
 			Headers:<br />

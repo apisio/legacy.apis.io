@@ -12,8 +12,9 @@ gem 'gravatar_image_tag' #, '1.0.0.pre2'
 
 gem "nokogiri"
 gem 'curb'
-# gem 'yajl-ruby'
-# gem 'coderay'
+
+gem 'yajl-ruby'
+gem 'coderay'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

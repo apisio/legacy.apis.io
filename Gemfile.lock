@@ -33,6 +33,7 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
+    coderay (1.0.6)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -128,12 +129,14 @@ GEM
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
     will_paginate (3.0.3)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bcrypt-ruby
+  coderay
   coffee-rails
   curb
   gravatar_image_tag
@@ -150,3 +153,4 @@ DEPENDENCIES
   turn
   uglifier
   will_paginate
+  yajl-ruby
