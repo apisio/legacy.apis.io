@@ -29,7 +29,8 @@ class SessionsController < ApplicationController
   
   def bechtel
     # Initiates Bechtel OAuth
-    redirect_to "https://sso.mypsn.com/sp/startSSO.ping?PartnerIdpId=PSN2-SAML2-Entity&TargetResource=http://localhost:60883/sessions"    
+    # redirect_to "https://sso.mypsn.com/sp/startSSO.ping?PartnerIdpId=PSN2-SAML2-Entity&TargetResource=http://localhost:60883/sessions"    
+    redirect_to "https://sso.mypsn.com/sp/startSSO.ping?PartnerIdpId=PSN2-SAML2-Entity&TargetResource=http://apis.io/sessions"    
   end
   
   def index
