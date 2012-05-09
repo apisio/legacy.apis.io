@@ -13,7 +13,7 @@ gem 'gravatar_image_tag' #, '1.0.0.pre2'
 gem "nokogiri"
 gem 'curb'
 
-gem 'yajl-ruby'
+gem 'yajl-ruby', require: 'yajl'
 gem 'coderay'
 
 # Bundle edge Rails instead:
