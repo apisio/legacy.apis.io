@@ -352,6 +352,8 @@
 	            e.preventDefault();
 	
 				console.log($(this).data('item-id'));
+
+				$("#explorer_api").val(<%=@api.id%>);
 	
 				$("#explorer_apiurl").val($("#apiurl_" + $(this).data('item-id')).attr('data-url'));
 				

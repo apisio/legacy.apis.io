@@ -1,7 +1,5 @@
 class ExplorersController < ApplicationController
   
-  # require "Yajl"
-  
   # GET /explorers
   # GET /explorers.json
   def index
@@ -43,7 +41,9 @@ class ExplorersController < ApplicationController
   # POST /explorers
   # POST /explorers.json
   def create
-    # @explorer = Explorer.new(params[:explorer])
+
+    @api = Api.find(params[:explorer][:api]) rescue nil
+
     @header=""
     @body=""
     @request=""
@@ -56,6 +56,8 @@ class ExplorersController < ApplicationController
     curl = Curl::Easy.new(@url)
 
     sent_headers = []
+    @redacted_headers = []
+    
     curl.on_debug do |type, data|
       # track request headers
       sent_headers << data if type == Curl::CURLINFO_HEADER_OUT
@@ -116,17 +118,26 @@ class ExplorersController < ApplicationController
     #   # json :error => e.to_s
     # end
 
-    # SAVE REQUEST / RESPONSE
-    if session[:user_id]
-      @ref = rand(1000000000000).to_s
-      @explorer = Explorer.new
-      @explorer.user_id = session[:user_id]
-      @explorer.apirequest = @request.gsub('<br/>', "\n")
-      @explorer.apiresponse = curl.header_str + @body
-      @explorer.reference = @ref
-      @explorer.save
+    if @api and @api.privateaccess
+      @ref = ""
+    else
+      # SAVE REQUEST / RESPONSE
+      if session[:user_id]
+        # Remove secure tokens from logging
+        @scrub_request = @request.gsub('<br/>', "\n")
+        @redacted_headers.each do |key|
+          @scrub_request = @scrub_request.gsub(key, "{filtered}")
+        end
+      
+        @ref = rand(1000000000000).to_s
+        @explorer = Explorer.new
+        @explorer.user_id = session[:user_id]
+        @explorer.apirequest = @scrub_request
+        @explorer.apiresponse = curl.header_str + @body
+        @explorer.reference = @ref
+        @explorer.save
+      end
     end
-
 
     respond_to do |format|
       if true #@explorer.save
@@ -186,6 +197,11 @@ class ExplorersController < ApplicationController
     keys.each_with_index do |key, i|
       next if values[i].to_s.empty?
       curl.headers[key] = values[i]
+      
+      if session["provider"] == "bechtel"
+        @redacted_headers << values[i]
+      end  
+      
     end
   end
   

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507231843) do
+ActiveRecord::Schema.define(:version => 20120509164814) do
 
   create_table "apis", :force => true do |t|
     t.integer  "user_id"
@@ -31,9 +31,11 @@ ActiveRecord::Schema.define(:version => 20120507231843) do
     t.integer  "user_id"
     t.text     "apirequest"
     t.text     "apiresponse"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "reference"
+    t.boolean  "privateaccess"
+    t.string   "provider"
   end
 
   create_table "follows", :force => true do |t|

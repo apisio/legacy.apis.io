@@ -1,6 +1,7 @@
 <%= form_for :explorer, :url=>{:controller=>"explorers", :action=>"create" }, :remote => true do |f| %>
 <p>
     <%= f.hidden_field :user_id, :value => session["user_id"] %>
+    <%= f.hidden_field :api %>
     <%= f.text_field :apiurl, :placeholder=>"API URL", :class => "input-xxlarge focus" %><br />
     <%= f.select :apimethod, options_for_select(["GET", "POST", "PUT", "DELETE"]), :class => 'input-small span1' %>
 	<%= check_box_tag :follow_redirects, 1, params[:follow_redirects] %> follow redirects?<br />
