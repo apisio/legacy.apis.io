@@ -1,6 +1,6 @@
 class ExplorersController < ApplicationController
   
-  require "Yajl"
+  # require "Yajl"
   
   # GET /explorers
   # GET /explorers.json
