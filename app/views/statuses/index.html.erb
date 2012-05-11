@@ -27,11 +27,18 @@ $(document).ready(function(){
 </div></div> -->
 
 <div id="scrollpage" style="display:none;">2</div>
+<div id="scrollactive" style="display:none;">false</div>
 
 <script>
+	var killScroll = $('#scrollactive').html();
 	$(window).scroll(function(){
 	        if  ($(window).scrollTop()+200 >= ($(document).height() - ($(window).height()))){
-				$.getScript('/statuses?page=' + $('#scrollpage').html()); return false;		
+		
+				if (killScroll == 'false') { // IMPORTANT - Keeps the loader from fetching more than once.
+					killScroll = $('#scrollactive').html("true");
+					$.getScript('/statuses?page=' + $('#scrollpage').html()); return false;
+				}
+				
 	        }
 	});
 </script>

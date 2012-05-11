@@ -1,4 +1,5 @@
 $("#statuses").append("<%= escape_javascript(render("feed")) %>");
 // $("#pager").html('<div class="pagination"><a class="next_page" rel="next" href="#" onclick="<%='$(".pagination").html("<img src=/assets/ajax-spinner.gif>");$.getScript("/statuses?page=' + @page.to_s + '");return false;'%>">more</a></div>');
 $('#scrollpage').html(<%=@page%>);
+$('#scrollactive').html("false");
 
