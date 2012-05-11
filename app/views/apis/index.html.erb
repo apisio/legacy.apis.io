@@ -30,16 +30,17 @@
 
 <br /><br /><br />
 <div id="scrollpage" style="display:none;">2</div>
+<div id="scrollactive" style="display:none;">false</div>
 
 <script>
-	// var killScroll = false;
+	var killScroll = $('#scrollactive').html();
 	$(window).scroll(function(){
 	        if  ($(window).scrollTop()+200 >= ($(document).height() - ($(window).height()))){
 		
-				// if (killScroll == false) { // IMPORTANT - Keeps the loader from fetching more than once.
-					// killScroll = true;
+				if (killScroll == 'false') { // IMPORTANT - Keeps the loader from fetching more than once.
+					killScroll = $('#scrollactive').html("true");
 					$.getScript('/apis?page=' + $('#scrollpage').html()); return false;
-				// }
+				}
 				
 	        }
 	});
