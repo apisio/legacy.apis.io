@@ -7,40 +7,40 @@
 <br /><br />
 <div class="row">
 <div class="span16">
-<% @apis.each do |api| %>
-
-	<% if api.privateaccess != true or (api.privateaccess == true and api.provider == "bechtel" and session['provider'] == "bechtel") or (api.privateaccess == true and api.provider == "personal" and session[:user_id] == api.user_id) %>
-
-	  <div class="span3 well">
-    
-	    <table>
-	      <tr><td height="100" colspan="2">
-	        <h4><a href="/<%=api.name%>"><%= api.name %></a>
-	        (<%= api.category %>)</h4><hr />
-	      </td></tr>
-	      <tr>
-	      <td width="80" height="160" valign="top"><a href="/<%=api.name%>"><img src="<%= api.imageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
-	      <td valign="top">        
-	        <%= api.description[0..140] %>
-	      </td>
-	    </tr></table>
-    
-	  </div>
-
-	<% end %>
-
-<% end %>
-
+	
+	<div id="statuses">
+		<%= render 'apis'%>
+	</div>
+	
 </div>
 </div>
 
 
-<br />
+<!-- <br />
 <p><center><div class="pager"><%= will_paginate @apis, :page_links => false %></div></center></p>
-<br />
+<br /> -->
+<!-- <div id="pager" class="pager"><div class="pagination">
+	<a class="next_page" rel="next" href="#" onclick="$('.pagination').html('<img src=<%= '"/assets/ajax-spinner.gif"'%>>');$.getScript('/apis?page=<%=@page.to_s%>'); return false;">more</a>
+</div></div> -->
+
 
 <% if session["user_id"]%>
 <%= link_to raw('<button class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add API </button>'), new_api_path %>
 <% end %>
 
 <br /><br /><br />
+<div id="scrollpage" style="display:none;">2</div>
+
+<script>
+	// var killScroll = false;
+	$(window).scroll(function(){
+	        if  ($(window).scrollTop()+200 >= ($(document).height() - ($(window).height()))){
+		
+				// if (killScroll == false) { // IMPORTANT - Keeps the loader from fetching more than once.
+					// killScroll = true;
+					$.getScript('/apis?page=' + $('#scrollpage').html()); return false;
+				// }
+				
+	        }
+	});
+</script>

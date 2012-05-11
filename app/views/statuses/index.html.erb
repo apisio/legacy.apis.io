@@ -21,4 +21,17 @@ $(document).ready(function(){
   <%= render 'feed' %>
 </div>
 <br />
-<p><center><div class="pager"><%= will_paginate @statuses, :page_links => false %></div></center></p>
+<!-- <p><center><div class="pager"><%= will_paginate @statuses, :page_links => false %></div></center></p> -->
+<!-- <div id="pager" class="pager"><div class="pagination">
+	<a class="next_page" rel="next" href="#" onclick="$('.pagination').html('<img src=<%= '"/assets/ajax-spinner.gif"'%>>');$.getScript('/statuses?page=<%=@page.to_s%>'); return false;">more</a>
+</div></div> -->
+
+<div id="scrollpage" style="display:none;">2</div>
+
+<script>
+	$(window).scroll(function(){
+	        if  ($(window).scrollTop()+200 >= ($(document).height() - ($(window).height()))){
+				$.getScript('/statuses?page=' + $('#scrollpage').html()); return false;		
+	        }
+	});
+</script>

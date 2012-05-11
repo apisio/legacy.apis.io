@@ -1,0 +1,19 @@
+<% @mashups.each do |mashup| %>
+
+  <div class="span3 well">
+
+    <table>
+      <tr><td height="100" colspan="2">
+        <h4><a href="/mashups/<%=mashup.mashupname%>"><%= mashup.mashupname %></a> via 
+        <a href="/<%= mashup.api.name %>"> <img src="<%= mashup.api.imageurl %>" style="width:40px; height: 40px; margin:5px;"></a></h4><hr />
+      </td></tr>
+      <tr>
+      <td width="80" height="150" valign="top"><a href="/mashups/<%=mashup.mashupname%>"><img src="<%= mashup.mashupimageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
+      <td valign="top">        
+        <%= mashup.mashupdesc[0..140] %>
+      </td>
+    </tr></table>
+
+  </div>
+
+<% end %>

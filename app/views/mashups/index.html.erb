@@ -7,31 +7,19 @@
 <br /><br />
 <div class="row-fluid">
 	<div class="span16">
-		<% @mashups.each do |mashup| %>
 
-		  <div class="span3 well">
-    
-		    <table>
-		      <tr><td height="100" colspan="2">
-		        <h4><a href="/mashups/<%=mashup.mashupname%>"><%= mashup.mashupname %></a> via 
-		        <a href="/<%= mashup.api.name %>"> <img src="<%= mashup.api.imageurl %>" style="width:40px; height: 40px; margin:5px;"></a></h4><hr />
-		      </td></tr>
-		      <tr>
-		      <td width="80" height="150" valign="top"><a href="/mashups/<%=mashup.mashupname%>"><img src="<%= mashup.mashupimageurl %>" style="width:60px; height: 60px; margin:5px;" align="left"></a></td>
-		      <td valign="top">        
-		        <%= mashup.mashupdesc[0..140] %>
-		      </td>
-		    </tr></table>
-    
-		  </div>
-
-		<% end %>
-
+		<div id="statuses">
+			<%= render 'mashups'%>
+		</div>
+		
 	</div>
 </div>
 
 
-<br /><p><center><div class="pager"><%= will_paginate @mashups, :page_links => false %></div></center></p><br />
+<!-- <br /><p><center><div class="pager"><%= will_paginate @mashups, :page_links => false %></div></center></p><br /> -->
+<!-- <div id="pager" class="pager"><div class="pagination">
+	<a class="next_page" rel="next" href="#" onclick="$('.pagination').html('<img src=<%= '"/assets/ajax-spinner.gif"'%>>');$.getScript('/mashups?page=<%=@page.to_s%>'); return false;">more</a>
+</div></div> -->
 
 <% if session["user_id"]%>
 	<%= link_to raw('<button class="btn btn-primary"> <i class="icon-plus icon-white"></i> Add Mashup </button>'), new_mashup_path %>
@@ -39,3 +27,14 @@
 
 <br /><br /><br />
 
+<div id="scrollpage" style="display:none;">2</div>
+
+<script>
+	$(window).scroll(function(){
+	        if  ($(window).scrollTop()+200 >= ($(document).height() - ($(window).height()))){
+		
+					$.getScript('/mashups?page=' + $('#scrollpage').html()); return false;
+				
+	        }
+	});
+</script>

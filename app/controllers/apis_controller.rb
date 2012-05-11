@@ -2,21 +2,19 @@ class ApisController < ApplicationController
   # GET /apis
   # GET /apis.json
   def index
-
-    # if session[:user_id]
-    #   if session['provider'] == "bechtel"
-    #     @apis = Api.paginate :page => params[:page], :conditions => ['provider = ? or (provider = ? and user_id = ?)', 'bechtel', 'personal', session[:user_id]], :order=>"name"
-    #   else
-    #     @apis = Api.paginate :page => params[:page], :conditions => ['provider != ? or (provider = ? and user_id = ?)', 'bechtel', 'personal', session[:user_id]], :order=>"name"
-    #   end
-    # else
-      @apis = Api.paginate :page => params[:page], :order=>"name"
-    # end
-     
-    respond_to do |format| 
-      format.html # index.html.erb
-      format.json { render json: @apis }
+    
+    @page = params[:page].to_i
+    if @page == 0
+      @page = 1
     end
+    @page = @page + 1
+
+    @apis = Api.paginate :page => params[:page], :order=>"name"
+     
+    # respond_to do |format| 
+    #   format.html # index.html.erb
+    #   format.json { render json: @apis }
+    # end
   end
 
   def search

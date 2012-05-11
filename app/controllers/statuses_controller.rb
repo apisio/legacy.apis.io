@@ -9,6 +9,13 @@ class StatusesController < ApplicationController
   # GET /statuses
   # GET /statuses.json
   def index
+    
+    @page = params[:page].to_i
+    if @page == 0
+      @page = 1
+    end
+    @page = @page + 1
+    
     # @statuses = Status.find(:all, :order => "created_at DESC")
     # @statuses = Status.paginate :page => params[:page], :order => 'created_at DESC' #, :per_page => 3
     
@@ -22,10 +29,10 @@ class StatusesController < ApplicationController
     @following = Follow.count(:all, :conditions => ["user_id = ?", session["user_id"]])
     
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @statuses }
-    end
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.json { render json: @statuses }
+    # end
   end
 
   def pollfeed

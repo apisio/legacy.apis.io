@@ -2,12 +2,19 @@ class MashupsController < ApplicationController
   # GET /mashups
   # GET /mashups.json
   def index
+    
+    @page = params[:page].to_i
+    if @page == 0
+      @page = 1
+    end
+    @page = @page + 1
+    
     @mashups = Mashup.paginate :page => params[:page], :order=>"mashupname"
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @mashups }
-    end
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.json { render json: @mashups }
+    # end
   end
 
   # GET /mashups/1

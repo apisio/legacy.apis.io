@@ -1,0 +1,4 @@
+$("#statuses").append("<%= escape_javascript(render("apis")) %>");
+// $("#pager").html('<div class="pagination"><a class="next_page" rel="next" href="#" onclick="<%='$(".pagination").html("<img src=/assets/ajax-spinner.gif>");$.getScript("/apis?page=' + @page.to_s + '");return false;'%>">more</a></div>');
+$('#scrollpage').html(<%=@page%>);
+
