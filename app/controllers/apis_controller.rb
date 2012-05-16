@@ -9,7 +9,7 @@ class ApisController < ApplicationController
     end
     @page = @page + 1
 
-    @apis = Api.paginate :page => params[:page], :order=>"name"
+    @apis = Api.paginate :page => params[:page], :order=>"name", :per_page => 100
      
     # respond_to do |format| 
     #   format.html # index.html.erb
@@ -19,9 +19,9 @@ class ApisController < ApplicationController
 
   def search
     if request.url.index('localhost')
-      @apis = Api.paginate :page => params[:page], :conditions => ['name LIKE ? or description LIKE ? or category LIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
+      @apis = Api.paginate :page => params[:page], :conditions => ['name LIKE ? or description LIKE ? or category LIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name", :per_page => 100
      else
-      @apis = Api.paginate :page => params[:page], :conditions => ['name ILIKE ? or description ILIKE ? or category ILIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name"
+      @apis = Api.paginate :page => params[:page], :conditions => ['name ILIKE ? or description ILIKE ? or category ILIKE ? or provider LIKE ?', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%'], :order=>"name", :per_page => 100
     end
 
     respond_to do |format|

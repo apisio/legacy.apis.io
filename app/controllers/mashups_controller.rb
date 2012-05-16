@@ -9,7 +9,7 @@ class MashupsController < ApplicationController
     end
     @page = @page + 1
     
-    @mashups = Mashup.paginate :page => params[:page], :order=>"mashupname"
+    @mashups = Mashup.paginate :page => params[:page], :order=>"mashupname", :per_page => 100
 
     # respond_to do |format|
     #   format.html # index.html.erb
