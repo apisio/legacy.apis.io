@@ -1,11 +1,21 @@
-<h1>Private Corporate Logins</h1><br />
-
-<br /><br />
-<div class="row-fluid" style="height:600px;">
-<div class="span1" >
-	<a href="/auth/github"><img src="/assets/githublogo.jpg" /></a>
+<div class="hero-unit">
+    <center>
+        <h1>Individual Logins</h1><br/>
+              <div id="reqbutton" class="btn btn-success  btn-large">
+                <img src="/assets/github-icon.png"> GitHub Login
+              </div>
+        <br/><br/>
+        <h1>Enterprise Logins</h1><br />
+        <br /><br />
+        <div class="row-fluid" style="height:600px;">
+            <div class="span1" >
+                <a href="/bechtel"><img src="/assets/bechtellogo.png" /></a>
+            </div>
+        </div>
+    </center>
 </div>
-<div class="span1" >
-	<a href="/bechtel"><img src="/assets/bechtellogo.png" /></a>
-</div>
-</div>	
+<script type="text/javascript">
+    $('#reqbutton').click(function() {
+      window.location.replace("/auth/github");
+    });
+</script>

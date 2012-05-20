@@ -19,7 +19,7 @@
   
   <h1><%= @api.name %>
   (<%= @api.category %>)</h1>
-  <h2>Registered by <%= link_to @api.user.username.capitalize, "/users/" + @api.user.username.downcase %></h2><br />
+  <h2>Registered by <%= link_to @api.user.username.downcase, "/users/" + @api.user.username.downcase %></h2><br />
 
   <div class="alert alert-info"><%= @api.description %></div>
 
